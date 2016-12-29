@@ -13,4 +13,4 @@ http://gnuarmeclipse.github.io/install/
 
 Once eclipse is set up here's what the debug config needs to look like, notes the 2 -f openocd scripts that must be configured.
 
-![alt text](https://raw.githubusercontent.com/thedarknet/defcon25-badge/master/Debug.png "Debug Config")
+![alt text](https://github.com/thedarknet/defcon25-badge/blob/master/Debug-ScreenShot.png "Debug Config")

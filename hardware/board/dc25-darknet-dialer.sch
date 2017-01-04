@@ -8355,12 +8355,13 @@ Basic schematic elements and footprints for 0603, 1206, and PTH resistors.</desc
 <part name="U$7" library="SYNShop" deviceset="VCC" device=""/>
 <part name="U$8" library="SYNShop" deviceset="VCC" device=""/>
 <part name="U$9" library="SYNShop" deviceset="VCC" device=""/>
-<part name="C12" library="SYNShop" deviceset="C-US" device="C0603"/>
-<part name="C13" library="SYNShop" deviceset="C-US" device="C0603"/>
-<part name="C14" library="SYNShop" deviceset="C-US" device="C0603"/>
-<part name="C15" library="SYNShop" deviceset="C-US" device="C0603"/>
+<part name="C12" library="SYNShop" deviceset="C-US" device="C0603" value="100nF"/>
+<part name="C13" library="SYNShop" deviceset="C-US" device="C0603" value="100nF"/>
+<part name="C14" library="SYNShop" deviceset="C-US" device="C0603" value="100nF"/>
+<part name="C15" library="SYNShop" deviceset="C-US" device="C0603" value="10nF"/>
 <part name="GND21" library="SYNShop" deviceset="GND" device=""/>
 <part name="U$10" library="SYNShop" deviceset="VCC" device=""/>
+<part name="C16" library="SYNShop" deviceset="C-US" device="C0603" value="4.7uF"/>
 </parts>
 <sheets>
 <sheet>
@@ -8457,6 +8458,7 @@ Basic schematic elements and footprints for 0603, 1206, and PTH resistors.</desc
 <instance part="C15" gate="G$1" x="114.3" y="139.7" rot="R180"/>
 <instance part="GND21" gate="1" x="114.3" y="134.62"/>
 <instance part="U$10" gate="G$1" x="114.3" y="144.78"/>
+<instance part="C16" gate="G$1" x="73.66" y="139.7" rot="R180"/>
 </instances>
 <busses>
 </busses>
@@ -8689,6 +8691,9 @@ Basic schematic elements and footprints for 0603, 1206, and PTH resistors.</desc
 <junction x="114.3" y="137.16"/>
 <junction x="93.98" y="137.16"/>
 <junction x="104.14" y="137.16"/>
+<pinref part="C16" gate="G$1" pin="1"/>
+<wire x1="83.82" y1="137.16" x2="73.66" y2="137.16" width="0.1524" layer="91"/>
+<junction x="83.82" y="137.16"/>
 </segment>
 </net>
 <net name="N$12" class="0">
@@ -9148,6 +9153,9 @@ Basic schematic elements and footprints for 0603, 1206, and PTH resistors.</desc
 <junction x="93.98" y="144.78"/>
 <pinref part="U$10" gate="G$1" pin="VCC"/>
 <junction x="114.3" y="144.78"/>
+<pinref part="C16" gate="G$1" pin="2"/>
+<wire x1="83.82" y1="144.78" x2="73.66" y2="144.78" width="0.1524" layer="91"/>
+<junction x="83.82" y="144.78"/>
 </segment>
 </net>
 </nets>

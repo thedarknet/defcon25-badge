@@ -1,0 +1,3 @@
+[submodule "software/3rdParty/CubeMXImporter"]
+	path = software/3rdParty/CubeMXImporter
+	url = https://github.com/cnoviello/CubeMXImporter.git

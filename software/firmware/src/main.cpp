@@ -40,14 +40,14 @@
 #include "gpio.h"
 
 /* USER CODE BEGIN Includes */
-
+#include "badge/dcdarknet_app.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-
+DCDarkNetApp DCDarkNet;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -88,6 +88,7 @@ int main(void)
   MX_USB_DEVICE_Init();
 
   /* USER CODE BEGIN 2 */
+  DCDarkNet.init();
 
   /* USER CODE END 2 */
 
@@ -138,7 +139,7 @@ void SystemClock_Config(void)
   HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
 
   /* SysTick_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
+  HAL_NVIC_SetPriority((IRQn_Type)SysTick_IRQn, 0, 0);
 }
 
 /* USER CODE BEGIN 4 */

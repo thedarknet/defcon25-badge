@@ -8958,9 +8958,9 @@ Basic schematic elements and footprints for 0603, 1206, and PTH resistors.</desc
 <label x="20.32" y="195.58" size="1.778" layer="95" rot="R180"/>
 </segment>
 <segment>
-<pinref part="U$2" gate="G$1" pin="PB9"/>
-<wire x1="15.24" y1="132.08" x2="15.24" y2="134.62" width="0.1524" layer="91"/>
-<label x="15.24" y="137.16" size="1.778" layer="95" rot="R90"/>
+<pinref part="U$2" gate="G$1" pin="PF4"/>
+<wire x1="12.7" y1="63.5" x2="12.7" y2="60.96" width="0.1524" layer="91"/>
+<label x="12.7" y="58.42" size="1.778" layer="95" rot="R270"/>
 </segment>
 </net>
 <net name="RMF69_INTERRUPT_DIO0" class="0">
@@ -8970,33 +8970,37 @@ Basic schematic elements and footprints for 0603, 1206, and PTH resistors.</desc
 <label x="68.58" y="215.9" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="U$2" gate="G$1" pin="PB0"/>
-<wire x1="33.02" y1="63.5" x2="33.02" y2="60.96" width="0.1524" layer="91"/>
-<label x="33.02" y="58.42" size="1.778" layer="95" rot="R270"/>
+<pinref part="U$2" gate="G$1" pin="PC4"/>
+<wire x1="27.94" y1="63.5" x2="27.94" y2="60.96" width="0.1524" layer="91"/>
+<label x="27.94" y="58.42" size="1.778" layer="95" rot="R270"/>
 </segment>
 </net>
 <net name="N$22" class="0">
 <segment>
 <pinref part="U$2" gate="G$1" pin="PA0"/>
 <wire x1="-5.08" y1="83.82" x2="-7.62" y2="83.82" width="0.1524" layer="91"/>
+<label x="-10.16" y="83.82" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
 <net name="N$23" class="0">
 <segment>
 <pinref part="U$2" gate="G$1" pin="PA1"/>
 <wire x1="-5.08" y1="81.28" x2="-7.62" y2="81.28" width="0.1524" layer="91"/>
+<label x="-10.16" y="81.28" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
 <net name="N$24" class="0">
 <segment>
 <pinref part="U$2" gate="G$1" pin="PA2"/>
 <wire x1="-5.08" y1="78.74" x2="-7.62" y2="78.74" width="0.1524" layer="91"/>
+<label x="-10.16" y="78.74" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
 <net name="N$25" class="0">
 <segment>
 <pinref part="U$2" gate="G$1" pin="PA3"/>
 <wire x1="10.16" y1="63.5" x2="10.16" y2="60.96" width="0.1524" layer="91"/>
+<label x="10.16" y="58.42" size="1.778" layer="95" rot="R270"/>
 </segment>
 </net>
 <net name="N$26" class="0">
@@ -9071,10 +9075,11 @@ Basic schematic elements and footprints for 0603, 1206, and PTH resistors.</desc
 <wire x1="43.18" y1="63.5" x2="43.18" y2="60.96" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$38" class="0">
+<net name="OLED_SPI_NSS" class="0">
 <segment>
 <pinref part="U$2" gate="G$1" pin="PB12"/>
 <wire x1="63.5" y1="78.74" x2="66.04" y2="78.74" width="0.1524" layer="91"/>
+<label x="68.58" y="78.74" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="USB_DM" class="0">
@@ -9137,9 +9142,14 @@ Basic schematic elements and footprints for 0603, 1206, and PTH resistors.</desc
 </segment>
 <segment>
 <pinref part="U$12" gate="G$1" pin="VCC"/>
-<wire x1="27.94" y1="271.78" x2="-2.54" y2="271.78" width="0.1524" layer="91"/>
+<wire x1="27.94" y1="271.78" x2="17.78" y2="271.78" width="0.1524" layer="91"/>
 <pinref part="U$9" gate="G$1" pin="VCC"/>
+<wire x1="17.78" y1="271.78" x2="-2.54" y2="271.78" width="0.1524" layer="91"/>
 <wire x1="-2.54" y1="271.78" x2="-2.54" y2="274.32" width="0.1524" layer="91"/>
+<pinref part="U$12" gate="G$1" pin="CS"/>
+<wire x1="27.94" y1="261.62" x2="17.78" y2="261.62" width="0.1524" layer="91"/>
+<wire x1="17.78" y1="261.62" x2="17.78" y2="271.78" width="0.1524" layer="91"/>
+<junction x="17.78" y="271.78"/>
 </segment>
 <segment>
 <pinref part="C15" gate="G$1" pin="2"/>
@@ -9156,6 +9166,216 @@ Basic schematic elements and footprints for 0603, 1206, and PTH resistors.</desc
 <pinref part="C16" gate="G$1" pin="2"/>
 <wire x1="83.82" y1="144.78" x2="73.66" y2="144.78" width="0.1524" layer="91"/>
 <junction x="83.82" y="144.78"/>
+</segment>
+</net>
+<net name="PB0" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PB0"/>
+<wire x1="33.02" y1="63.5" x2="33.02" y2="60.96" width="0.1524" layer="91"/>
+<label x="33.02" y="58.42" size="1.778" layer="95" rot="R270"/>
+</segment>
+</net>
+<net name="OLED_SPI_SCK" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PB13"/>
+<wire x1="63.5" y1="81.28" x2="66.04" y2="81.28" width="0.1524" layer="91"/>
+<label x="68.58" y="81.28" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U$12" gate="G$1" pin="SCK"/>
+<wire x1="27.94" y1="241.3" x2="25.4" y2="241.3" width="0.1524" layer="91"/>
+<label x="22.86" y="241.3" size="1.778" layer="95" rot="R180"/>
+</segment>
+</net>
+<net name="OLED_SPI_MISO" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PB14"/>
+<wire x1="63.5" y1="83.82" x2="66.04" y2="83.82" width="0.1524" layer="91"/>
+<label x="68.58" y="83.82" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="OLED_SPI_MOSI" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PB15"/>
+<wire x1="63.5" y1="86.36" x2="66.04" y2="86.36" width="0.1524" layer="91"/>
+<label x="68.58" y="86.36" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U$12" gate="G$1" pin="SDA"/>
+<wire x1="27.94" y1="246.38" x2="25.4" y2="246.38" width="0.1524" layer="91"/>
+<label x="22.86" y="246.38" size="1.778" layer="95" rot="R180"/>
+</segment>
+</net>
+<net name="PB9" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PB9"/>
+<wire x1="15.24" y1="132.08" x2="15.24" y2="134.62" width="0.1524" layer="91"/>
+<label x="15.24" y="137.16" size="1.778" layer="95" rot="R90"/>
+</segment>
+</net>
+<net name="N$38" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PF0"/>
+<wire x1="-5.08" y1="106.68" x2="-7.62" y2="106.68" width="0.1524" layer="91"/>
+<label x="-10.16" y="106.68" size="1.778" layer="95" rot="R180"/>
+</segment>
+</net>
+<net name="N$39" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PF1"/>
+<wire x1="-5.08" y1="104.14" x2="-7.62" y2="104.14" width="0.1524" layer="91"/>
+<label x="-10.16" y="104.14" size="1.778" layer="95" rot="R180"/>
+</segment>
+</net>
+<net name="N$40" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PC13"/>
+<wire x1="-5.08" y1="114.3" x2="-7.62" y2="114.3" width="0.1524" layer="91"/>
+<label x="-10.16" y="114.3" size="1.778" layer="95" rot="R180"/>
+</segment>
+</net>
+<net name="N$41" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PB8"/>
+<wire x1="17.78" y1="132.08" x2="17.78" y2="134.62" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$42" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="BOOT0"/>
+<wire x1="20.32" y1="132.08" x2="20.32" y2="134.62" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$43" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PB5"/>
+<wire x1="27.94" y1="132.08" x2="27.94" y2="134.62" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$44" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PD2"/>
+<wire x1="35.56" y1="132.08" x2="35.56" y2="134.62" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$45" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PC12"/>
+<wire x1="38.1" y1="132.08" x2="38.1" y2="134.62" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$46" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PC11"/>
+<wire x1="40.64" y1="132.08" x2="40.64" y2="134.62" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$47" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PC10"/>
+<wire x1="43.18" y1="132.08" x2="43.18" y2="134.62" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$48" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PA15"/>
+<wire x1="45.72" y1="132.08" x2="45.72" y2="134.62" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$49" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PA8"/>
+<wire x1="63.5" y1="99.06" x2="66.04" y2="99.06" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$50" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PC9"/>
+<wire x1="63.5" y1="96.52" x2="66.04" y2="96.52" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$51" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PC8"/>
+<wire x1="63.5" y1="93.98" x2="66.04" y2="93.98" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$52" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PC7"/>
+<wire x1="63.5" y1="91.44" x2="66.04" y2="91.44" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$53" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PC6"/>
+<wire x1="63.5" y1="88.9" x2="66.04" y2="88.9" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$54" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PC14"/>
+<wire x1="-5.08" y1="111.76" x2="-7.62" y2="111.76" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$55" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PC15"/>
+<wire x1="-5.08" y1="109.22" x2="-7.62" y2="109.22" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$56" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="VBAT"/>
+<wire x1="-5.08" y1="116.84" x2="-7.62" y2="116.84" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$57" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PC0"/>
+<wire x1="-5.08" y1="99.06" x2="-7.62" y2="99.06" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$58" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PC1"/>
+<wire x1="-5.08" y1="96.52" x2="-7.62" y2="96.52" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$59" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PC2"/>
+<wire x1="-5.08" y1="93.98" x2="-7.62" y2="93.98" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$60" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PC3"/>
+<wire x1="-5.08" y1="91.44" x2="-7.62" y2="91.44" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$61" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PB10"/>
+<wire x1="40.64" y1="63.5" x2="40.64" y2="60.96" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$66" class="0">
+<segment>
+<pinref part="U$12" gate="G$1" pin="A0"/>
+<wire x1="27.94" y1="251.46" x2="25.4" y2="251.46" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$67" class="0">
+<segment>
+<pinref part="U$12" gate="G$1" pin="RESET"/>
+<wire x1="27.94" y1="256.54" x2="25.4" y2="256.54" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$62" class="0">
+<segment>
+<pinref part="U$12" gate="G$1" pin="LED"/>
+<wire x1="27.94" y1="236.22" x2="22.86" y2="236.22" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>

@@ -4292,6 +4292,12 @@ Metric Code Size 5664</description>
 <wire x1="-1.5875" y1="0" x2="-1.5875" y2="-1.905" width="0.254" layer="94"/>
 <wire x1="-1.5875" y1="0" x2="-2.8575" y2="0" width="0.254" layer="94"/>
 </symbol>
+<symbol name="VCC1">
+<pin name="VCC1" x="0" y="0" visible="off" length="short" direction="sup" rot="R90"/>
+<wire x1="0" y1="2.54" x2="-0.635" y2="1.27" width="0.254" layer="94"/>
+<wire x1="0" y1="2.54" x2="0.635" y2="1.27" width="0.254" layer="94"/>
+<text x="-1.27" y="3.175" size="1.778" layer="96">&gt;VALUE</text>
+</symbol>
 </symbols>
 <devicesets>
 <deviceset name="DN_LOGO">
@@ -6178,6 +6184,19 @@ Basic schematic elements and footprints for 0603, 1206, and PTH resistors.</desc
 <connect gate="G$1" pin="A" pad="P$1"/>
 <connect gate="G$1" pin="C" pad="P$2"/>
 </connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="VCC1">
+<description>SUPPLY SYMBOL</description>
+<gates>
+<gate name="G$1" symbol="VCC1" x="0" y="0"/>
+</gates>
+<devices>
+<device name="">
 <technologies>
 <technology name=""/>
 </technologies>
@@ -9384,6 +9403,45 @@ We've spent an enormous amount of time creating and checking these footprints an
 <pad name="1" x="-2.54" y="0" drill="0.8" diameter="1.8796"/>
 <pad name="3" x="2.54" y="0" drill="0.8" diameter="1.8796"/>
 </package>
+<package name="PTC">
+<wire x1="-3.81" y1="1.524" x2="3.81" y2="1.524" width="0.2032" layer="21"/>
+<wire x1="3.81" y1="1.524" x2="3.81" y2="-1.524" width="0.2032" layer="21"/>
+<wire x1="3.81" y1="-1.524" x2="-3.81" y2="-1.524" width="0.2032" layer="21"/>
+<wire x1="-3.81" y1="-1.524" x2="-3.81" y2="1.524" width="0.2032" layer="21"/>
+<pad name="P$1" x="-2.54" y="0" drill="0.8" diameter="1.8796"/>
+<pad name="P$2" x="2.54" y="0" drill="0.8" diameter="1.8796"/>
+<text x="-3.81" y="1.705" size="0.4318" layer="25">&gt;Name</text>
+<text x="-3.81" y="-2.14" size="0.4318" layer="27">&gt;Value</text>
+</package>
+<package name="PTC-1206">
+<wire x1="-1.5" y1="0.75" x2="1.5" y2="0.75" width="0.127" layer="51"/>
+<wire x1="1.5" y1="0.75" x2="1.5" y2="-0.75" width="0.127" layer="51"/>
+<wire x1="1.5" y1="-0.75" x2="-1.5" y2="-0.75" width="0.127" layer="51"/>
+<wire x1="-1.5" y1="-0.75" x2="-1.5" y2="0.75" width="0.127" layer="51"/>
+<wire x1="0.635" y1="-0.762" x2="-0.635" y2="-0.762" width="0.2032" layer="21"/>
+<wire x1="-0.635" y1="0.762" x2="0.635" y2="0.762" width="0.2032" layer="21"/>
+<wire x1="-1.143" y1="-1.016" x2="0.254" y2="1.016" width="0.127" layer="51"/>
+<wire x1="0.254" y1="1.016" x2="1.143" y2="1.016" width="0.127" layer="51"/>
+<smd name="1" x="-1.4" y="0" dx="1" dy="1.8" layer="1"/>
+<smd name="2" x="1.4" y="0" dx="1" dy="1.8" layer="1"/>
+<text x="-1.524" y="1.27" size="0.4064" layer="25">&gt;Name</text>
+<text x="-1.524" y="-1.651" size="0.4064" layer="27">&gt;Value</text>
+</package>
+<package name="0603">
+<wire x1="-1.473" y1="0.983" x2="1.473" y2="0.983" width="0.0508" layer="39"/>
+<wire x1="1.473" y1="0.983" x2="1.473" y2="-0.983" width="0.0508" layer="39"/>
+<wire x1="1.473" y1="-0.983" x2="-1.473" y2="-0.983" width="0.0508" layer="39"/>
+<wire x1="-1.473" y1="-0.983" x2="-1.473" y2="0.983" width="0.0508" layer="39"/>
+<wire x1="-0.356" y1="0.432" x2="0.356" y2="0.432" width="0.1016" layer="51"/>
+<wire x1="-0.356" y1="-0.419" x2="0.356" y2="-0.419" width="0.1016" layer="51"/>
+<smd name="1" x="-0.85" y="0" dx="1.1" dy="1" layer="1"/>
+<smd name="2" x="0.85" y="0" dx="1.1" dy="1" layer="1"/>
+<text x="-0.889" y="0.762" size="0.4064" layer="25" font="vector">&gt;NAME</text>
+<text x="-1.016" y="-1.143" size="0.4064" layer="27" font="vector">&gt;VALUE</text>
+<rectangle x1="-0.8382" y1="-0.4699" x2="-0.3381" y2="0.4801" layer="51"/>
+<rectangle x1="0.3302" y1="-0.4699" x2="0.8303" y2="0.4801" layer="51"/>
+<rectangle x1="-0.1999" y1="-0.3" x2="0.1999" y2="0.3" layer="35"/>
+</package>
 </packages>
 <symbols>
 <symbol name="RESONATOR">
@@ -9418,6 +9476,18 @@ We've spent an enormous amount of time creating and checking these footprints an
 <pin name="1" x="-2.54" y="0" visible="off" length="point" direction="pas" swaplevel="1"/>
 <pin name="2" x="0" y="-7.62" visible="off" length="point" direction="pas" swaplevel="1" rot="R90"/>
 </symbol>
+<symbol name="PTC">
+<wire x1="5.08" y1="1.27" x2="5.08" y2="-1.27" width="0.254" layer="94"/>
+<wire x1="5.08" y1="-1.27" x2="-2.54" y2="-1.27" width="0.254" layer="94"/>
+<wire x1="-2.54" y1="-1.27" x2="-2.54" y2="1.27" width="0.254" layer="94"/>
+<wire x1="-2.54" y1="1.27" x2="5.08" y2="1.27" width="0.254" layer="94"/>
+<wire x1="-1.524" y1="-2.54" x2="3.81" y2="2.54" width="0.254" layer="94"/>
+<wire x1="3.81" y1="2.54" x2="5.08" y2="2.54" width="0.254" layer="94"/>
+<text x="-2.54" y="3.048" size="1.778" layer="95">&gt;NAME</text>
+<text x="-3.302" y="-5.08" size="1.778" layer="96">&gt;VALUE</text>
+<pin name="1" x="-5.08" y="0" visible="off" length="short"/>
+<pin name="2" x="7.62" y="0" visible="off" length="short" rot="R180"/>
+</symbol>
 </symbols>
 <devicesets>
 <deviceset name="RESONATOR" prefix="Y">
@@ -9442,6 +9512,42 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 <connect gate="G$1" pin="3" pad="3"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="PTC" prefix="F">
+<description>&lt;b&gt;Resettable Fuse PTC&lt;/b&gt;
+Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
+<gates>
+<gate name="G$1" symbol="PTC" x="0" y="0"/>
+</gates>
+<devices>
+<device name="PTH" package="PTC">
+<connects>
+<connect gate="G$1" pin="1" pad="P$1"/>
+<connect gate="G$1" pin="2" pad="P$2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="SMD" package="PTC-1206">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="0603" package="0603">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -9560,12 +9666,11 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <part name="LED11" library="SYNShop" deviceset="LED" device="0603"/>
 <part name="C17" library="SYNShop" deviceset="C-US" device="C0603"/>
 <part name="GND24" library="SYNShop" deviceset="GND" device=""/>
-<part name="U$13" library="SYNShop" deviceset="VCC" device=""/>
-<part name="U$14" library="SYNShop" deviceset="VCC0" device=""/>
+<part name="5V" library="SYNShop" deviceset="VCC0" device="" value="5V"/>
 <part name="C18" library="SYNShop" deviceset="C-US" device="C0603"/>
 <part name="GND25" library="SYNShop" deviceset="GND" device=""/>
 <part name="X1" library="SYNShop" deviceset="USB" device="-MICROB"/>
-<part name="U$16" library="SYNShop" deviceset="VCC0" device=""/>
+<part name="U$16" library="SYNShop" deviceset="VCC0" device="" value="5V"/>
 <part name="U$17" library="SYNShop" deviceset="SOP22" device=""/>
 <part name="LED12" library="SYNShop" deviceset="LED" device="5MM"/>
 <part name="R24" library="SYNShop" deviceset="R-US_" device="0309/12"/>
@@ -9584,11 +9689,19 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <part name="GND26" library="SYNShop" deviceset="GND" device=""/>
 <part name="Y1" library="SparkFun" deviceset="RESONATOR" device="SMD"/>
 <part name="GND29" library="SYNShop" deviceset="GND" device=""/>
+<part name="3.7V" library="SYNShop" deviceset="VCC1" device="" value="3.7V"/>
+<part name="F1" library="SparkFun" deviceset="PTC" device="SMD" value="500uA"/>
+<part name="3.7V1" library="SYNShop" deviceset="VCC1" device="" value="3.7V"/>
+<part name="C21" library="SYNShop" deviceset="C-US" device="C0603"/>
+<part name="GND30" library="SYNShop" deviceset="GND" device=""/>
+<part name="U$13" library="SYNShop" deviceset="VCC" device=""/>
 </parts>
 <sheets>
 <sheet>
 <plain>
 <text x="99.06" y="317.5" size="1.778" layer="91">Note need to check on power connection / battery</text>
+<text x="20.32" y="419.1" size="1.778" layer="91">3.3V LDO Voltage regulator
+Here.. need to make part</text>
 </plain>
 <instances>
 <instance part="U$1" gate="G$1" x="12.7" y="2.54"/>
@@ -9690,8 +9803,7 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <instance part="LED11" gate="G$1" x="22.86" y="320.04"/>
 <instance part="C17" gate="G$1" x="66.04" y="327.66" rot="R180"/>
 <instance part="GND24" gate="1" x="78.74" y="320.04"/>
-<instance part="U$13" gate="G$1" x="78.74" y="335.28"/>
-<instance part="U$14" gate="VCC0" x="0" y="337.82"/>
+<instance part="5V" gate="VCC0" x="0" y="337.82"/>
 <instance part="C18" gate="G$1" x="12.7" y="327.66" rot="R180"/>
 <instance part="GND25" gate="1" x="12.7" y="320.04"/>
 <instance part="X1" gate="G$1" x="55.88" y="360.68"/>
@@ -9702,10 +9814,10 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <instance part="GND27" gate="1" x="200.66" y="233.68"/>
 <instance part="U$18" gate="G$1" x="200.66" y="254"/>
 <instance part="CN1" gate="G$1" x="104.14" y="330.2"/>
-<instance part="SW1" gate="G$1" x="27.94" y="396.24"/>
-<instance part="R25" gate="G$1" x="27.94" y="406.4" rot="R90"/>
-<instance part="GND28" gate="1" x="27.94" y="388.62"/>
-<instance part="U$20" gate="G$1" x="27.94" y="411.48"/>
+<instance part="SW1" gate="G$1" x="88.9" y="248.92"/>
+<instance part="R25" gate="G$1" x="88.9" y="259.08" rot="R90"/>
+<instance part="GND28" gate="1" x="88.9" y="241.3"/>
+<instance part="U$20" gate="G$1" x="88.9" y="264.16"/>
 <instance part="R26" gate="G$1" x="17.78" y="375.92" rot="R180"/>
 <instance part="R27" gate="G$1" x="17.78" y="381" rot="R180"/>
 <instance part="C19" gate="G$1" x="33.02" y="368.3" rot="R180"/>
@@ -9714,6 +9826,12 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <instance part="GND26" gate="1" x="33.02" y="355.6"/>
 <instance part="Y1" gate="G$1" x="-43.18" y="104.14" rot="R270"/>
 <instance part="GND29" gate="1" x="-53.34" y="101.6"/>
+<instance part="3.7V" gate="G$1" x="78.74" y="337.82"/>
+<instance part="F1" gate="G$1" x="10.16" y="408.94"/>
+<instance part="3.7V1" gate="G$1" x="0" y="414.02"/>
+<instance part="C21" gate="G$1" x="53.34" y="403.86" rot="R180"/>
+<instance part="GND30" gate="1" x="53.34" y="398.78"/>
+<instance part="U$13" gate="G$1" x="63.5" y="414.02"/>
 </instances>
 <busses>
 </busses>
@@ -9999,6 +10117,10 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <pinref part="Y1" gate="G$1" pin="2"/>
 <wire x1="-50.8" y1="104.14" x2="-53.34" y2="104.14" width="0.1524" layer="91"/>
 <pinref part="GND29" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="C21" gate="G$1" pin="1"/>
+<pinref part="GND30" gate="1" pin="GND"/>
 </segment>
 </net>
 <net name="N$12" class="0">
@@ -10412,8 +10534,8 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <segment>
 <pinref part="R25" gate="G$1" pin="1"/>
 <pinref part="SW1" gate="G$1" pin="A"/>
-<wire x1="27.94" y1="401.32" x2="48.26" y2="401.32" width="0.1524" layer="91"/>
-<label x="50.8" y="401.32" size="1.778" layer="95"/>
+<wire x1="88.9" y1="254" x2="109.22" y2="254" width="0.1524" layer="91"/>
+<label x="111.76" y="254" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="VCC" class="0">
@@ -10476,17 +10598,6 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <junction x="83.82" y="144.78"/>
 </segment>
 <segment>
-<pinref part="U$11" gate="G$1" pin="VBAT"/>
-<wire x1="55.88" y1="332.74" x2="66.04" y2="332.74" width="0.1524" layer="91"/>
-<pinref part="C17" gate="G$1" pin="2"/>
-<wire x1="66.04" y1="332.74" x2="78.74" y2="332.74" width="0.1524" layer="91"/>
-<junction x="66.04" y="332.74"/>
-<pinref part="U$13" gate="G$1" pin="VCC"/>
-<wire x1="78.74" y1="332.74" x2="78.74" y2="335.28" width="0.1524" layer="91"/>
-<pinref part="CN1" gate="G$1" pin="1"/>
-<wire x1="78.74" y1="332.74" x2="101.6" y2="332.74" width="0.1524" layer="91"/>
-</segment>
-<segment>
 <pinref part="U$17" gate="G$1" pin="VS"/>
 <pinref part="U$18" gate="G$1" pin="VCC"/>
 <wire x1="198.12" y1="251.46" x2="200.66" y2="251.46" width="0.1524" layer="91"/>
@@ -10495,6 +10606,14 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <segment>
 <pinref part="R25" gate="G$1" pin="2"/>
 <pinref part="U$20" gate="G$1" pin="VCC"/>
+</segment>
+<segment>
+<pinref part="C21" gate="G$1" pin="2"/>
+<wire x1="53.34" y1="408.94" x2="63.5" y2="408.94" width="0.1524" layer="91"/>
+<wire x1="63.5" y1="408.94" x2="63.5" y2="414.02" width="0.1524" layer="91"/>
+<pinref part="U$13" gate="G$1" pin="VCC"/>
+<wire x1="53.34" y1="408.94" x2="48.26" y2="408.94" width="0.1524" layer="91"/>
+<junction x="53.34" y="408.94"/>
 </segment>
 </net>
 <net name="TSC_G3_IO2" class="0">
@@ -10730,7 +10849,7 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <pinref part="C18" gate="G$1" pin="2"/>
 <junction x="12.7" y="332.74"/>
 <wire x1="12.7" y1="332.74" x2="0" y2="332.74" width="0.1524" layer="91"/>
-<pinref part="U$14" gate="VCC0" pin="VCC0"/>
+<pinref part="5V" gate="VCC0" pin="VCC0"/>
 <wire x1="0" y1="332.74" x2="0" y2="337.82" width="0.1524" layer="91"/>
 </segment>
 <segment>
@@ -10800,9 +10919,41 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <label x="43.18" y="58.42" size="1.778" layer="95" rot="R270"/>
 </segment>
 </net>
+<net name="VCC1" class="0">
+<segment>
+<pinref part="U$11" gate="G$1" pin="VBAT"/>
+<wire x1="55.88" y1="332.74" x2="66.04" y2="332.74" width="0.1524" layer="91"/>
+<pinref part="C17" gate="G$1" pin="2"/>
+<wire x1="66.04" y1="332.74" x2="78.74" y2="332.74" width="0.1524" layer="91"/>
+<junction x="66.04" y="332.74"/>
+<wire x1="78.74" y1="332.74" x2="78.74" y2="337.82" width="0.1524" layer="91"/>
+<pinref part="CN1" gate="G$1" pin="1"/>
+<wire x1="78.74" y1="332.74" x2="101.6" y2="332.74" width="0.1524" layer="91"/>
+<pinref part="3.7V" gate="G$1" pin="VCC1"/>
+<junction x="78.74" y="332.74"/>
+</segment>
+<segment>
+<pinref part="F1" gate="G$1" pin="1"/>
+<wire x1="5.08" y1="408.94" x2="0" y2="408.94" width="0.1524" layer="91"/>
+<pinref part="3.7V1" gate="G$1" pin="VCC1"/>
+<wire x1="0" y1="408.94" x2="0" y2="414.02" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$31" class="0">
+<segment>
+<pinref part="F1" gate="G$1" pin="2"/>
+<wire x1="17.78" y1="408.94" x2="22.86" y2="408.94" width="0.1524" layer="91"/>
+</segment>
+</net>
 </nets>
 </sheet>
 </sheets>
 </schematic>
 </drawing>
+<compatibility>
+<note version="6.3" minversion="6.2.2" severity="warning">
+Since Version 6.2.2 text objects can contain more than one line,
+which will not be processed correctly with this version.
+</note>
+</compatibility>
 </eagle>

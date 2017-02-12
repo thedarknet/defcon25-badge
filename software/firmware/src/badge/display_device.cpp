@@ -154,7 +154,6 @@ void DisplayST7735::setAddrWindow(uint16_t x0, uint16_t y0, uint16_t x1, uint16_
 		writeCmd(ROW_ADDRESS_SET);
 		write16Data(x0);
 		write16Data(x1);
-
 	} else {
 		writeCmd(COLUMN_ADDRESS_SET);
 		write16Data(x0);
@@ -163,7 +162,6 @@ void DisplayST7735::setAddrWindow(uint16_t x0, uint16_t y0, uint16_t x1, uint16_
 		writeCmd(ROW_ADDRESS_SET);
 		write16Data(y0);
 		write16Data(y1);
-
 	}
 }
 
@@ -243,8 +241,8 @@ ErrorType DisplayST7735::init(uint8_t pf, uint8_t madctl) {
 
 #if 0
 	//serial interface, data packet contains just
-	//transmission byte and control bit D/CX is transferred by the D/CX pin. If D/CX is “low”, the transmission byte is
-	//interpreted as a command byte. If D/CX is “high”, the transmission byte is stored in the display data
+	//transmission byte and control bit D/CX is transferred by the D/CX pin. If D/CX is "low", the transmission byte is
+	//interpreted as a command byte. If D/CX is "high", the transmission byte is stored in the display data
 	// RAM (memory write command), or command register as parameter.
 	// Controlling reads = Page 29
 	//

@@ -5,7 +5,7 @@ DCDarkNetApp::DCDarkNetApp() {
 
 }
 
-DisplayST7735 Display(128,128);
+DisplayST7735 Display(128,160, DisplayST7735::PORTAIT);
 
 ErrorType DCDarkNetApp::init() {
 	ErrorType et;

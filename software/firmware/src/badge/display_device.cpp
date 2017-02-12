@@ -9,12 +9,22 @@
 
 /////////////////////////////////////////////////////////////////////
 // Generic base display device
-DisplayDevice::DisplayDevice(uint16_t w, uint16_t h) :
-		width(w), height(h) {
+DisplayDevice::DisplayDevice(uint16_t w, uint16_t h, DisplayDevice::ROTATION r) :
+		Width(w), Height(h), Rotation(r) {
 }
 
 DisplayDevice::~DisplayDevice() {
 
+}
+
+uint16_t DisplayDevice::getWidth() {
+	return Width;
+}
+uint16_t DisplayDevice::getHeight() {
+	return Height;
+}
+DisplayDevice::ROTATION DisplayDevice::getRotation() {
+	return Rotation == 0 ? PORTAIT : LANDSCAPE;
 }
 
 //////////////////////////////////////////////////////////////////
@@ -34,26 +44,14 @@ DisplayDevice::~DisplayDevice() {
  };
  */
 
-DisplayST7735::DisplayST7735(uint16_t w, uint16_t h) :
-		DisplayDevice(w, h), PixelFormat(0), MemoryAccessControl(0) {
+DisplayST7735::DisplayST7735(uint16_t w, uint16_t h, DisplayST7735::ROTATION r) :
+		DisplayDevice(w, h,r), PixelFormat(0), MemoryAccessControl(0) {
 
 }
 
 DisplayST7735::~DisplayST7735() {
 
 }
-
-//#define MADCTLGRAPHICS 0x6
-//#define MADCTLBMP      0x2
-//#define ST7735_CASET 0x2A
-///#define ST7735_RASET 0x2B
-//#define ST7735_MADCTL 0x36
-//#define ST7735_RAMWR 0x2C
-//#define ST7735_RAMRD 0x2E
-//#define ST7735_COLMOD 0x3A
-
-//#define MADVAL(x) (((x) << 5) | 8)
-//static uint8_t madctlcurrent = MADVAL(MADCTLGRAPHICS);
 
 struct sCmdBuf {
 	uint8_t command;   // ST7735 command byte
@@ -62,16 +60,15 @@ struct sCmdBuf {
 	uint8_t data[16];  // parameter data
 };
 
-
 static const struct sCmdBuf initializers[] = {
-		// SWRESET Software reset
+// SWRESET Software reset
 		{ DisplayST7735::SWRESET, 150, 0, 0 },
 		// SLPOUT Leave sleep mode
 		{ DisplayST7735::SLEEP_OUT, 150, 0, 0 },
 		// FRMCTR1, FRMCTR2 Frame Rate configuration -- Normal mode, idle
 		// frame rate = fosc / (1 x 2 + 40) * (LINE + 2C + 2D)
-		{ DisplayST7735::FRAME_RATE_CONTROL_FULL_COLOR, 0, 3, { 0x01, 0x2C, 0x2B } },
-		{ DisplayST7735::FRAME_RATE_CONTROL_IDLE_COLOR, 0, 3, { 0x01, 0x2C, 0x2B } },
+		{ DisplayST7735::FRAME_RATE_CONTROL_FULL_COLOR, 0, 3, { 0x01, 0x2C, 0x2B } }, {
+				DisplayST7735::FRAME_RATE_CONTROL_IDLE_COLOR, 0, 3, { 0x01, 0x2C, 0x2B } },
 		// FRMCTR3 Frame Rate configureation -- partial mode
 		{ DisplayST7735::FRAME_RATE_CONTROL_PARTIAL_FULL_COLOR, 0, 6, { 0x01, 0x2C, 0x2D, 0x01, 0x2C, 0x2D } },
 		// INVCTR Display inversion (no inversion)
@@ -89,7 +86,7 @@ static const struct sCmdBuf initializers[] = {
 		// INVOFF Don't invert display
 		{ DisplayST7735::DISPLAY_INVERSION_OFF, 0, 0, 0 },
 		// Memory access directions. row address/col address, bottom to top refesh (10.1.27)
-		{ DisplayST7735::MEMORY_DATA_ACCESS_CONTROL, 0, 1, { 0 } },
+		{ DisplayST7735::MEMORY_DATA_ACCESS_CONTROL, 0, 1, { DisplayST7735::VERTICAL_REFRESH_ORDER } },
 		// Color mode 18 bit (10.1.30
 		//011 12 bit/pixel, 101 16 bit/pixel, 110 18 bit/pixel, 111 not used
 		{ DisplayST7735::INTERFACE_PIXEL_FORMAT, 0, 1, { 0b101 } },
@@ -115,7 +112,7 @@ bool DisplayST7735::writeCmd(uint8_t c) {
 }
 
 bool DisplayST7735::writeNData(const uint8_t *data, int nbytes) {
-	return writeN(1,data,nbytes);
+	return writeN(1, data, nbytes);
 }
 
 bool DisplayST7735::writeN(char dc, const uint8_t *data, int nbytes) {
@@ -134,22 +131,22 @@ bool DisplayST7735::writeN(char dc, const uint8_t *data, int nbytes) {
 
 bool DisplayST7735::write16Data(const uint16_t &data) {
 	uint8_t buf[2];
-	buf[0] = data>>8;
-	buf[1] = data&0xFF;
-	return writeN(1,&buf[0],sizeof(buf));
+	buf[0] = data >> 8;
+	buf[1] = data & 0xFF;
+	return writeN(1, &buf[0], sizeof(buf));
 }
 
 bool DisplayST7735::drawPixel(uint16_t x0, uint16_t y0, uint8_t r, uint8_t g, uint8_t b) {
-	setAddrWindow(x0,y0,x0,y0);
+	setAddrWindow(x0, y0, x0, y0);
 
-	uint8_t data[3] = {0};
-	uint8_t size = makeColor(r,g,b,data);
+	uint32_t data;
+	uint8_t size = makeColor(r, g, b, data);
 	writeCmd(MEMORY_WRITE);
-	return writeNData(&data[0],size);
+	return writeNData((uint8_t*)&data, size);
 }
 
 void DisplayST7735::setAddrWindow(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1) {
-	if((MemoryAccessControl&ROW_COLUMN_ORDER)==0) {
+	if ((MemoryAccessControl & ROW_COLUMN_ORDER) == 0) {
 		writeCmd(COLUMN_ADDRESS_SET);
 		write16Data(y0);
 		write16Data(y1);
@@ -177,35 +174,62 @@ void ST7735_backLight(uint8_t on) {
 		HAL_GPIO_WritePin(OLED_BACK_LIT_GPIO_Port, OLED_BACK_LIT_Pin, GPIO_PIN_SET);
 }
 
-uint8_t DisplayST7735::makeColor(uint8_t r, uint8_t g, uint8_t b, uint8_t out[3]) {
-	uint16_t retVal = 0;
-	switch(PixelFormat) {
+uint32_t DisplayST7735::makeColor(uint8_t r, uint8_t g, uint8_t b) {
+	uint32_t color;
+	makeColor(r,g,b,color);
+	return color;
+}
+
+uint8_t DisplayST7735::makeColor(uint8_t r, uint8_t g, uint8_t b, uint32_t &color) {
+	uint16_t retVal = 2;
+	uint8_t *out = (uint8_t*) &color;
+	switch (PixelFormat) {
 	case FORMAT_12_BIT:
+		retVal = 2;
 		break;
 	case FORMAT_16_BIT:
-		retVal = (r&0b11111)<<11;
-		retVal |= (g&0b111111)<<5;
-		retVal |= (b&0b11111);
-		out[0] = retVal>>8;
-		out[1] = retVal&0xFF;
+		retVal = (r & 0b11111) << 11;
+		retVal |= (g & 0b111111) << 5;
+		retVal |= (b & 0b11111);
+		out[0] = retVal >> 8;
+		out[1] = retVal & 0xFF;
+		retVal = 2;
 		break;
 	case FORMAT_18_BIT:
-		out[0] = r<<2;
-		out[1] = g<<2;
-		out[2] = b<<2;
+		out[0] = r << 2;
+		out[1] = g << 2;
+		out[2] = b << 2;
+		retVal = 3;
 		break;
 	default:
 		assert(false);
 	}
+	return retVal;
 }
 
 ErrorType DisplayST7735::init() {
-	return init(FORMAT_16_BIT,ROW_COLUMN_ORDER);
+	return init(FORMAT_16_BIT, ROW_COLUMN_ORDER);
+}
+
+void DisplayST7735::setMemoryAccessControl(uint8_t macctl) {
+	if (macctl != MemoryAccessControl) {
+		MemoryAccessControl = macctl;
+		writeCmd(MEMORY_DATA_ACCESS_CONTROL);
+		writeNData(&MemoryAccessControl, 1);
+	}
+}
+
+void DisplayST7735::setPixelFormat(uint8_t pf) {
+	if(PixelFormat!=pf) {
+		PixelFormat = pf;
+		writeCmd(INTERFACE_PIXEL_FORMAT);
+		writeNData(&pf,1);
+	}
 }
 
 ErrorType DisplayST7735::init(uint8_t pf, uint8_t madctl) {
-	PixelFormat = pf;
-	MemoryAccessControl = madctl;
+	setPixelFormat(pf);
+	setMemoryAccessControl(madctl);
 	ErrorType et;
 
 	//clear chip select
@@ -258,36 +282,45 @@ ErrorType DisplayST7735::init(uint8_t pf, uint8_t madctl) {
 		if (cmd->delay)
 			HAL_Delay(cmd->delay);
 	}
+	fillScreen(0);
+	fillScreen(makeColor(0,255,0));
 
-	uint16_t color = 0xFFFF;
-	uint8_t hi = color >> 8, lo = color;
-	uint16_t _width = 128;
-	uint16_t _height = 160;
-	uint16_t w = _width;
-	uint16_t h = _height;
-	uint16_t x = 0, y = 0;
-
-
-	  // rudimentary clipping (drawChar w/big text requires this)
-	  //if((x >= _width) || (y >= _height)) return;
-	  if((x + w - 1) >= _width)  w = _width  - x;
-	  if((y + h - 1) >= _height) h = _height - y;
-
-	  setAddrWindow(0, 0, 127, 159);
-	  writeCmd(MEMORY_WRITE);
-
-	  for(y=h; y>0; y--) {
-	    for(x=w; x>0; x--) {
-	      writeNData(&hi,1);
-	      writeNData(&lo,1);
-	    }
-	  }
-	//for(int i=0;i<40;i++) {
-	//	drawPixel(10+i,10+i,0xF,0,0);
-	//}
-	//for(int i=0;i<40;i++) {
-	//	drawPixel(12+i,10,0xF,0,0);
-	//}
 	return et;
 }
 
+void DisplayST7735::fillScreen(uint32_t color) {
+	fillRec(0,0,getWidth(),getHeight(),color);
+}
+
+bool DisplayST7735::sendThirdByte() {
+	return PixelFormat==FORMAT_18_BIT;
+}
+
+// Draw a filled rectangle at the given coordinates with the given width, height, and color.
+// Input: x     horizontal position of the top left corner of the rectangle, columns from the left edge
+//        y     vertical position of the top left corner of the rectangle, rows from the top edge
+//        w     horizontal width of the rectangle
+//        h     vertical height of the rectangle
+//        color appropriated packed color, which can be produced by makeColor()
+// Output: none
+void DisplayST7735::fillRec(int16_t x, int16_t y, int16_t w, int16_t h, uint32_t color) {
+	uint8_t buf[3] = {uint8_t((color&0xFF0000) >> 16), uint8_t((color&0xFF00) >> 8), uint8_t(color&0xFF)};
+
+	// rudimentary clipping (drawChar w/big text requires this)
+	if((x >= getWidth()) || (y >= getHeight())) return;
+	if ((x + w - 1) >= getWidth())
+		w = getWidth() - x;
+	if ((y + h - 1) >= getHeight())
+		h = getHeight() - y;
+
+	setAddrWindow(0, 0, getWidth()-1, getHeight()-1);
+	writeCmd(MEMORY_WRITE);
+
+	uint8_t idx = sendThirdByte()?0:1;
+
+	for (y = h; y > 0; y--) {
+		for (x = w; x > 0; x--) {
+			writeNData(&buf[idx],(sizeof(buf)-idx));
+		}
+	}
+}

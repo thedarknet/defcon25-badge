@@ -5,14 +5,22 @@
 
 class DisplayDevice {
 public:
-	DisplayDevice(uint16_t w, uint16_t h);
+	enum ROTATION {
+		PORTAIT = 0,
+		LANDSCAPE = 1
+	};
+public:
+	DisplayDevice(uint16_t w, uint16_t h, ROTATION r);
 	virtual ErrorType init()=0;
 	virtual ~DisplayDevice();
 public:
-
+	uint16_t getWidth();
+	uint16_t getHeight();
+	ROTATION getRotation();
 private:
-	uint16_t width;
-	uint16_t height;
+	uint16_t Width;
+	uint16_t Height;
+	uint32_t Rotation : 1;
 };
 
 
@@ -313,18 +321,24 @@ public:
 		//
 	};
 public:
-	DisplayST7735(uint16_t w, uint16_t h);
+	DisplayST7735(uint16_t w, uint16_t h, ROTATION r);
 	virtual ErrorType init();
 	ErrorType init(uint8_t pf, uint8_t mac);
 	virtual ~DisplayST7735();
 	bool drawPixel(uint16_t x0, uint16_t y0, uint8_t r, uint8_t g, uint8_t b);
+	void setMemoryAccessControl(uint8_t macctl);
+	void fillRec(int16_t x, int16_t y, int16_t w, int16_t h, uint32_t color);
+	void fillScreen(uint32_t color);
+	void setPixelFormat(uint8_t pf);
 protected:
 	bool writeCmd(uint8_t c);
 	bool writeNData(const uint8_t *data, int nbytes);
 	bool write16Data(const uint16_t &data);
 	void setAddrWindow(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1);
 	bool writeN(char dc, const uint8_t *data, int nbytes);
-	uint8_t makeColor(uint8_t r, uint8_t g, uint8_t b, uint8_t out[3]);
+	uint8_t makeColor(uint8_t r, uint8_t g, uint8_t b, uint32_t &color);
+	uint32_t makeColor(uint8_t r, uint8_t g, uint8_t b);
+	bool sendThirdByte();
 private:
 	uint8_t 	PixelFormat;
 	uint8_t  	MemoryAccessControl;

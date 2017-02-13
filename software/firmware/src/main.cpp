@@ -41,6 +41,7 @@
 
 /* USER CODE BEGIN Includes */
 #include "badge/dcdarknet_app.h"
+#include "badge/logger.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -48,6 +49,9 @@
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 DCDarkNetApp DCDarkNet;
+darknet::STM32Logger stm32DLogger(darknet::LOG_DEBUG_LEVEL);
+darknet::STM32Logger stm32ILogger(darknet::LOG_INFO_LEVEL);
+darknet::STM32Logger stm32ELogger(darknet::LOG_ERROR_LEVEL);
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -66,7 +70,9 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+  darknet::LogManager::get().addLogger(darknet::DEBUG_LOGGER_ID,&stm32DLogger);
+  darknet::LogManager::get().addLogger(darknet::INFO_LOGGER_ID,&stm32ILogger);
+  darknet::LogManager::get().addLogger(darknet::ERROR_LOGGER_ID,&stm32ELogger);
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/

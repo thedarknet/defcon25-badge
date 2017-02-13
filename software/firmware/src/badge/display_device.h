@@ -3,6 +3,37 @@
 
 #include "error_type.h"
 
+/*
+ * @Author cmdc0de
+ * @date:  2/13/17
+ *
+ * Convient RGB color class
+ */
+class RGBColor {
+public:
+	static const RGBColor BLACK;
+	static const RGBColor RED;
+	static const RGBColor GREEN;
+	static const RGBColor BLUE;
+	static const RGBColor WHITE;
+public:
+	RGBColor(uint8_t r, uint8_t g, uint8_t b) : R(r), G(g), B(b) {}
+	uint16_t getR() const {return R;}
+	uint16_t getG() const {return G;}
+	uint16_t getB() const {return B;}
+	bool operator==(const RGBColor &r) const;
+	bool operator!=(const RGBColor &r) const;
+private:
+	uint8_t R,G,B;
+};
+
+/*
+ * @author cmdc0de
+ * @date:  2/13/17
+ *
+ * Base class for display devices
+ * 	not sure this is actually needed as you create an instance of the Display7735 class not this
+ */
 class DisplayDevice {
 public:
 	enum ROTATION {
@@ -11,34 +42,56 @@ public:
 	};
 public:
 	DisplayDevice(uint16_t w, uint16_t h, ROTATION r);
-	virtual ErrorType init()=0;
+	ErrorType init();
 	virtual ~DisplayDevice();
 public:
 	uint16_t getWidth();
 	uint16_t getHeight();
 	ROTATION getRotation();
+protected:
 private:
 	uint16_t Width;
 	uint16_t Height;
 	uint32_t Rotation : 1;
 };
 
-
+/*
+ * @author cmdc0de
+ *
+ * Big thank you to adafruit as the interface of this st7735 driver was inspired by their GFX libraries.
+ */
 class DisplayST7735 : public DisplayDevice {
+protected:
+	///Used to convert from the RGB Color class to something the driver chip understands
+	class PackedColor {
+	public:
+		PackedColor();
+		uint8_t *getPackedColorData();
+		uint8_t getSize();
+	public:
+		static PackedColor create(uint8_t pixelFormat, const RGBColor &c);
+	private:
+		uint8_t Color[3];
+		uint8_t SizeInBytes;
+	};
+
 public:
+	///parameter to Memory Data access control command
 	enum MEMORY_DATA_ACCESS_CONTROL_BITS {
-		BOT_TO_TOP 					= 0b1000000 //Bottom to Top (When MADCTL B7=’1’), 0 = top to bottom
+		BOT_TO_TOP 					= 0b1000000 //Bottom to Top (When MADCTL B7=1), 0 = top to bottom
 		, COLUMN_ORDER 				= 0b01000000 //right to left, 0 = left to right
 		, ROW_COLUMN_ORDER 			= 0b00100000 //Row then column, 0 = column then row
 		, VERTICAL_REFRESH_ORDER 	= 0b00010000 //lcd referesh bot to top, 0 = top to bot
 		, RGB_ORDER					= 0b00001000 // 1 = BGR, 0 = RGB
 		, LCD_HORIZONTAL_REFERESH	= 0b00000100 // 1 = right to left, 0 = left to right
 		};
+	///enumeration of pixel formats for interface pixel command
 	enum PIXEL_FORMAT {
 		FORMAT_12_BIT 		= 0b011
 		, FORMAT_16_BIT 	= 0b101
 		, FORMAT_18_BIT 	= 0b110
 	};
+	///all LCD commands
 	enum LCD_COMMANDS {
 		//No OP
 		NOP = 0x0
@@ -48,7 +101,7 @@ public:
 		, SWRESET = 0x1
 		//	This read byte returns 24-bit display identification information.
 		//-The 1st parameter is dummy data
-		//-The 2nd parameter (ID17 to ID10): LCD module’s manufacturer ID.
+		//-The 2nd parameter (ID17 to ID10): LCD modules manufacturer ID.
 		//-The 3rd parameter (ID26 to ID20): LCD module/driver version ID
 		//-The 4th parameter (ID37 to UD30): LCD module/driver ID.
 		//-Commands RDID1/2/3(DAh, DBh, DCh) read data correspond to the parameters 2,3,4 of the command 04h, respectively.
@@ -76,26 +129,26 @@ public:
 		/*
 		Bit Description
 			Bit7: (MY) (Row order)
-				‘1’ = Bottom to Top (When MADCTL B7=’1’)
-				‘0’ = Top to Bottom (When MADCTL B7=’0’)
+				â€˜1â€™ = Bottom to Top (When MADCTL B7=1)
+				â€˜0â€™ = Top to Bottom (When MADCTL B7=0)
 			Bit6: (MX) (column order)
-				‘1’ = Right to Left (When MADCTL B6=’1’)
-				‘0’ = Left to Right (When MADCTL B6=’0’)
+				â€˜1â€™ = Right to Left (When MADCTL B6=1)
+				â€˜0â€™ = Left to Right (When MADCTL B6=0)
 			Bit5: Row/Column Order
-				‘1’ = Row/column exchange (MV=1)
-				‘0’ = Normal (MV=0)
+				â€˜1â€™ = Row/column exchange (MV=1)
+				â€˜0â€™ = Normal (MV=0)
 			Bit4: Vertical Refresh order
-				‘1’ =LCD Refresh Bottom to Top
-				‘0’ =LCD Refresh Top to Bottom
+				â€˜1â€™ =LCD Refresh Bottom to Top
+				â€˜0â€™ =LCD Refresh Top to Bottom
 			Bit3: RGB order
-				‘1’ =BGR, “0”=RGB
+				1 =BGR, 0=RGB
 			Bit2: LCD horizontal refresh direction control
-				‘0’ = LCD horizontal refresh Left to right
-				‘1’ = LCD horizontal refresh right to left
+				â€˜0â€™ = LCD horizontal refresh Left to right
+				â€˜1â€™ = LCD horizontal refresh right to left
 			Bit1:
-				Not Used ‘0’
+				Not Used
 			Bit0:
-				Not Used ‘0’
+				Not Used 0
 		 */
 		//Read Display MADCTL
 		, READ_DISPLAY_MEMORY_ACCESS_CONTROL = 0xb
@@ -110,7 +163,7 @@ public:
 		//	Bit 5: Inversion On/Off
 		//		Inversion On/Off: 1 = on, 0 = off
 		//	bit 2-0: Gamma Curve Selection
-		//		“000” = GC0, “001” = GC1, “010” = GC2, “011” = GC3, ”100” to “111” = Not defined
+		//		â€œ000â€� = GC0, â€œ001â€� = GC1, â€œ010â€� = GC2, â€œ011â€� = GC3, â€�100â€� to â€œ111â€� = Not defined
 		, READ_DISPLAY_IMAGE_MODE = 0xd
 		//Read Display Signal Mode
 		//	bit 7:
@@ -137,7 +190,7 @@ public:
 		// Display Inversion On
 		, DISPLAY_INVERSION_ON = 0x21
 		// Gamma Set
-		//	Byte 1: “000” = GC0, “001” = GC1, “010” = GC2, “011” = GC3, ”100” to “111” = Not defined
+		//	Byte 1: â€œ000â€� = GC0, â€œ001â€� = GC1, â€œ010â€� = GC2, â€œ011â€� = GC3, â€�100â€� to â€œ111â€� = Not defined
 		, GAMMA_SET = 0x26
 		//Display Off, exit by sending display_on
 		, DISPLAY_OFF = 0x28
@@ -170,7 +223,7 @@ public:
 		//	The Start Column/Start Row positions are different in accordance with MADCTL setting.
 		//	Then D[17:0] is read back from the frame memory and the column register and the row register
 		//	Frame Read can be cancelled by sending any other command.
-		//	The data color coding is fixed to 18-bit in reading function. Please see section 9.8 “Data color coding” for color
+		//	The data color coding is fixed to 18-bit in reading function. Please see section 9.8 â€œData color codingâ€� for color
 		//	coding (18-bit cases), when there is used 8, 9, 16 and 18-bit data lines for image data.
 		, MEMORY_READ = 0x2e
 		// Partial Area
@@ -187,26 +240,26 @@ public:
 		// Memory Data Access Control (MADCTL)
 		/*
 		 * 	Bit7: (MY) (Row order)
-				‘1’ = Bottom to Top (When MADCTL B7=’1’)
-				‘0’ = Top to Bottom (When MADCTL B7=’0’)
+				â€˜1â€™ = Bottom to Top (When MADCTL B7=â€™1â€™)
+				â€˜0â€™ = Top to Bottom (When MADCTL B7=â€™0â€™)
 			Bit6: (MX) (column order)
-				‘1’ = Right to Left (When MADCTL B6=’1’)
-				‘0’ = Left to Right (When MADCTL B6=’0’)
+				â€˜1â€™ = Right to Left (When MADCTL B6=â€™1â€™)
+				â€˜0â€™ = Left to Right (When MADCTL B6=â€™0â€™)
 			Bit5: Row/Column Order
-				‘1’ = Row/column exchange (MV=1)
-				‘0’ = Normal (MV=0)
+				â€˜1â€™ = Row/column exchange (MV=1)
+				â€˜0â€™ = Normal (MV=0)
 			Bit4: Vertical Refresh order
-				‘1’ =LCD Refresh Bottom to Top
-				‘0’ =LCD Refresh Top to Bottom
+				â€˜1â€™ =LCD Refresh Bottom to Top
+				â€˜0â€™ =LCD Refresh Top to Bottom
 			Bit3: RGB order
-				‘1’ =BGR, “0”=RGB
+				â€˜1â€™ =BGR, â€œ0â€�=RGB
 			Bit2: LCD horizontal refresh direction control
-				‘0’ = LCD horizontal refresh Left to right
-				‘1’ = LCD horizontal refresh right to left
+				â€˜0â€™ = LCD horizontal refresh Left to right
+				â€˜1â€™ = LCD horizontal refresh right to left
 			Bit1:
-				Not Used ‘0’
+				Not Used â€˜0â€™
 			Bit0:
-				Not Used ‘0’
+				Not Used â€˜0â€™
 		Section 10.1.27
 		*/
 		, MEMORY_DATA_ACCESS_CONTROL = 0x36
@@ -228,18 +281,18 @@ public:
 		, INTERFACE_PIXEL_FORMAT = 0x3a
 		// Read ID1 Value
 		//	Byte 1: dummy
-		//	Byte 2: LCD module’s manufacturer ID. Bits 17:10
+		//	Byte 2: LCD moduleâ€™s manufacturer ID. Bits 17:10
 		, READ_ID1 = 0xda
 		// Read ID2 Value
 		//	Byte 1: dummy
 		//	Byte 2:
 		//		Bit 7: ignore:
-		//		Bites 6-0:  LCD module’s manufacturer ID. Bits 26-20
+		//		Bites 6-0:  LCD moduleâ€™s manufacturer ID. Bits 26-20
 		, READ_ID2 = 0xdb
 		// Read ID3 Value
 		//	Byte 1: dummy
 		//	Byte 2:
-		//		Bites 6-0:  LCD module’s manufacturer ID. Bits 37-30
+		//		Bites 6-0:  LCD moduleâ€™s manufacturer ID. Bits 37-30
 		, READ_ID3 = 0xdc
 		// Frame Rate Control: In normal mode/ Full colors
 		//	Byte 1:
@@ -300,9 +353,9 @@ public:
 		//	Byte 1: bites7-0: bites 7-0 for id3
 		, WRITE_ID3 = 0xd2
 		// NVM Control Status
-		// bit 6: VMF_EN “1” = Command C7h enable ; “0” = Command C7h disable
-		// bit 5: ID2_EN “1” = Command D1h enable ; “0” = Command D1h disable
-		// bit 0: EXT_R Read: extension command status, “1” for enable, “0” for disable.
+		// bit 6: VMF_EN â€œ1â€� = Command C7h enable ; â€œ0â€� = Command C7h disable
+		// bit 5: ID2_EN â€œ1â€� = Command D1h enable ; â€œ0â€� = Command D1h disable
+		// bit 0: EXT_R Read: extension command status, â€œ1â€� for enable, â€œ0â€� for disable.
 		, NVM_CONTROL_STATAUS = 0xd9
 		// NVM Read Command
 		// 	reads 2 bytes
@@ -312,10 +365,10 @@ public:
 		//		1 = NVM_CMD[7:0] : Select to Program/Erase ; Program command : 3Ah ; Erase command : C5h
 		//		2 = A5 (must be)
 		, NVM_WRTIE_COMMAND = 0xdf
-		// Gamma (‘+’polarity) Correction Characteristics Setting
+		// Gamma (â€˜+â€™polarity) Correction Characteristics Setting
 		//	10.2.17
 		, GAMMA_POS_CONTROL = 0xe0
-		// Gamma ‘-’polarity Correction Characteristics Setting
+		// Gamma â€˜-â€™polarity Correction Characteristics Setting
 		//	10.2.18
 		, GAMMA_NEG_CONTROL = 0xe1
 		//
@@ -325,23 +378,35 @@ public:
 	virtual ErrorType init();
 	ErrorType init(uint8_t pf, uint8_t mac);
 	virtual ~DisplayST7735();
-	bool drawPixel(uint16_t x0, uint16_t y0, uint8_t r, uint8_t g, uint8_t b);
+	bool drawPixel(uint16_t x0, uint16_t y0, const RGBColor &color);
 	void setMemoryAccessControl(uint8_t macctl);
-	void fillRec(int16_t x, int16_t y, int16_t w, int16_t h, uint32_t color);
-	void fillScreen(uint32_t color);
+	void fillRec(int16_t x, int16_t y, int16_t w, int16_t h, const RGBColor &color);
+	void fillScreen(const RGBColor &color);
 	void setPixelFormat(uint8_t pf);
+	void drawVerticalLine(int16_t x, int16_t y, int16_t h);
+	void drawVerticalLine(int16_t x, int16_t y, int16_t h, const RGBColor &color);
+	void drawHorizontalLine(int16_t x, int16_t y, int16_t w);
+	void drawHorizontalLine(int16_t x, int16_t y, int16_t w, const RGBColor &color);
+	uint32_t drawString(uint16_t x, uint16_t y, char *pt);
+	uint32_t drawString(uint16_t x, uint16_t y, char *pt, const RGBColor &textColor);
+	uint32_t drawString(uint16_t x, uint16_t y, char *pt, const RGBColor &textColor, const RGBColor &bgColor, uint8_t size);
+	void drawCharAtPosition(int16_t x, int16_t y, char c, const RGBColor &textColor, const RGBColor &bgColor, uint8_t size);
+	void setTextColor(const RGBColor &t);
+	void setBackgroundColor(const RGBColor &t);
+	const RGBColor &getTextColor();
+	const RGBColor &getBackgroundColor();
 protected:
 	bool writeCmd(uint8_t c);
 	bool writeNData(const uint8_t *data, int nbytes);
 	bool write16Data(const uint16_t &data);
 	void setAddrWindow(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1);
 	bool writeN(char dc, const uint8_t *data, int nbytes);
-	uint8_t makeColor(uint8_t r, uint8_t g, uint8_t b, uint32_t &color);
-	uint32_t makeColor(uint8_t r, uint8_t g, uint8_t b);
-	bool sendThirdByte();
+	PackedColor makeColor(const RGBColor &c);
 private:
 	uint8_t 	PixelFormat;
 	uint8_t  	MemoryAccessControl;
+	RGBColor	CurrentTextColor;
+	RGBColor	CurrentBGColor;
 };
 
 #endif

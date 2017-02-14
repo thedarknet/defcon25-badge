@@ -14,11 +14,11 @@ const RGBColor RGBColor::BLUE(0, 0, 255);
 const RGBColor RGBColor::WHITE(255, 255, 255);
 
 bool RGBColor::operator==(const RGBColor &r) const {
-	return (r.R==R && r.G==G && r.B==B);
+	return (r.R == R && r.G == G && r.B == B);
 }
 
 bool RGBColor::operator!=(const RGBColor &r) const {
-	return !((*this)==r);
+	return !((*this) == r);
 }
 
 //default font
@@ -105,8 +105,8 @@ DisplayST7735::PackedColor DisplayST7735::PackedColor::create(
  */
 
 DisplayST7735::DisplayST7735(uint16_t w, uint16_t h, DisplayST7735::ROTATION r) :
-		DisplayDevice(w, h, r), PixelFormat(0), MemoryAccessControl(0), CurrentTextColor(RGBColor::WHITE)
-	, CurrentBGColor(RGBColor::BLACK) {
+		DisplayDevice(w, h, r), PixelFormat(0), MemoryAccessControl(0), CurrentTextColor(
+				RGBColor::WHITE), CurrentBGColor(RGBColor::BLACK) {
 
 }
 
@@ -132,7 +132,7 @@ static const struct sCmdBuf initializers[] = {
 				{ 0x01, 0x2C, 0x2B } }, {
 				DisplayST7735::FRAME_RATE_CONTROL_IDLE_COLOR, 0, 3, { 0x01,
 						0x2C, 0x2B } },
-		// FRMCTR3 Frame Rate configureation -- partial mode
+		// FRMCTR3 Frame Rate configuration -- partial mode
 		{ DisplayST7735::FRAME_RATE_CONTROL_PARTIAL_FULL_COLOR, 0, 6, { 0x01,
 				0x2C, 0x2D, 0x01, 0x2C, 0x2D } },
 		// INVCTR Display inversion (no inversion)
@@ -163,7 +163,7 @@ static const struct sCmdBuf initializers[] = {
 		// GMCTRP1 Gamma correction
 		{ 0xE0, 0, 16, { 0x02, 0x1C, 0x07, 0x12, 0x37, 0x32, 0x29, 0x2D, 0x29,
 				0x25, 0x2B, 0x39, 0x00, 0x01, 0x03, 0x10 } },
-		// GMCTRP2 Gamma Polarity corrction
+		// GMCTRP2 Gamma Polarity correction
 		{ 0xE1, 0, 16, { 0x03, 0x1d, 0x07, 0x06, 0x2E, 0x2C, 0x29, 0x2D, 0x2E,
 				0x2E, 0x37, 0x3F, 0x00, 0x00, 0x02, 0x10 } },
 		// DISPON Display on
@@ -207,10 +207,10 @@ bool DisplayST7735::write16Data(const uint16_t &data) {
 }
 
 bool DisplayST7735::drawPixel(uint16_t x0, uint16_t y0, const RGBColor &color) {
-	PackedColor pc = PackedColor::create(PixelFormat,color);
+	PackedColor pc = PackedColor::create(PixelFormat, color);
 	setAddrWindow(x0, y0, x0, y0);
 	writeCmd(MEMORY_WRITE);
-	return writeNData(pc.getPackedColorData(),pc.getSize());
+	return writeNData(pc.getPackedColorData(), pc.getSize());
 }
 
 void DisplayST7735::setAddrWindow(uint16_t x0, uint16_t y0, uint16_t x1,
@@ -248,7 +248,7 @@ DisplayST7735::PackedColor DisplayST7735::makeColor(const RGBColor &rgb) {
 }
 
 ErrorType DisplayST7735::init() {
-	return init(FORMAT_16_BIT, ROW_COLUMN_ORDER);
+	return init(FORMAT_16_BIT, ROW_COLUMN_ORDER); //ROW_COLUMN_ORDER ?
 }
 
 void DisplayST7735::setMemoryAccessControl(uint8_t macctl) {
@@ -269,6 +269,10 @@ void DisplayST7735::setPixelFormat(uint8_t pf) {
 
 ErrorType DisplayST7735::init(uint8_t pf, uint8_t madctl) {
 	ErrorType et;
+	//ensure pixel format
+	setPixelFormat(pf);
+	//ensure memory access control format
+	setMemoryAccessControl(madctl);
 
 	//clear chip select
 	HAL_GPIO_WritePin(OLED_SPI2_CS_GPIO_Port, OLED_SPI2_CS_Pin, GPIO_PIN_SET);
@@ -320,15 +324,11 @@ ErrorType DisplayST7735::init(uint8_t pf, uint8_t madctl) {
 		if (cmd->delay)
 			HAL_Delay(cmd->delay);
 	}
-	//ensure pixel format
-	setPixelFormat(pf);
-	//ensure memory access control format
-	setMemoryAccessControl(madctl);
 
 	//temp
 	fillScreen(RGBColor::BLACK);
 	fillScreen(RGBColor(255, 0, 0));
-	drawString(0,0,"Hello", RGBColor::WHITE, RGBColor::BLACK,3);
+	drawString(0, 0, "Hello", RGBColor::WHITE, RGBColor::BLACK, 3);
 	///
 
 	return et;
@@ -338,7 +338,6 @@ void DisplayST7735::fillScreen(const RGBColor &color) {
 	fillRec(0, 0, getWidth(), getHeight(), color);
 }
 
-
 // Draw a filled rectangle at the given coordinates with the given width, height, and color.
 // Input: x     horizontal position of the top left corner of the rectangle, columns from the left edge
 //        y     vertical position of the top left corner of the rectangle, rows from the top edge
@@ -346,8 +345,9 @@ void DisplayST7735::fillScreen(const RGBColor &color) {
 //        h     vertical height of the rectangle
 //        color appropriated packed color, which can be produced by PackColor::create()
 // Output: none
-void DisplayST7735::fillRec(int16_t x, int16_t y, int16_t w, int16_t h, const RGBColor &color) {
-	PackedColor pc = PackedColor::create(PixelFormat,color);
+void DisplayST7735::fillRec(int16_t x, int16_t y, int16_t w, int16_t h,
+		const RGBColor &color) {
+	PackedColor pc = PackedColor::create(PixelFormat, color);
 
 	if ((x >= getWidth()) || (y >= getHeight()))
 		return;
@@ -361,7 +361,7 @@ void DisplayST7735::fillRec(int16_t x, int16_t y, int16_t w, int16_t h, const RG
 
 	for (y = h; y > 0; y--) {
 		for (x = w; x > 0; x--) {
-			writeNData(pc.getPackedColorData(),pc.getSize());
+			writeNData(pc.getPackedColorData(), pc.getSize());
 		}
 	}
 }
@@ -425,12 +425,12 @@ const RGBColor &DisplayST7735::getBackgroundColor() {
 }
 
 uint32_t DisplayST7735::drawString(uint16_t x, uint16_t y, char *pt) {
-	return drawString(x,y,pt,CurrentTextColor);
+	return drawString(x, y, pt, CurrentTextColor);
 }
 
 uint32_t DisplayST7735::drawString(uint16_t x, uint16_t y, char *pt,
 		const RGBColor &textColor) {
-	return drawString(x,y,pt,textColor,CurrentBGColor,1);
+	return drawString(x, y, pt, textColor, CurrentBGColor, 1);
 }
 
 // Input: x         columns from the left edge (0 to 20)
@@ -440,14 +440,15 @@ uint32_t DisplayST7735::drawString(uint16_t x, uint16_t y, char *pt,
 // bgColor is Black and size is 1
 // Output: number of characters printed
 uint32_t DisplayST7735::drawString(uint16_t x, uint16_t y, char *pt,
-		const RGBColor &textColor, const RGBColor &backGroundColor, uint8_t size) {
+		const RGBColor &textColor, const RGBColor &backGroundColor,
+		uint8_t size) {
 	uint32_t count = 0;
 	//TODO clean this up
 	if (y > 15) //15*10 = 150
 		return 0;
 
-	uint16_t w = FONT_WIDTH*size;
-	uint16_t h = FONT_HEIGHT*size;
+	uint16_t w = FONT_WIDTH * size;
+	uint16_t h = FONT_HEIGHT * size;
 
 	while (*pt) {
 		drawCharAtPosition(x * w, y * h, *pt, textColor, backGroundColor, size);
@@ -461,7 +462,7 @@ uint32_t DisplayST7735::drawString(uint16_t x, uint16_t y, char *pt,
 }
 
 void DisplayST7735::drawVerticalLine(int16_t x, int16_t y, int16_t h) {
-	drawVerticalLine(x,y,h,CurrentTextColor);
+	drawVerticalLine(x, y, h, CurrentTextColor);
 }
 
 // Draw a vertical line at the given coordinates with the given height and color.
@@ -487,7 +488,7 @@ void DisplayST7735::drawVerticalLine(int16_t x, int16_t y, int16_t h,
 }
 
 void DisplayST7735::drawHorizontalLine(int16_t x, int16_t y, int16_t w) {
-	return drawHorizontalLine(x,y,w,CurrentTextColor);
+	return drawHorizontalLine(x, y, w, CurrentTextColor);
 }
 
 // Draw a horizontal line at the given coordinates with the given width and color.
@@ -495,17 +496,18 @@ void DisplayST7735::drawHorizontalLine(int16_t x, int16_t y, int16_t w) {
 //        y     vertical position of the start of the line, rows from the top edge
 //        w     horizontal width of the line
 //		Color is the RGBColor
-void DisplayST7735::drawHorizontalLine(int16_t x, int16_t y, int16_t w, const RGBColor& color) {
+void DisplayST7735::drawHorizontalLine(int16_t x, int16_t y, int16_t w,
+		const RGBColor& color) {
 	//safey
 	if ((x >= getWidth()) || (y >= getHeight()))
 		return;
 	if ((x + w - 1) >= getWidth())
 		w = getWidth() - x;
 	setAddrWindow(x, y, x + w - 1, y);
-	PackedColor pc = PackedColor::create(PixelFormat,color);
+	PackedColor pc = PackedColor::create(PixelFormat, color);
 	writeCmd(MEMORY_WRITE);
 	while (w--) {
-		writeNData(pc.getPackedColorData(),pc.getSize());
+		writeNData(pc.getPackedColorData(), pc.getSize());
 	}
 }
 

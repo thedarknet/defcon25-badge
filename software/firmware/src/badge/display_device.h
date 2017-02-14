@@ -129,26 +129,26 @@ public:
 		/*
 		Bit Description
 			Bit7: (MY) (Row order)
-				â€˜1â€™ = Bottom to Top (When MADCTL B7=1)
-				â€˜0â€™ = Top to Bottom (When MADCTL B7=0)
+				1 = Bottom to Top (When MADCTL B7=1)
+				0 = Top to Bottom (When MADCTL B7=0)
 			Bit6: (MX) (column order)
-				â€˜1â€™ = Right to Left (When MADCTL B6=1)
-				â€˜0â€™ = Left to Right (When MADCTL B6=0)
+				1 = Right to Left (When MADCTL B6=1)
+				0 = Left to Right (When MADCTL B6=0)
 			Bit5: Row/Column Order
-				â€˜1â€™ = Row/column exchange (MV=1)
-				â€˜0â€™ = Normal (MV=0)
+				1 = Row/column exchange (MV=1)
+				0 = Normal (MV=0)
 			Bit4: Vertical Refresh order
-				â€˜1â€™ =LCD Refresh Bottom to Top
-				â€˜0â€™ =LCD Refresh Top to Bottom
+				1 =LCD Refresh Bottom to Top
+				0 =LCD Refresh Top to Bottom
 			Bit3: RGB order
 				1 =BGR, 0=RGB
 			Bit2: LCD horizontal refresh direction control
-				â€˜0â€™ = LCD horizontal refresh Left to right
-				â€˜1â€™ = LCD horizontal refresh right to left
+				1 = LCD horizontal refresh Left to right
+				0 = LCD horizontal refresh right to left
 			Bit1:
 				Not Used
 			Bit0:
-				Not Used 0
+				Not Used
 		 */
 		//Read Display MADCTL
 		, READ_DISPLAY_MEMORY_ACCESS_CONTROL = 0xb
@@ -163,7 +163,7 @@ public:
 		//	Bit 5: Inversion On/Off
 		//		Inversion On/Off: 1 = on, 0 = off
 		//	bit 2-0: Gamma Curve Selection
-		//		â€œ000â€� = GC0, â€œ001â€� = GC1, â€œ010â€� = GC2, â€œ011â€� = GC3, â€�100â€� to â€œ111â€� = Not defined
+		//		000 = GC0, 001 = GC1, 010 = GC2, 011 = GC3, 100 to 111 = Not defined
 		, READ_DISPLAY_IMAGE_MODE = 0xd
 		//Read Display Signal Mode
 		//	bit 7:
@@ -240,26 +240,26 @@ public:
 		// Memory Data Access Control (MADCTL)
 		/*
 		 * 	Bit7: (MY) (Row order)
-				â€˜1â€™ = Bottom to Top (When MADCTL B7=â€™1â€™)
-				â€˜0â€™ = Top to Bottom (When MADCTL B7=â€™0â€™)
+				1 = Bottom to Top (When MADCTL B7=1)
+				0 = Top to Bottom (When MADCTL B7=0)
 			Bit6: (MX) (column order)
-				â€˜1â€™ = Right to Left (When MADCTL B6=â€™1â€™)
-				â€˜0â€™ = Left to Right (When MADCTL B6=â€™0â€™)
+				1 = Right to Left (When MADCTL B6=1)
+				0 = Left to Right (When MADCTL B6=0)
 			Bit5: Row/Column Order
-				â€˜1â€™ = Row/column exchange (MV=1)
-				â€˜0â€™ = Normal (MV=0)
+				1 = Row/column exchange (MV=1)
+				0 = Normal (MV=0)
 			Bit4: Vertical Refresh order
-				â€˜1â€™ =LCD Refresh Bottom to Top
-				â€˜0â€™ =LCD Refresh Top to Bottom
+				1 =LCD Refresh Bottom to Top
+				0 =LCD Refresh Top to Bottom
 			Bit3: RGB order
-				â€˜1â€™ =BGR, â€œ0â€�=RGB
+				1 =BGR, 0=RGB
 			Bit2: LCD horizontal refresh direction control
-				â€˜0â€™ = LCD horizontal refresh Left to right
-				â€˜1â€™ = LCD horizontal refresh right to left
+				0 = LCD horizontal refresh Left to right
+				1 = LCD horizontal refresh right to left
 			Bit1:
-				Not Used â€˜0â€™
+				Not Used
 			Bit0:
-				Not Used â€˜0â€™
+				Not Used
 		Section 10.1.27
 		*/
 		, MEMORY_DATA_ACCESS_CONTROL = 0x36
@@ -353,9 +353,9 @@ public:
 		//	Byte 1: bites7-0: bites 7-0 for id3
 		, WRITE_ID3 = 0xd2
 		// NVM Control Status
-		// bit 6: VMF_EN â€œ1â€� = Command C7h enable ; â€œ0â€� = Command C7h disable
-		// bit 5: ID2_EN â€œ1â€� = Command D1h enable ; â€œ0â€� = Command D1h disable
-		// bit 0: EXT_R Read: extension command status, â€œ1â€� for enable, â€œ0â€� for disable.
+		// bit 6: VMF_EN 1 = Command C7h enable ; 0 = Command C7h disable
+		// bit 5: ID2_EN 1 = Command D1h enable ; 0 = Command D1h disable
+		// bit 0: EXT_R Read: extension command status, 1 for enable, 0 for disable.
 		, NVM_CONTROL_STATAUS = 0xd9
 		// NVM Read Command
 		// 	reads 2 bytes
@@ -365,10 +365,10 @@ public:
 		//		1 = NVM_CMD[7:0] : Select to Program/Erase ; Program command : 3Ah ; Erase command : C5h
 		//		2 = A5 (must be)
 		, NVM_WRTIE_COMMAND = 0xdf
-		// Gamma (â€˜+â€™polarity) Correction Characteristics Setting
+		// Gamma (+ polarity) Correction Characteristics Setting
 		//	10.2.17
 		, GAMMA_POS_CONTROL = 0xe0
-		// Gamma â€˜-â€™polarity Correction Characteristics Setting
+		// Gamma - polarity Correction Characteristics Setting
 		//	10.2.18
 		, GAMMA_NEG_CONTROL = 0xe1
 		//

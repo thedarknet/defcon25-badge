@@ -3,3 +3,11 @@ SDA is infact: MOSI as the board is SPI not I2C
 --https://webcache.googleusercontent.com/search?q=cache:zqTKMD6Ik7kJ:https://community.particle.io/t/solved-getting-the-st7735-to-work-with-spark/11392+&cd=3&hl=en&ct=clnk&gl=us
 
 https://github.com/XarkLabs/PDQ_GFX_Libs/blob/master/PDQ_ST7735/PDQ_ST7735.h line 513...that's the fastest avr can go but can the display go faster?
+
+
+
+--1.44 seem to actually be IL19163C (not st7735)
+https://luigidifraia.wordpress.com/2016/02/19/lcd-display-panels-casting-some-light-on-the-mess/
+https://forum.pjrc.com/threads/25862-ILI9163C-128x128-TFT-driver
+https://github.com/sumotoy/TFT_ILI9163C
+http://www.ebay.co.uk/itm/111317541232?afsrc=1&rmvSB=true

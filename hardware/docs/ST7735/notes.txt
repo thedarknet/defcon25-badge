@@ -11,3 +11,5 @@ https://luigidifraia.wordpress.com/2016/02/19/lcd-display-panels-casting-some-li
 https://forum.pjrc.com/threads/25862-ILI9163C-128x128-TFT-driver
 https://github.com/sumotoy/TFT_ILI9163C
 http://www.ebay.co.uk/itm/111317541232?afsrc=1&rmvSB=true
+
+https://forum.arduino.cc/index.php?topic=260605.135

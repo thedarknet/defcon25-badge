@@ -10789,18 +10789,6 @@ write for hw IR</text>
 <label x="172.72" y="88.9" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
-<net name="TIM_IR_MAIN_SIGNAL" class="0">
-<segment>
-<pinref part="U$2" gate="G$1" pin="PB8"/>
-<wire x1="17.78" y1="132.08" x2="17.78" y2="134.62" width="0.1524" layer="91"/>
-<label x="17.78" y="137.16" size="1.778" layer="95" rot="R90"/>
-</segment>
-<segment>
-<pinref part="LED12" gate="G$1" pin="C"/>
-<wire x1="195.58" y1="208.28" x2="200.66" y2="208.28" width="0.1524" layer="91"/>
-<label x="203.2" y="208.28" size="1.778" layer="95"/>
-</segment>
-</net>
 <net name="TSC_G5_IO4" class="0">
 <segment>
 <pinref part="U$2" gate="G$1" pin="PB7"/>
@@ -10810,9 +10798,14 @@ write for hw IR</text>
 </net>
 <net name="TIM_IR_CARRIER_FREQ" class="0">
 <segment>
-<pinref part="U$2" gate="G$1" pin="PB5"/>
-<wire x1="27.94" y1="132.08" x2="27.94" y2="134.62" width="0.1524" layer="91"/>
-<label x="27.94" y="137.16" size="1.778" layer="95" rot="R90"/>
+<pinref part="LED12" gate="G$1" pin="C"/>
+<wire x1="195.58" y1="208.28" x2="200.66" y2="208.28" width="0.1524" layer="91"/>
+<label x="203.2" y="208.28" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U$2" gate="G$1" pin="PB8"/>
+<wire x1="17.78" y1="132.08" x2="17.78" y2="134.62" width="0.1524" layer="91"/>
+<label x="17.78" y="137.16" size="1.778" layer="95" rot="R90"/>
 </segment>
 </net>
 <net name="N$49" class="0">
@@ -11069,6 +11062,13 @@ write for hw IR</text>
 <pinref part="U$2" gate="G$1" pin="PA7"/>
 <wire x1="25.4" y1="63.5" x2="25.4" y2="60.96" width="0.1524" layer="91"/>
 <label x="25.4" y="58.42" size="1.778" layer="95" rot="R270"/>
+</segment>
+</net>
+<net name="SD_CARD_CS" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="PB5"/>
+<wire x1="27.94" y1="132.08" x2="27.94" y2="134.62" width="0.1524" layer="91"/>
+<label x="27.94" y="137.16" size="1.778" layer="95" rot="R90"/>
 </segment>
 </net>
 </nets>

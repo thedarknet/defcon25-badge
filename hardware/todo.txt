@@ -1,8 +1,8 @@
 TODO:
-* need to add sampling pins for touch to capacitor
-* Remove capacitors from touch 
-* add capacitors to sample pins
-* add SD card NSS
+* schema:
+* [DONE]: need to add sampling pins for touch to capacitor
+* [DONE]: Remove capacitors from touch 
+* [DONE]: add SD card NSS
 
 
 4 layer ~$10 per board

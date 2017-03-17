@@ -234,13 +234,13 @@ void DisplayST7735::setAddrWindow(uint16_t x0, uint16_t y0, uint16_t x1,
 	}
 }
 
-void ST7735_backLight(uint8_t on) {
+void DisplayST7735::setBackLightOn(bool on) {
 	if (on)
 		HAL_GPIO_WritePin(OLED_BACK_LIT_GPIO_Port, OLED_BACK_LIT_Pin,
-				GPIO_PIN_RESET);
+				GPIO_PIN_SET);
 	else
 		HAL_GPIO_WritePin(OLED_BACK_LIT_GPIO_Port, OLED_BACK_LIT_Pin,
-				GPIO_PIN_SET);
+				GPIO_PIN_RESET);
 }
 
 DisplayST7735::PackedColor DisplayST7735::makeColor(const RGBColor &rgb) {
@@ -269,6 +269,7 @@ void DisplayST7735::setPixelFormat(uint8_t pf) {
 
 ErrorType DisplayST7735::init(uint8_t pf, uint8_t madctl) {
 	ErrorType et;
+	setBackLightOn(true);
 	//ensure pixel format
 	setPixelFormat(pf);
 	//ensure memory access control format

@@ -395,6 +395,7 @@ public:
 	void setBackgroundColor(const RGBColor &t);
 	const RGBColor &getTextColor();
 	const RGBColor &getBackgroundColor();
+	void setBackLightOn(bool on);
 protected:
 	bool writeCmd(uint8_t c);
 	bool writeNData(const uint8_t *data, int nbytes);

@@ -3414,8 +3414,8 @@ Please make sure your boards conform to these design rules.</description>
 <element name="LED12" library="SYNShop" package="LED5MM" value="" x="28.603125" y="57.159375" rot="R180"/>
 <element name="R24" library="darknet_parts_library" package="0309/12" value="" x="25.15" y="50.801875"/>
 <element name="CN1" library="adafruit" package="JST-PH-2-THM-RA" value="" x="40.218125" y="69.965" rot="MR270"/>
-<element name="SW1" library="SYNShop" package="TACTILE-2PIN-NARROW" value="RESET" x="86.19875" y="43.020625" rot="MR180"/>
-<element name="R25" library="darknet_parts_library" package="0603-RES" value="" x="88.609375" y="46.458125" rot="MR0"/>
+<element name="SW1" library="SYNShop" package="TACTILE-2PIN-NARROW" value="RESET" x="94.855625" y="63.341875" rot="MR0"/>
+<element name="R25" library="darknet_parts_library" package="0603-RES" value="" x="88.133125" y="60.586875" rot="MR0"/>
 <element name="R26" library="darknet_parts_library" package="0603-RES" value="27" x="88.10375" y="67.16375" rot="MR0"/>
 <element name="R27" library="darknet_parts_library" package="0603-RES" value="27" x="88.10375" y="65.11375" rot="MR0"/>
 <element name="C19" library="darknet_parts_library" package="C0603" value="47pF" x="88.10375" y="63.06375" rot="MR180"/>
@@ -3424,8 +3424,8 @@ Please make sure your boards conform to these design rules.</description>
 <element name="Y1" library="SparkFun" package="RESONATOR-SMD" value="RESONATORSMD" x="40.2125" y="48.055" rot="MR90"/>
 <element name="F1" library="SparkFun" package="PTC-1206" value="500uA" x="48.524375" y="64.525" rot="MR180"/>
 <element name="C21" library="darknet_parts_library" package="C0603" value="1uF" x="44.774375" y="41.4175" rot="MR0"/>
-<element name="LED13" library="SYNShop" package="GULLWING_LED" value="" x="7.71375" y="12.198125" rot="MR0"/>
-<element name="R28" library="darknet_parts_library" package="1206" value="" x="5.365" y="14.989375" rot="MR0"/>
+<element name="LED13" library="SYNShop" package="LED-0603" value="" x="40.296875" y="41.419375" rot="MR90"/>
+<element name="R28" library="darknet_parts_library" package="0603-RES" value="" x="40.29" y="43.485" rot="MR0"/>
 <element name="STLINK" library="darknet_parts_library" package="1X04" value="STLINK-V2-CONNECTOR" x="3.306875" y="49.688125" rot="R270"/>
 <element name="SAMPLE_CAP_G3" library="darknet_parts_library" package="C0603" value="0.047uF" x="50.845625" y="60.19875" rot="MR90"/>
 <element name="SAMPLE_CAP_G1" library="darknet_parts_library" package="C0603" value="0.047uF" x="45.425" y="60.15875" rot="MR90"/>
@@ -3582,7 +3582,6 @@ Please make sure your boards conform to these design rules.</description>
 <wire x1="42.95775" y1="20.98675" x2="42.95775" y2="21.336" width="0.3048" layer="16"/>
 <wire x1="42.95775" y1="21.336" x2="42.306875" y2="21.986875" width="0.3048" layer="16"/>
 <wire x1="42.306875" y1="21.986875" x2="42.306875" y2="22.06625" width="0.3048" layer="16"/>
-<wire x1="20.828" y1="23.344" x2="7.71375" y2="10.698125" width="0" layer="19" extent="16-16"/>
 </signal>
 <signal name="N$1">
 <contactref element="R11" pad="2"/>
@@ -3912,8 +3911,8 @@ Please make sure your boards conform to these design rules.</description>
 <contactref element="U$2" pad="P7"/>
 <contactref element="R25" pad="1"/>
 <contactref element="SW1" pad="P$1"/>
-<wire x1="89.46265" y1="43.020625" x2="89.459375" y2="46.458125" width="0" layer="19" extent="16-16"/>
-<wire x1="43.5625" y1="50.605" x2="89.459375" y2="46.458125" width="0" layer="19" extent="16-16"/>
+<wire x1="88.983125" y1="60.586875" x2="91.591725" y2="63.341875" width="0" layer="19" extent="16-16"/>
+<wire x1="43.5625" y1="50.605" x2="88.983125" y2="60.586875" width="0" layer="19" extent="16-16"/>
 </signal>
 <signal name="VCC">
 <contactref element="U$15" pad="3.3V"/>
@@ -3949,16 +3948,16 @@ Please make sure your boards conform to these design rules.</description>
 <contactref element="U$22" pad="VCC"/>
 <wire x1="43.9625" y1="43.655" x2="43.9625" y2="41.455625" width="0.3048" layer="16"/>
 <wire x1="43.9625" y1="41.455625" x2="43.924375" y2="41.4175" width="0.3048" layer="16"/>
-<wire x1="54.66125" y1="64.575625" x2="59.69" y2="77.47" width="0" layer="19" extent="16-16"/>
-<wire x1="54.5625" y1="61.255" x2="54.66125" y2="64.575625" width="0" layer="19" extent="16-16"/>
+<wire x1="76.205" y1="48.295" x2="87.283125" y2="60.586875" width="0" layer="19" extent="16-16"/>
+<wire x1="56.9125" y1="46.005" x2="76.205" y2="48.295" width="0" layer="19" extent="16-16"/>
+<wire x1="52.9625" y1="57.005" x2="54.8625" y2="47.605" width="0" layer="19" extent="16-16"/>
+<wire x1="54.66125" y1="64.575625" x2="54.5625" y2="61.255" width="0" layer="19" extent="16-16"/>
 <wire x1="46.4625" y1="57.005" x2="52.9625" y2="57.005" width="0" layer="19" extent="16-16"/>
 <wire x1="43.5625" y1="53.605" x2="46.4625" y2="57.005" width="0" layer="19" extent="16-16"/>
 <wire x1="38.6625" y1="52.805" x2="43.5625" y2="53.605" width="0" layer="19" extent="16-16"/>
 <wire x1="45.4625" y1="45.705" x2="43.5625" y2="53.605" width="0" layer="19" extent="16-16"/>
-<wire x1="54.8625" y1="47.605" x2="52.9625" y2="57.005" width="0" layer="19" extent="16-16"/>
 <wire x1="28.691875" y1="45.48375" x2="38.6625" y2="52.805" width="0" layer="19" extent="16-16"/>
-<wire x1="76.205" y1="48.295" x2="56.9125" y2="46.005" width="0" layer="19" extent="16-16"/>
-<wire x1="87.759375" y1="46.458125" x2="76.205" y2="48.295" width="0" layer="19" extent="16-16"/>
+<wire x1="59.69" y1="77.47" x2="54.66125" y2="64.575625" width="0" layer="19" extent="16-16"/>
 <wire x1="3.306875" y1="54.768125" x2="28.691875" y2="45.48375" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="TSC_G3_IO2">
@@ -3984,7 +3983,7 @@ Please make sure your boards conform to these design rules.</description>
 <signal name="LED_STATUS">
 <contactref element="U$2" pad="P2"/>
 <contactref element="R28" pad="1"/>
-<wire x1="6.765" y1="14.989375" x2="43.5625" y2="48.105" width="0" layer="19" extent="16-16"/>
+<wire x1="41.14" y1="43.485" x2="43.5625" y2="48.105" width="0" layer="19" extent="16-16"/>
 </signal>
 <signal name="TSC_G5_IO4">
 <contactref element="U$2" pad="P59"/>
@@ -4090,7 +4089,7 @@ Please make sure your boards conform to these design rules.</description>
 <signal name="N$29">
 <contactref element="LED13" pad="A"/>
 <contactref element="R28" pad="2"/>
-<wire x1="2.71375" y1="10.698125" x2="3.965" y2="14.989375" width="0" layer="19" extent="16-16"/>
+<wire x1="39.546875" y1="41.419375" x2="39.44" y2="43.485" width="0" layer="19" extent="16-16"/>
 </signal>
 <signal name="TSC_G2_I01">
 <contactref element="U$2" pad="P20"/>

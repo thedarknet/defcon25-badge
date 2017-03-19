@@ -21,9 +21,6 @@ bool RGBColor::operator!=(const RGBColor &r) const {
 	return !((*this) == r);
 }
 
-//default font
-#include "font.cpp"
-
 /////////////////////////////////////////////////////////////////////
 // Generic base display device
 DisplayDevice::DisplayDevice(uint16_t w, uint16_t h, DisplayDevice::ROTATION r) :
@@ -106,7 +103,8 @@ DisplayST7735::PackedColor DisplayST7735::PackedColor::create(
 
 DisplayST7735::DisplayST7735(uint16_t w, uint16_t h, DisplayST7735::ROTATION r) :
 		DisplayDevice(w, h, r), PixelFormat(0), MemoryAccessControl(0), CurrentTextColor(
-				RGBColor::WHITE), CurrentBGColor(RGBColor::BLACK) {
+				RGBColor::WHITE), CurrentBGColor(RGBColor::BLACK), CurrentFont(
+				0) {
 
 }
 
@@ -248,7 +246,7 @@ DisplayST7735::PackedColor DisplayST7735::makeColor(const RGBColor &rgb) {
 }
 
 ErrorType DisplayST7735::init() {
-	return init(FORMAT_16_BIT, ROW_COLUMN_ORDER); //ROW_COLUMN_ORDER ?
+	return init(FORMAT_16_BIT, ROW_COLUMN_ORDER, &Font_6x10); //ROW_COLUMN_ORDER ?
 }
 
 void DisplayST7735::setMemoryAccessControl(uint8_t macctl) {
@@ -267,8 +265,14 @@ void DisplayST7735::setPixelFormat(uint8_t pf) {
 	}
 }
 
-ErrorType DisplayST7735::init(uint8_t pf, uint8_t madctl) {
+void DisplayST7735::setFont(const FontDef_t *font) {
+	CurrentFont = font;
+}
+
+ErrorType DisplayST7735::init(uint8_t pf, uint8_t madctl,
+		const FontDef_t *defaultFont) {
 	ErrorType et;
+	setFont(defaultFont);
 	setBackLightOn(true);
 	//ensure pixel format
 	setPixelFormat(pf);
@@ -326,12 +330,6 @@ ErrorType DisplayST7735::init(uint8_t pf, uint8_t madctl) {
 			HAL_Delay(cmd->delay);
 	}
 
-	//temp
-	fillScreen(RGBColor::BLACK);
-	fillScreen(RGBColor(255, 0, 0));
-	drawString(0, 0, "Hello", RGBColor::WHITE, RGBColor::BLACK, 3);
-	///
-
 	return et;
 }
 
@@ -367,8 +365,13 @@ void DisplayST7735::fillRec(int16_t x, int16_t y, int16_t w, int16_t h,
 	}
 }
 
-void DisplayST7735::drawRec(int16_t x, int16_t y, int16_t w, int16_t h, const RGBColor &color) {
+void DisplayST7735::drawRec(int16_t x, int16_t y, int16_t w, int16_t h,
+		const RGBColor &color) {
 	//TODO
+}
+
+const uint8_t *DisplayST7735::getFontData() {
+	return CurrentFont->data;
 }
 
 // Input: x         horizontal position of the top left corner of the character, columns from the left edge
@@ -392,7 +395,7 @@ void DisplayST7735::drawCharAtPosition(int16_t x, int16_t y, char c,
 		if (i == 5)
 			line = 0x0;
 		else
-			line = Font[(c * 5) + i];
+			line = getFontData()[(c * 5) + i];
 		for (j = 0; j < 8; j++) {
 			if (line & 0x1) {
 				if (size == 1) // default size
@@ -435,35 +438,37 @@ uint32_t DisplayST7735::drawString(uint16_t x, uint16_t y, const char *pt) {
 
 uint32_t DisplayST7735::drawString(uint16_t x, uint16_t y, const char *pt,
 		const RGBColor &textColor) {
-	return drawString(x, y, pt, textColor, CurrentBGColor, 1);
+	return drawString(x, y, pt, textColor, CurrentBGColor, 1,false);
 }
 
-// Input: x         columns from the left edge (0 to 20)
-//        y         rows from the top edge (0 to 15)
-//        pt        pointer to a null terminated string to be printed
-//        textColor 16-bit color of the characters
-// bgColor is Black and size is 1
-// Output: number of characters printed
-uint32_t DisplayST7735::drawString(uint16_t x, uint16_t y, const char *pt,
+uint32_t DisplayST7735::drawString(uint16_t xPos, uint16_t yPos, const char *pt,
 		const RGBColor &textColor, const RGBColor &backGroundColor,
-		uint8_t size) {
-	uint32_t count = 0;
-	//TODO clean this up
-	if (y > 15) //15*10 = 150
-		return 0;
+		uint8_t size, bool lineWrap) {
 
-	uint16_t w = FONT_WIDTH * size;
-	uint16_t h = FONT_HEIGHT * size;
+	uint16_t currentX = xPos;
+	uint16_t currentY = yPos;
+	const char *orig = pt;
 
 	while (*pt) {
-		drawCharAtPosition(x * w, y * h, *pt, textColor, backGroundColor, size);
+		if ((currentX > getWidth() && !lineWrap) || currentY > getHeight()) {
+			return pt - orig;
+		} else if (currentX>getWidth() && lineWrap) {
+			currentX = 0;
+			currentY+=CurrentFont->FontHeight;
+			drawCharAtPosition(currentX, currentY, *pt, textColor,
+									backGroundColor, size);
+			currentX+=CurrentFont->FontWidth;
+		} else if (*pt == '\n' || *pt == '\r') {
+				currentY+=CurrentFont->FontHeight;
+				currentX = 0;
+		} else {
+			drawCharAtPosition(currentX, currentY, *pt, textColor,
+					backGroundColor, size);
+			currentX+=CurrentFont->FontWidth;
+		}
 		pt++;
-		x = x + 1;
-		if (x > 20)
-			return count;
-		count++;
 	}
-	return count;  // number of characters printed
+	return (pt - orig);  // number of characters printed
 }
 
 void DisplayST7735::drawVerticalLine(int16_t x, int16_t y, int16_t h) {

@@ -1,4 +1,5 @@
 #include "gui.h"
+#include "stm32f3xx_hal.h"
 
 void GUI_ListItemData::setShouldScroll() {
 	if (strlen(text) > 14) {
@@ -8,55 +9,24 @@ void GUI_ListItemData::setShouldScroll() {
 	}
 }
 
-GUI_TickerData::GUI_TickerData(const char * txt, uint8_t X, uint8_t Y, uint8_t W, uint8_t H) :
-		text(txt), x(X), y(Y), w(W), h(H), bg(RGBColor::BLACK), border(RGBColor::WHITE), startTick(0) {
+GUI_TickerData::GUI_TickerData(const char * txt, uint8_t X, uint8_t Y,
+		uint8_t W, uint8_t H) :
+		text(txt), x(X), y(Y), w(W), h(H), BorderSize(1), FontScalar(1), bg(
+				RGBColor::BLACK), TextColor(RGBColor::WHITE), startTick(0) {
 }
 
 GUI::GUI(DisplayST7735 *display) :
-gui_CurList(0), Display(display) {
+		Display(display) {
 
 }
 
 bool GUI::init() {
-	gui_CurList = 0;
 	return true;
 }
 
-void GUI::lable(const char* txt, uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t borderSize, const RGBColor &bg,
-		const RGBColor &txtColor, uint8_t textSize, const RGBColor &borderColor) {
-	Display->fillRec(x, y, w, h, bg);
-	if (borderSize)
-		Display->drawRec(x, y, w, h, borderColor);
-	Display->drawString(x, y, txt, txtColor, borderColor, textSize);
-}
-
-void gui_lable_multiline(const char* txt, uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t bg, uint8_t border) {
-	SSD1306_DrawFilledRectangle(x, y, w, h, bg);
-	uint8_t max_x = x + border, cy = y + border;
-	SSD1306_GotoXY(x + border, cy);
-	while (*txt) {
-		if (max_x + GUI_DefFont.FontWidth > SSD1306_WIDTH || max_x + GUI_DefFont.FontWidth > x + w || *txt == '\n'
-				|| *txt == '\r') {
-			cy += GUI_DefFont.FontHeight;
-			SSD1306_GotoXY(x + border, cy);
-			max_x = x + border;
-			if (cy + GUI_DefFont.FontHeight > y + h - border) {
-				if (border)
-					SSD1306_DrawRectangle(x, y, w, h, !bg);
-				return;
-			}
-		}
-		max_x += GUI_DefFont.FontWidth;
-		if (*txt != '\n' && *txt != '\r')
-			SSD1306_Putc(*txt, &GUI_DefFont, !bg);
-		txt++;
-	}
-	if (border)
-		SSD1306_DrawRectangle(x, y, w, h, !bg);
-}
-
-void gui_ticker(GUI_TickerData *dt) {
-	uint8_t maxlen = (dt->w - dt->border * 2) / GUI_DefFont.FontWidth, len = 0;
+void GUI::drawTicker(GUI_TickerData *dt) {
+	uint8_t maxlen = (dt->w - dt->BorderSize * 2)
+			/ Display->getFont()->FontWidth, len = 0;
 	int shift = 0;
 	while (*(dt->text + len) != 0)
 		len++;
@@ -75,11 +45,8 @@ void gui_ticker(GUI_TickerData *dt) {
 	if (shift < 0) {
 		shift = 0;
 	}
-	gui_lable(dt->text + shift, dt->x, dt->y, dt->w, dt->h, dt->bg, dt->border);
-}
-
-void gui_set_curList(GUI_ListData* list) {
-	gui_CurList = list;
+	Display->drawString(dt->x, dt->y, dt->text + shift, dt->TextColor, dt->bg,
+			dt->FontScalar, false);
 }
 
 const char *GUI_ListItemData::getScrollOffset() {
@@ -103,80 +70,81 @@ const char *GUI_ListItemData::getScrollOffset() {
 	return text + offSet;
 }
 
-uint8_t gui_draw_list() {
+uint8_t GUI::drawList(GUI_ListData* gui_CurList) {
 	if (gui_CurList == 0)
 		return 0;
-	SSD1306_DrawFilledRectangle(gui_CurList->x, gui_CurList->y, gui_CurList->w, gui_CurList->h, 0);
-	SSD1306_DrawRectangle(gui_CurList->x, gui_CurList->y, gui_CurList->w, gui_CurList->h, 1);
+	//SSD1306_DrawFilledRectangle(gui_CurList->x, gui_CurList->y, gui_CurList->w, gui_CurList->h, 0);
+	//SSD1306_DrawRectangle(gui_CurList->x, gui_CurList->y, gui_CurList->w, gui_CurList->h, 1);
 
 	uint8_t ry = gui_CurList->y + 2;
 	if (gui_CurList->header != 0) {
-		gui_text(gui_CurList->header, gui_CurList->x + 1, gui_CurList->y, 1);
+		Display->drawString(gui_CurList->x + 1, gui_CurList->y, gui_CurList->header, RGBColor::WHITE, RGBColor::BLACK,
+				1, false);
 		ry += GUI_DefFont.FontHeight;
 	}
 
-	uint8_t maxC = ((gui_CurList->h - 3) / GUI_DefFont.FontHeight) - (gui_CurList->header != 0);
+	uint8_t maxC = ((gui_CurList->h - 3) / Display->getFont()->FontHeight)
+			- (gui_CurList->header != 0);
 
 	uint16_t i;
 	if (maxC >= gui_CurList->ItemsCount) {
 		for (i = 0; i < gui_CurList->ItemsCount; i++) {
-			if (i != gui_CurList->selectedItem)
-				gui_lable(gui_CurList->items[i].text, gui_CurList->x + 1, ry + i * GUI_DefFont.FontHeight,
-						gui_CurList->w - 3, GUI_DefFont.FontHeight, 0, 0);
-			else {
-				gui_lable(gui_CurList->items[i].getScrollOffset(), gui_CurList->x + 1, ry + i * GUI_DefFont.FontHeight,
-						gui_CurList->w - 3, GUI_DefFont.FontHeight, 1, 0);
+			if (i != gui_CurList->selectedItem) {
+				Display->drawString(gui_CurList->x + 1, ry + i * Display->getFont()->FontHeight,
+						gui_CurList->items[i].text, RGBColor::WHITE, RGBColor::BLACK, 1, false);
+			} else {
+				Display->drawString(gui_CurList->x + 1, ry + i * Display->getFont()->FontHeight,
+						gui_CurList->items[i].getScrollOffset(), RGBColor::BLACK, RGBColor::WHITE, 1, false);
 			}
 		}
 	} else {
-		if (gui_CurList->ItemsCount - 1 - gui_CurList->selectedItem < maxC / 2) {
-			for (i = gui_CurList->ItemsCount - maxC; i < gui_CurList->ItemsCount; i++) {
-				if (i != gui_CurList->selectedItem)
-					gui_lable(gui_CurList->items[i].text, gui_CurList->x + 1,
-							ry + (i - gui_CurList->ItemsCount + maxC) * GUI_DefFont.FontHeight, gui_CurList->w - 3,
-							GUI_DefFont.FontHeight, 0, 0);
-				else
-					gui_lable(gui_CurList->items[i].getScrollOffset(), gui_CurList->x + 1,
-							ry + (i - gui_CurList->ItemsCount + maxC) * GUI_DefFont.FontHeight, gui_CurList->w - 3,
-							GUI_DefFont.FontHeight, 1, 0);
+		if (gui_CurList->ItemsCount - 1 - gui_CurList->selectedItem
+				< maxC / 2) {
+			for (i = gui_CurList->ItemsCount - maxC;
+					i < gui_CurList->ItemsCount; i++) {
+				if (i != gui_CurList->selectedItem) {
+					Display->drawString(gui_CurList->x + 1,
+							ry + (i - gui_CurList->ItemsCount + maxC) * Display->getFont()->FontHeight,
+							gui_CurList->items[i].text, RGBColor::WHITE, RGBColor::BLACK, 1, false);
+				} else {
+					Display->drawString(gui_CurList->x + 1,
+							ry + (i - gui_CurList->ItemsCount + maxC) * Display->getFont()->FontHeight,
+							gui_CurList->items[i].getScrollOffset(), RGBColor::BLACK, RGBColor::WHITE, 1, false);
+				}
 			}
 		} else if (gui_CurList->selectedItem < maxC / 2) {
 			for (i = 0; i < maxC; i++) {
 				if (i != gui_CurList->selectedItem)
-					gui_lable(gui_CurList->items[i].text, gui_CurList->x + 1, ry + i * GUI_DefFont.FontHeight,
-							gui_CurList->w - 3, GUI_DefFont.FontHeight, 0, 0);
+					Display->drawString(gui_CurList->x + 1, ry + i * Display->getFont()->FontHeight,
+							gui_CurList->items[i].text, RGBColor::WHITE, RGBColor::BLACK, 1, false);
 				else
-					gui_lable(gui_CurList->items[i].getScrollOffset(), gui_CurList->x + 1,
-							ry + i * GUI_DefFont.FontHeight, gui_CurList->w - 3, GUI_DefFont.FontHeight, 1, 0);
+					Display->drawString(gui_CurList->x + 1, ry + i * Display->getFont()->FontHeight,
+							gui_CurList->items[i].getScrollOffset(), RGBColor::BLACK, RGBColor::WHITE, 1, false);
 			}
 		} else {
-			for (i = gui_CurList->selectedItem - maxC / 2; i < gui_CurList->selectedItem - maxC / 2 + maxC; i++) {
-				if (i != gui_CurList->selectedItem)
-					gui_lable(gui_CurList->items[i].text, gui_CurList->x + 1,
-							ry + (i - gui_CurList->selectedItem + maxC / 2) * GUI_DefFont.FontHeight,
-							gui_CurList->w - 3, GUI_DefFont.FontHeight, 0, 0);
-				else
-					gui_lable(gui_CurList->items[i].getScrollOffset(), gui_CurList->x + 1,
-							ry + (i - gui_CurList->selectedItem + maxC / 2) * GUI_DefFont.FontHeight,
-							gui_CurList->w - 3, GUI_DefFont.FontHeight, 1, 0);
+			for (i = gui_CurList->selectedItem - maxC / 2;
+					i < gui_CurList->selectedItem - maxC / 2 + maxC; i++) {
+				if (i != gui_CurList->selectedItem) {
+				Display->drawString(gui_CurList->x + 1,
+						ry + (i - gui_CurList->selectedItem + maxC / 2) * Display->getFont()->FontHeight,
+						gui_CurList->items[i].text, RGBColor::WHITE, RGBColor::BLACK, 1, false);
+				} else {
+					Display->drawString(gui_CurList->x + 1,
+						ry + (i - gui_CurList->selectedItem + maxC / 2) * Display->getFont()->FontHeight,
+						gui_CurList->items[i].getScrollOffset(), RGBColor::BLACK, RGBColor::WHITE, 1, false);
+				}
 			}
 		}
 	}
 	uint8_t sli_h = gui_CurList->h / gui_CurList->ItemsCount;
 	if (sli_h < 10)
 		sli_h = 10;
-	uint8_t yy = ((gui_CurList->h) * gui_CurList->selectedItem) / gui_CurList->ItemsCount;
-	SSD1306_DrawLine(gui_CurList->x, ry - 2, gui_CurList->x + gui_CurList->w, ry - 2, 1);
-	SSD1306_DrawLine(gui_CurList->x + gui_CurList->w - 1, gui_CurList->y + yy, gui_CurList->x + gui_CurList->w - 1,
-			gui_CurList->y + yy + sli_h, 1);
+	uint8_t yy = ((gui_CurList->h) * gui_CurList->selectedItem)
+			/ gui_CurList->ItemsCount;
+	Display->drawHorizontalLine(gui_CurList->x, ry - 2,
+			gui_CurList->x + gui_CurList->w, RGBColor::WHITE);
+//SSD1306_DrawLine(gui_CurList->x + gui_CurList->w - 1, gui_CurList->y + yy, gui_CurList->x + gui_CurList->w - 1,
+//	gui_CurList->y + yy + sli_h, 1);
 	return 0;
 }
 
-void gui_upd_display() {
-	SSD1306_UpdateScreen();
-	SSD1306_Fill (SSD1306_COLOR_BLACK);
-}
-void gui_draw(void) {
-	gui_draw_list();
-	gui_upd_display();
-}

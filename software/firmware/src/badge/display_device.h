@@ -2,6 +2,7 @@
 #define DCDARKNET_DISPLAY_DEVICE_H
 
 #include "error_type.h"
+#include "fonts.h"
 
 /*
  * @Author cmdc0de
@@ -376,7 +377,7 @@ public:
 public:
 	DisplayST7735(uint16_t w, uint16_t h, ROTATION r);
 	virtual ErrorType init();
-	ErrorType init(uint8_t pf, uint8_t mac);
+	ErrorType init(uint8_t pf, uint8_t mac, const FontDef_t *defaultFont);
 	virtual ~DisplayST7735();
 	bool drawPixel(uint16_t x0, uint16_t y0, const RGBColor &color);
 	void setMemoryAccessControl(uint8_t macctl);
@@ -388,15 +389,20 @@ public:
 	void drawVerticalLine(int16_t x, int16_t y, int16_t h, const RGBColor &color);
 	void drawHorizontalLine(int16_t x, int16_t y, int16_t w);
 	void drawHorizontalLine(int16_t x, int16_t y, int16_t w, const RGBColor &color);
-	uint32_t drawString(uint16_t x, uint16_t y, const char *pt);
-	uint32_t drawString(uint16_t x, uint16_t y, const char *pt, const RGBColor &textColor);
-	uint32_t drawString(uint16_t x, uint16_t y, const char *pt, const RGBColor &textColor, const RGBColor &bgColor, uint8_t size);
+	//xPos and yPos are the pixel offsets, for each character drawn xPos is increased by the width of the current font
+	//
+	uint32_t drawString(uint16_t xPos, uint16_t yPos, const char *pt);
+	uint32_t drawString(uint16_t xPos, uint16_t yPos, const char *pt, const RGBColor &textColor);
+	uint32_t drawString(uint16_t xPos, uint16_t yPos, const char *pt, const RGBColor &textColor, const RGBColor &bgColor, uint8_t size, bool lineWrap);
+	//x and y are pixel locations
 	void drawCharAtPosition(int16_t x, int16_t y, char c, const RGBColor &textColor, const RGBColor &bgColor, uint8_t size);
 	void setTextColor(const RGBColor &t);
 	void setBackgroundColor(const RGBColor &t);
 	const RGBColor &getTextColor();
 	const RGBColor &getBackgroundColor();
 	void setBackLightOn(bool on);
+	void setFont(const FontDef_t *font);
+	const FontDef_t *getFont() {return CurrentFont;}
 protected:
 	bool writeCmd(uint8_t c);
 	bool writeNData(const uint8_t *data, int nbytes);
@@ -404,11 +410,13 @@ protected:
 	void setAddrWindow(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1);
 	bool writeN(char dc, const uint8_t *data, int nbytes);
 	PackedColor makeColor(const RGBColor &c);
+	const uint8_t *getFontData();
 private:
 	uint8_t 	PixelFormat;
 	uint8_t  	MemoryAccessControl;
 	RGBColor	CurrentTextColor;
 	RGBColor	CurrentBGColor;
+	const FontDef_t   *CurrentFont;
 };
 
 #endif

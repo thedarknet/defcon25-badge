@@ -14,8 +14,8 @@ class GUI_TickerData {
 public:
 	GUI_TickerData(const char * txt, uint8_t X, uint8_t Y, uint8_t W, uint8_t H);
 	const char *text;
-	uint8_t x, y, w, h;
-	RGBColor bg, border;
+	uint8_t x, y, w, h, BorderSize, FontScalar;
+	RGBColor bg, TextColor;
 	uint32_t startTick;
 };
 
@@ -77,48 +77,10 @@ class GUI {
 public:
 	GUI(DisplayST7735 *display);
 	bool init();
-	void lable(const char* txt, uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t borderSize, const RGBColor &bg,
-			const RGBColor &txtColor, uint8_t textSize, const RGBColor &borderColor);
-
-	/**
-	 * @brief  Draw multiline text with params
-	 * @param  txt: Text
-	 * @param  x: X location of left corner
-	 * @param  y: Y location of up corner
-	 * @param  w: Width
-	 * @param  h: Height
-	 * @param  bg: lable's background color. Text color is !bg
-	 * @param  border: width of border. border's color is !bg
-	 * @retval None
-	 */
-	void gui_lable_multiline(const char* txt, uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t bg, uint8_t border);
-
-	/**
-	 * @brief  Draw running text line using GUI_TickerData structure
-	 * @param  txt: Text
-	 * @param  td: GUI_TickerData
-	 * @retval None
-	 */
-	void gui_ticker(GUI_TickerData *dt);
-
-	/**
-	 * @brief  Ser current GUI_List element
-	 * @param  ld: GUI_ListItemData
-	 * @retval None
-	 */
-	void gui_set_curList(GUI_ListData* list);
-	/**
-	 * @brief  draw current GUI_List
-	 * @note   DO NOT USE IT BY YOURSELF! DO NOT FORGET gui_set_curList(data) first!
-	 * @param  ld: GUI_ListItemData
-	 * @retval None
-	 */
-	uint8_t gui_draw_list(void);
-
-	void gui_draw(void);
+	void drawTicker(GUI_TickerData *dt);
+	uint8_t drawList(GUI_ListData* list);
 
 private:
-	GUI_ListData *gui_CurList;
 	DisplayST7735 *Display;
 };
 

@@ -391,11 +391,11 @@ void DisplayST7735::drawCharAtPosition(int16_t x, int16_t y, char c,
 			((y + 8 * size - 1) < 0))   // Clip top
 		return;
 
-	for (i = 0; i < 6; i++) {
-		if (i == 5)
+	for (i = 0; i < CurrentFont->FontWidth; i++) {
+		if (i == CurrentFont->FontWidth-1)
 			line = 0x0;
 		else
-			line = getFontData()[(c * 5) + i];
+			line = getFontData()[(c * CurrentFont->CharBytes) + i];
 		for (j = 0; j < 8; j++) {
 			if (line & 0x1) {
 				if (size == 1) // default size
@@ -444,7 +444,7 @@ uint32_t DisplayST7735::drawString(uint16_t x, uint16_t y, const char *pt,
 uint32_t DisplayST7735::drawString(uint16_t xPos, uint16_t yPos, const char *pt,
 		const RGBColor &textColor, const RGBColor &backGroundColor,
 		uint8_t size, bool lineWrap) {
-
+#if 1
 	uint16_t currentX = xPos;
 	uint16_t currentY = yPos;
 	const char *orig = pt;
@@ -454,21 +454,40 @@ uint32_t DisplayST7735::drawString(uint16_t xPos, uint16_t yPos, const char *pt,
 			return pt - orig;
 		} else if (currentX>getWidth() && lineWrap) {
 			currentX = 0;
-			currentY+=CurrentFont->FontHeight;
+			currentY+=CurrentFont->FontHeight*size;
 			drawCharAtPosition(currentX, currentY, *pt, textColor,
 									backGroundColor, size);
 			currentX+=CurrentFont->FontWidth;
 		} else if (*pt == '\n' || *pt == '\r') {
-				currentY+=CurrentFont->FontHeight;
+				currentY+=CurrentFont->FontHeight*size;
 				currentX = 0;
 		} else {
 			drawCharAtPosition(currentX, currentY, *pt, textColor,
 					backGroundColor, size);
-			currentX+=CurrentFont->FontWidth;
+			currentX+=CurrentFont->FontWidth*size;
 		}
 		pt++;
 	}
 	return (pt - orig);  // number of characters printed
+#else
+	uint32_t count = 0;
+	//TODO clean this up
+	if (yPos > 15) //15*10 = 150
+		return 0;
+
+	uint16_t w = 6 * size;
+	uint16_t h = 10 * size;
+
+	while (*pt) {
+		drawCharAtPosition(xPos * w, yPos * h, *pt, textColor, backGroundColor, size);
+		pt++;
+		xPos = xPos + 1;
+		if (xPos > 20)
+			return count;
+		count++;
+	}
+	return count;  // number of characters printed
+#endif
 }
 
 void DisplayST7735::drawVerticalLine(int16_t x, int16_t y, int16_t h) {

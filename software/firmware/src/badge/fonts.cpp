@@ -550,7 +550,7 @@ static const uint8_t Font6x10[] = {
 FontDef_t Font_6x10 = {
 	6,
 	10,
-	10,
+	5,
 	Font6x10
 
 };

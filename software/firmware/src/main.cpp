@@ -103,7 +103,7 @@ int main(void) {
 	MX_TIM16_Init();
 	MX_TSC_Init();
 	MX_USB_DEVICE_Init();
-	MX_SPI3_Init();
+//	MX_SPI3_Init();
 
 	/* USER CODE BEGIN 2 */
 	DCDarkNet.init();

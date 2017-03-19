@@ -27,11 +27,11 @@ void DCDarkNetApp::run() {
 	} else if (HAL_GetTick()-time>3000) {
 		Display.fillScreen(RGBColor::BLACK);
 		Display.fillScreen(RGBColor(255, 0, 0));
-		Display.drawString(0, 0, "Hello", RGBColor::WHITE, RGBColor::BLACK, 3, false);
+		Display.drawString(0, 0, "Hello", RGBColor::WHITE, RGBColor::BLACK, 2, false);
 	} else if (bStart == true) {
 		bStart = false;
 		Display.fillScreen(RGBColor(0, 0, 255));
-		Display.drawString(0, 0, "Hello", RGBColor::WHITE, RGBColor::BLACK, 3, false);
+		Display.drawString(0, 0, "Hello", RGBColor::WHITE, RGBColor::BLACK, 1, false);
 	}
 	///
 }

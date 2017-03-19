@@ -80,7 +80,7 @@ uint8_t GUI::drawList(GUI_ListData* gui_CurList) {
 	if (gui_CurList->header != 0) {
 		Display->drawString(gui_CurList->x + 1, gui_CurList->y, gui_CurList->header, RGBColor::WHITE, RGBColor::BLACK,
 				1, false);
-		ry += GUI_DefFont.FontHeight;
+		ry += Display->getFont()->FontHeight;
 	}
 
 	uint8_t maxC = ((gui_CurList->h - 3) / Display->getFont()->FontHeight)

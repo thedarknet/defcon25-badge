@@ -5,7 +5,6 @@
 #include "display_device.h"
 #include "fonts.h"
 
-#define GUI_DefFont Font_7x10
 
 //running line
 #define GUI_TickerSpeed 500

@@ -8,34 +8,34 @@
 </settings>
 <grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
-<layer number="1" name="Top" color="4" fill="1" visible="yes" active="no"/>
-<layer number="2" name="Route2" color="1" fill="3" visible="yes" active="no"/>
-<layer number="3" name="Route3" color="4" fill="3" visible="yes" active="no"/>
-<layer number="4" name="Route4" color="1" fill="4" visible="yes" active="no"/>
-<layer number="5" name="Route5" color="4" fill="4" visible="yes" active="no"/>
-<layer number="6" name="Route6" color="1" fill="8" visible="yes" active="no"/>
-<layer number="7" name="Route7" color="4" fill="8" visible="yes" active="no"/>
-<layer number="8" name="Route8" color="1" fill="2" visible="yes" active="no"/>
-<layer number="9" name="Route9" color="4" fill="2" visible="yes" active="no"/>
-<layer number="10" name="Route10" color="1" fill="7" visible="yes" active="no"/>
-<layer number="11" name="Route11" color="4" fill="7" visible="yes" active="no"/>
-<layer number="12" name="Route12" color="1" fill="5" visible="yes" active="no"/>
-<layer number="13" name="Route13" color="4" fill="5" visible="yes" active="no"/>
-<layer number="14" name="Route14" color="1" fill="6" visible="yes" active="no"/>
-<layer number="15" name="Route15" color="4" fill="6" visible="yes" active="no"/>
-<layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="no"/>
-<layer number="17" name="Pads" color="2" fill="1" visible="yes" active="no"/>
-<layer number="18" name="Vias" color="2" fill="1" visible="yes" active="no"/>
-<layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="no"/>
-<layer number="20" name="Dimension" color="15" fill="1" visible="yes" active="no"/>
-<layer number="21" name="tPlace" color="7" fill="1" visible="yes" active="no"/>
-<layer number="22" name="bPlace" color="7" fill="1" visible="yes" active="no"/>
-<layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="no"/>
-<layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="no"/>
-<layer number="25" name="tNames" color="7" fill="1" visible="yes" active="no"/>
-<layer number="26" name="bNames" color="7" fill="1" visible="yes" active="no"/>
-<layer number="27" name="tValues" color="7" fill="1" visible="yes" active="no"/>
-<layer number="28" name="bValues" color="7" fill="1" visible="yes" active="no"/>
+<layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
+<layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
+<layer number="3" name="Route3" color="4" fill="3" visible="no" active="no"/>
+<layer number="4" name="Route4" color="1" fill="4" visible="no" active="no"/>
+<layer number="5" name="Route5" color="4" fill="4" visible="no" active="no"/>
+<layer number="6" name="Route6" color="1" fill="8" visible="no" active="no"/>
+<layer number="7" name="Route7" color="4" fill="8" visible="no" active="no"/>
+<layer number="8" name="Route8" color="1" fill="2" visible="no" active="no"/>
+<layer number="9" name="Route9" color="4" fill="2" visible="no" active="no"/>
+<layer number="10" name="Route10" color="1" fill="7" visible="no" active="no"/>
+<layer number="11" name="Route11" color="4" fill="7" visible="no" active="no"/>
+<layer number="12" name="Route12" color="1" fill="5" visible="no" active="no"/>
+<layer number="13" name="Route13" color="4" fill="5" visible="no" active="no"/>
+<layer number="14" name="Route14" color="1" fill="6" visible="no" active="no"/>
+<layer number="15" name="Route15" color="4" fill="6" visible="no" active="no"/>
+<layer number="16" name="Bottom" color="1" fill="1" visible="no" active="no"/>
+<layer number="17" name="Pads" color="2" fill="1" visible="no" active="no"/>
+<layer number="18" name="Vias" color="2" fill="1" visible="no" active="no"/>
+<layer number="19" name="Unrouted" color="6" fill="1" visible="no" active="no"/>
+<layer number="20" name="Dimension" color="15" fill="1" visible="no" active="no"/>
+<layer number="21" name="tPlace" color="7" fill="1" visible="no" active="no"/>
+<layer number="22" name="bPlace" color="7" fill="1" visible="no" active="no"/>
+<layer number="23" name="tOrigins" color="15" fill="1" visible="no" active="no"/>
+<layer number="24" name="bOrigins" color="15" fill="1" visible="no" active="no"/>
+<layer number="25" name="tNames" color="7" fill="1" visible="no" active="no"/>
+<layer number="26" name="bNames" color="7" fill="1" visible="no" active="no"/>
+<layer number="27" name="tValues" color="7" fill="1" visible="no" active="no"/>
+<layer number="28" name="bValues" color="7" fill="1" visible="no" active="no"/>
 <layer number="29" name="tStop" color="7" fill="3" visible="no" active="no"/>
 <layer number="30" name="bStop" color="7" fill="6" visible="no" active="no"/>
 <layer number="31" name="tCream" color="7" fill="4" visible="no" active="no"/>
@@ -44,8 +44,8 @@
 <layer number="34" name="bFinish" color="6" fill="6" visible="no" active="no"/>
 <layer number="35" name="tGlue" color="7" fill="4" visible="no" active="no"/>
 <layer number="36" name="bGlue" color="7" fill="5" visible="no" active="no"/>
-<layer number="37" name="tTest" color="7" fill="1" visible="yes" active="no"/>
-<layer number="38" name="bTest" color="7" fill="1" visible="yes" active="no"/>
+<layer number="37" name="tTest" color="7" fill="1" visible="no" active="no"/>
+<layer number="38" name="bTest" color="7" fill="1" visible="no" active="no"/>
 <layer number="39" name="tKeepout" color="4" fill="11" visible="no" active="no"/>
 <layer number="40" name="bKeepout" color="1" fill="11" visible="no" active="no"/>
 <layer number="41" name="tRestrict" color="4" fill="10" visible="no" active="no"/>
@@ -53,19 +53,19 @@
 <layer number="43" name="vRestrict" color="2" fill="10" visible="no" active="no"/>
 <layer number="44" name="Drills" color="7" fill="1" visible="no" active="no"/>
 <layer number="45" name="Holes" color="7" fill="1" visible="no" active="no"/>
-<layer number="46" name="Milling" color="3" fill="1" visible="yes" active="no"/>
-<layer number="47" name="Measures" color="7" fill="1" visible="yes" active="no"/>
-<layer number="48" name="Document" color="7" fill="1" visible="yes" active="no"/>
-<layer number="49" name="Reference" color="7" fill="1" visible="yes" active="no"/>
-<layer number="50" name="dxf" color="7" fill="1" visible="yes" active="no"/>
-<layer number="51" name="tDocu" color="7" fill="1" visible="yes" active="no"/>
-<layer number="52" name="bDocu" color="7" fill="1" visible="yes" active="no"/>
-<layer number="53" name="tGND_GNDA" color="7" fill="9" visible="yes" active="no"/>
-<layer number="54" name="bGND_GNDA" color="1" fill="9" visible="yes" active="no"/>
-<layer number="56" name="wert" color="7" fill="1" visible="yes" active="no"/>
-<layer number="57" name="tCAD" color="7" fill="1" visible="yes" active="no"/>
-<layer number="59" name="tCarbon" color="7" fill="1" visible="yes" active="no"/>
-<layer number="60" name="bCarbon" color="7" fill="1" visible="yes" active="no"/>
+<layer number="46" name="Milling" color="3" fill="1" visible="no" active="no"/>
+<layer number="47" name="Measures" color="7" fill="1" visible="no" active="no"/>
+<layer number="48" name="Document" color="7" fill="1" visible="no" active="no"/>
+<layer number="49" name="Reference" color="7" fill="1" visible="no" active="no"/>
+<layer number="50" name="dxf" color="7" fill="1" visible="no" active="no"/>
+<layer number="51" name="tDocu" color="7" fill="1" visible="no" active="no"/>
+<layer number="52" name="bDocu" color="7" fill="1" visible="no" active="no"/>
+<layer number="53" name="tGND_GNDA" color="7" fill="9" visible="no" active="no"/>
+<layer number="54" name="bGND_GNDA" color="1" fill="9" visible="no" active="no"/>
+<layer number="56" name="wert" color="7" fill="1" visible="no" active="no"/>
+<layer number="57" name="tCAD" color="7" fill="1" visible="no" active="no"/>
+<layer number="59" name="tCarbon" color="7" fill="1" visible="no" active="no"/>
+<layer number="60" name="bCarbon" color="7" fill="1" visible="no" active="no"/>
 <layer number="90" name="Modules" color="5" fill="1" visible="yes" active="yes"/>
 <layer number="91" name="Nets" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="92" name="Busses" color="1" fill="1" visible="yes" active="yes"/>
@@ -7482,6 +7482,21 @@ chip</description>
 <wire x1="0.5" y1="-10.55" x2="-16" y2="-10.55" width="0.127" layer="48"/>
 <wire x1="-16" y1="-10.55" x2="-16" y2="15.97" width="0.127" layer="48"/>
 </package>
+<package name="IR-MODULE_FLAT">
+<pad name="1" x="-2.54" y="0" drill="0.8128" diameter="1.8796" rot="R180"/>
+<pad name="2" x="0" y="0" drill="0.8128" diameter="1.8796" rot="R270"/>
+<pad name="3" x="2.54" y="0" drill="0.8128" diameter="1.8796" rot="R180"/>
+<text x="-3.175" y="-1.905" size="0.4064" layer="25" ratio="10" rot="R180">&gt;NAME</text>
+<text x="-3.175" y="1.905" size="0.4064" layer="27" ratio="10" rot="R180">&gt;VALUE</text>
+<wire x1="3" y1="1.3" x2="-3" y2="1.3" width="0.127" layer="21"/>
+<wire x1="-3" y1="1.3" x2="-3" y2="2.95" width="0.127" layer="21"/>
+<wire x1="-3" y1="2.95" x2="-3" y2="8.25" width="0.127" layer="21"/>
+<wire x1="3" y1="1.3" x2="3" y2="2.95" width="0.127" layer="21"/>
+<wire x1="3" y1="2.95" x2="3" y2="8.25" width="0.127" layer="21"/>
+<wire x1="-3" y1="8.25" x2="3" y2="8.25" width="0.127" layer="21"/>
+<wire x1="-3" y1="2.95" x2="3" y2="2.95" width="0.127" layer="21"/>
+<circle x="0" y="5.6" radius="2.483946875" width="0.127" layer="21"/>
+</package>
 <package name="IR-MODULE">
 <wire x1="0" y1="-3.175" x2="-1.905" y2="-1.905" width="0.2032" layer="21" curve="-66"/>
 <wire x1="1.905" y1="-1.905" x2="0" y2="-3.175" width="0.2032" layer="21" curve="-66"/>
@@ -10821,7 +10836,17 @@ Basic Inductor/Choke - 0603 and 1206. Footprints are not proven and vary greatly
 <gate name="G$1" symbol="SOP22" x="-7.62" y="0"/>
 </gates>
 <devices>
-<device name="" package="IR-MODULE">
+<device name="VERTICAL" package="IR-MODULE">
+<connects>
+<connect gate="G$1" pin="GND" pad="3"/>
+<connect gate="G$1" pin="OUT" pad="1"/>
+<connect gate="G$1" pin="VS" pad="2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="FLAT" package="IR-MODULE_FLAT">
 <connects>
 <connect gate="G$1" pin="GND" pad="3"/>
 <connect gate="G$1" pin="OUT" pad="1"/>
@@ -11354,18 +11379,18 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <part name="LED6" library="SYNShop" deviceset="LED" device="REVERSEMOUNT"/>
 <part name="LED7" library="SYNShop" deviceset="LED" device="REVERSEMOUNT"/>
 <part name="LED8" library="SYNShop" deviceset="LED" device="REVERSEMOUNT"/>
-<part name="R1" library="darknet_parts_library" deviceset="RESISTOR" device="1206"/>
-<part name="R2" library="darknet_parts_library" deviceset="RESISTOR" device="1206"/>
-<part name="R3" library="darknet_parts_library" deviceset="RESISTOR" device="1206"/>
-<part name="R4" library="darknet_parts_library" deviceset="RESISTOR" device="1206"/>
-<part name="R5" library="darknet_parts_library" deviceset="RESISTOR" device="1206"/>
-<part name="R6" library="darknet_parts_library" deviceset="RESISTOR" device="1206"/>
-<part name="R7" library="darknet_parts_library" deviceset="RESISTOR" device="1206"/>
-<part name="R8" library="darknet_parts_library" deviceset="RESISTOR" device="1206"/>
+<part name="R1" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="47"/>
+<part name="R2" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="47"/>
+<part name="R3" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="47"/>
+<part name="R4" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="47"/>
+<part name="R5" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="47"/>
+<part name="R6" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="47"/>
+<part name="R7" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="47"/>
+<part name="R8" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="47"/>
 <part name="LED9" library="SYNShop" deviceset="LED" device="REVERSEMOUNT"/>
 <part name="LED10" library="SYNShop" deviceset="LED" device="REVERSEMOUNT"/>
-<part name="R9" library="darknet_parts_library" deviceset="RESISTOR" device="1206"/>
-<part name="R10" library="darknet_parts_library" deviceset="RESISTOR" device="1206"/>
+<part name="R9" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="47"/>
+<part name="R10" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="47"/>
 <part name="TOUCHHOOK" library="darknet_parts_library" deviceset="CAP_TOUCH" device="HOOK"/>
 <part name="U$15" library="SYNShop" deviceset="RFM69HCW" device="RFN69HCWSMD"/>
 <part name="R11" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="1K"/>
@@ -11409,16 +11434,16 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <part name="GND23" library="SYNShop" deviceset="GND" device=""/>
 <part name="R23" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES"/>
 <part name="LED11" library="SYNShop" deviceset="LED" device="0603"/>
-<part name="C17" library="darknet_parts_library" deviceset="C-US" device="C0603"/>
+<part name="C17" library="darknet_parts_library" deviceset="C-US" device="C0603" value="1uF"/>
 <part name="GND24" library="SYNShop" deviceset="GND" device=""/>
 <part name="5V" library="SYNShop" deviceset="VCC0" device="" value="5V"/>
 <part name="C18" library="darknet_parts_library" deviceset="C-US" device="C0603"/>
 <part name="GND25" library="SYNShop" deviceset="GND" device=""/>
 <part name="X1" library="SYNShop" deviceset="USB" device="-MICROB" value="10118193-0001LF"/>
 <part name="U$16" library="SYNShop" deviceset="VCC0" device="" value="5V"/>
-<part name="U$17" library="darknet_parts_library" deviceset="SOP22" device=""/>
+<part name="U$17" library="darknet_parts_library" deviceset="SOP22" device="FLAT"/>
 <part name="LED12" library="SYNShop" deviceset="LED" device="5MM"/>
-<part name="R24" library="darknet_parts_library" deviceset="R-US_" device="0207/7"/>
+<part name="R24" library="darknet_parts_library" deviceset="R-US_" device="0207/7" value="56"/>
 <part name="GND27" library="SYNShop" deviceset="GND" device=""/>
 <part name="U$18" library="SYNShop" deviceset="VCC" device=""/>
 <part name="CN1" library="adafruit" deviceset="JST_2PIN" device="-THM-RA"/>
@@ -11440,7 +11465,7 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <part name="C21" library="darknet_parts_library" deviceset="C-US" device="C0603" value="1uF"/>
 <part name="U$13" library="SYNShop" deviceset="VCC" device=""/>
 <part name="LED13" library="SYNShop" deviceset="LED" device="0603"/>
-<part name="R28" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES"/>
+<part name="R28" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="56"/>
 <part name="STLINK" library="darknet_parts_library" deviceset="STLINK-V2-CONNECTOR" device=""/>
 <part name="SAMPLE_CAP_G3" library="darknet_parts_library" deviceset="C-US" device="C0603" value="0.047uF"/>
 <part name="SAMPLE_CAP_G1" library="darknet_parts_library" deviceset="C-US" device="C0603" value="0.047uF"/>

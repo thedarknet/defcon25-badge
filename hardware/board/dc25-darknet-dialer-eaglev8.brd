@@ -3072,22 +3072,20 @@ type 0207, grid 7.5 mm</description>
 <wire x1="0.5" y1="-10.55" x2="-16" y2="-10.55" width="0.127" layer="48"/>
 <wire x1="-16" y1="-10.55" x2="-16" y2="15.97" width="0.127" layer="48"/>
 </package>
-<package name="IR-MODULE">
-<wire x1="0" y1="-3.175" x2="-1.905" y2="-1.905" width="0.2032" layer="21" curve="-66"/>
-<wire x1="1.905" y1="-1.905" x2="0" y2="-3.175" width="0.2032" layer="21" curve="-66"/>
+<package name="IR-MODULE_FLAT">
 <pad name="1" x="-2.54" y="0" drill="0.8128" diameter="1.8796" rot="R180"/>
 <pad name="2" x="0" y="0" drill="0.8128" diameter="1.8796" rot="R270"/>
 <pad name="3" x="2.54" y="0" drill="0.8128" diameter="1.8796" rot="R180"/>
 <text x="-3.175" y="-1.905" size="0.4064" layer="25" ratio="10" rot="R180">&gt;NAME</text>
 <text x="-3.175" y="1.905" size="0.4064" layer="27" ratio="10" rot="R180">&gt;VALUE</text>
-<wire x1="2.8575" y1="1.5875" x2="-2.8575" y2="1.5875" width="0.254" layer="21"/>
-<wire x1="2.8575" y1="-1.905" x2="3.175" y2="0" width="0.254" layer="21"/>
-<wire x1="3.175" y1="0" x2="2.8575" y2="1.5875" width="0.254" layer="21"/>
-<wire x1="-2.8575" y1="-1.905" x2="-3.175" y2="0" width="0.254" layer="21"/>
-<wire x1="-3.175" y1="0" x2="-2.8575" y2="1.5875" width="0.254" layer="21"/>
-<wire x1="1.905" y1="-1.905" x2="2.8575" y2="-1.905" width="0.254" layer="21"/>
-<wire x1="-1.905" y1="-1.905" x2="-2.8575" y2="-1.905" width="0.254" layer="21"/>
-<wire x1="1.905" y1="-1.905" x2="-1.905" y2="-1.905" width="0.254" layer="21"/>
+<wire x1="3" y1="1.3" x2="-3" y2="1.3" width="0.127" layer="21"/>
+<wire x1="-3" y1="1.3" x2="-3" y2="2.95" width="0.127" layer="21"/>
+<wire x1="-3" y1="2.95" x2="-3" y2="8.25" width="0.127" layer="21"/>
+<wire x1="3" y1="1.3" x2="3" y2="2.95" width="0.127" layer="21"/>
+<wire x1="3" y1="2.95" x2="3" y2="8.25" width="0.127" layer="21"/>
+<wire x1="-3" y1="8.25" x2="3" y2="8.25" width="0.127" layer="21"/>
+<wire x1="-3" y1="2.95" x2="3" y2="2.95" width="0.127" layer="21"/>
+<circle x="0" y="5.6" radius="2.483946875" width="0.127" layer="21"/>
 </package>
 <package name="KRUX_LOGO">
 <polygon width="0" layer="122">
@@ -3953,7 +3951,7 @@ Please make sure your boards conform to these design rules.</description>
 </pass>
 </autorouter>
 <elements>
-<element name="U$1" library="SYNShop" package="DN_LOGO" value="DN_LOGO" x="72.10125" y="49.709375"/>
+<element name="U$1" library="SYNShop" package="DN_LOGO" value="DN_LOGO" x="81.15" y="48.756875"/>
 <element name="TOUCH1" library="darknet_parts_library" package="CAP_TOUCH_PAD_1" value="CAP_TOUCH1" x="78.56981875" y="78.38948125"/>
 <element name="TOUCH2" library="darknet_parts_library" package="CAP_TOUCH_PAD_2" value="CAP_TOUCH2" x="61.05398125" y="88.643459375"/>
 <element name="TOUCH3" library="darknet_parts_library" package="CAP_TOUCH_PAD_3" value="CAP_TOUCH3" x="40.7924" y="88.643459375"/>
@@ -3972,25 +3970,25 @@ Please make sure your boards conform to these design rules.</description>
 <element name="LED6" library="SYNShop" package="GULLWING_LED" value="" x="10.414" y="39.116" rot="MR180"/>
 <element name="LED7" library="SYNShop" package="GULLWING_LED" value="" x="20.828" y="21.844" rot="MR180"/>
 <element name="LED8" library="SYNShop" package="GULLWING_LED" value="" x="38.608" y="11.684" rot="MR180"/>
-<element name="R1" library="darknet_parts_library" package="1206" value="" x="81.28" y="68.42125" rot="MR180"/>
-<element name="R2" library="darknet_parts_library" package="1206" value="" x="67.389375" y="80.248125" rot="MR0"/>
-<element name="R3" library="darknet_parts_library" package="1206" value="" x="47.069375" y="80.16875" rot="MR0"/>
-<element name="R4" library="darknet_parts_library" package="1206" value="" x="29.21" y="68.58" rot="MR0"/>
-<element name="R5" library="darknet_parts_library" package="1206" value="" x="29.21" y="61.595" rot="MR0"/>
-<element name="R6" library="darknet_parts_library" package="1206" value="" x="27.94" y="40.64" rot="MR0"/>
-<element name="R7" library="darknet_parts_library" package="1206" value="" x="27.94" y="33.02" rot="MR0"/>
-<element name="R8" library="darknet_parts_library" package="1206" value="" x="46.99" y="21.59" rot="MR0"/>
+<element name="R1" library="darknet_parts_library" package="1206" value="47" x="81.28" y="68.42125" rot="MR180"/>
+<element name="R2" library="darknet_parts_library" package="1206" value="47" x="67.389375" y="80.248125" rot="MR0"/>
+<element name="R3" library="darknet_parts_library" package="1206" value="47" x="47.069375" y="80.16875" rot="MR0"/>
+<element name="R4" library="darknet_parts_library" package="1206" value="47" x="29.21" y="68.58" rot="MR0"/>
+<element name="R5" library="darknet_parts_library" package="1206" value="47" x="30.1625" y="59.134375" rot="MR0"/>
+<element name="R6" library="darknet_parts_library" package="1206" value="47" x="27.94" y="40.64" rot="MR0"/>
+<element name="R7" library="darknet_parts_library" package="1206" value="47" x="27.94" y="33.02" rot="MR0"/>
+<element name="R8" library="darknet_parts_library" package="1206" value="47" x="46.99" y="21.59" rot="MR0"/>
 <element name="LED9" library="SYNShop" package="GULLWING_LED" value="" x="58.42" y="11.43" rot="MR180"/>
 <element name="LED10" library="SYNShop" package="GULLWING_LED" value="" x="75.946" y="21.59" rot="MR180"/>
-<element name="R9" library="darknet_parts_library" package="1206" value="" x="67.230625" y="21.2725" rot="MR0"/>
-<element name="R10" library="darknet_parts_library" package="1206" value="" x="75.803125" y="35.08375" rot="MR180"/>
+<element name="R9" library="darknet_parts_library" package="1206" value="47" x="67.230625" y="21.2725" rot="MR0"/>
+<element name="R10" library="darknet_parts_library" package="1206" value="47" x="75.803125" y="35.08375" rot="MR180"/>
 <element name="TOUCHHOOK" library="darknet_parts_library" package="CAP_TOUCH_PAD_HOOK" value="CAP_TOUCHHOOK" x="86.106" y="35.56"/>
 <element name="U$15" library="SYNShop" package="16PIN-PCB-SMD" value="RFM69HCWRFN69HCWSMD" x="77.205" y="55.795" rot="MR270"/>
 <element name="R11" library="darknet_parts_library" package="0603-RES" value="1K" x="76.28375" y="69.3725" rot="MR180"/>
 <element name="R12" library="darknet_parts_library" package="0603-RES" value="1K" x="61.9125" y="77.866875" rot="MR90"/>
 <element name="R13" library="darknet_parts_library" package="0603-RES" value="1K" x="39.84625" y="78.025625" rot="MR90"/>
 <element name="R14" library="darknet_parts_library" package="0603-RES" value="1K" x="24.13" y="68.58" rot="MR0"/>
-<element name="R15" library="darknet_parts_library" package="0603-RES" value="1K" x="24.13" y="60.96" rot="MR0"/>
+<element name="R15" library="darknet_parts_library" package="0603-RES" value="1K" x="24.13" y="59.134375" rot="MR0"/>
 <element name="R16" library="darknet_parts_library" package="0603-RES" value="1K" x="22.86" y="40.64" rot="MR0"/>
 <element name="R17" library="darknet_parts_library" package="0603-RES" value="1K" x="22.780625" y="33.099375" rot="MR0"/>
 <element name="R18" library="darknet_parts_library" package="0603-RES" value="1K" x="42.06875" y="24.60625" rot="MR0"/>
@@ -4010,12 +4008,12 @@ Please make sure your boards conform to these design rules.</description>
 <element name="R22" library="darknet_parts_library" package="0603-RES" value="" x="48.195625" y="72.63625" rot="MR180"/>
 <element name="R23" library="darknet_parts_library" package="0603-RES" value="" x="48.195625" y="74.68625" rot="MR0"/>
 <element name="LED11" library="SYNShop" package="LED-0603" value="" x="50.645625" y="69.73625" rot="MR180"/>
-<element name="C17" library="darknet_parts_library" package="C0603" value="" x="44.995625" y="69.78625" rot="MR270"/>
+<element name="C17" library="darknet_parts_library" package="C0603" value="1uF" x="44.995625" y="69.78625" rot="MR270"/>
 <element name="C18" library="darknet_parts_library" package="C0603" value="" x="45.045625" y="73.83625" rot="MR90"/>
 <element name="X1" library="SYNShop" package="USB-MICROB" value="10118193-0001LF" x="94.4775" y="71.12625" rot="MR245"/>
-<element name="U$17" library="darknet_parts_library" package="IR-MODULE" value="SOP22" x="28.691875" y="45.48375" rot="R180"/>
-<element name="LED12" library="SYNShop" package="LED5MM" value="" x="28.691875" y="57.5375"/>
-<element name="R24" library="darknet_parts_library" package="0207/7" value="" x="28.691875" y="51.433125" rot="R180"/>
+<element name="U$17" library="darknet_parts_library" package="IR-MODULE_FLAT" value="SOP22FLAT" x="28.691875" y="45.48375" rot="R180"/>
+<element name="LED12" library="SYNShop" package="LED5MM" value="" x="28.691875" y="61.75375"/>
+<element name="R24" library="darknet_parts_library" package="0207/7" value="56" x="28.691875" y="51.433125" rot="R180"/>
 <element name="CN1" library="adafruit" package="JST-PH-2-THM-RA" value="" x="40.218125" y="69.965" rot="MR270"/>
 <element name="SW1" library="SYNShop" package="TACTILE-2PIN-NARROW" value="RESET" x="94.855625" y="63.341875" rot="MR0"/>
 <element name="R25" library="darknet_parts_library" package="0603-RES" value="" x="88.133125" y="60.586875" rot="MR0"/>
@@ -4028,7 +4026,7 @@ Please make sure your boards conform to these design rules.</description>
 <element name="F1" library="SparkFun" package="PTC-1206" value="500uA" x="48.60375" y="66.350625" rot="MR180"/>
 <element name="C21" library="darknet_parts_library" package="C0603" value="1uF" x="44.774375" y="41.4175" rot="MR0"/>
 <element name="LED13" library="SYNShop" package="LED-0603" value="" x="40.296875" y="41.419375" rot="MR90"/>
-<element name="R28" library="darknet_parts_library" package="0603-RES" value="" x="40.29" y="43.485" rot="MR0"/>
+<element name="R28" library="darknet_parts_library" package="0603-RES" value="56" x="40.29" y="43.485" rot="MR0"/>
 <element name="STLINK" library="darknet_parts_library" package="1X04" value="STLINK-V2-CONNECTOR" x="3.306875" y="49.688125" rot="R270"/>
 <element name="SAMPLE_CAP_G3" library="darknet_parts_library" package="C0603" value="0.047uF" x="50.845625" y="60.436875" rot="MR90"/>
 <element name="SAMPLE_CAP_G1" library="darknet_parts_library" package="C0603" value="0.047uF" x="45.425" y="60.436875" rot="MR90"/>
@@ -4239,8 +4237,11 @@ Please make sure your boards conform to these design rules.</description>
 <signal name="N$5">
 <contactref element="R15" pad="2"/>
 <contactref element="TOUCH5" pad="PAD"/>
-<wire x1="19.90358125" y1="60.85078125" x2="23.17078125" y2="60.85078125" width="0.3048" layer="16"/>
-<wire x1="23.17078125" y1="60.85078125" x2="23.28" y2="60.96" width="0.3048" layer="16"/>
+<wire x1="19.90358125" y1="60.85078125" x2="20.0025" y2="60.880625" width="0.3048" layer="16"/>
+<wire x1="20.0025" y1="60.880625" x2="21.351875" y2="60.880625" width="0.3048" layer="16"/>
+<wire x1="21.351875" y1="60.880625" x2="23.12796875" y2="59.10453125" width="0.3048" layer="16"/>
+<wire x1="23.12796875" y1="59.10453125" x2="23.17078125" y2="59.10453125" width="0.3048" layer="16"/>
+<wire x1="23.17078125" y1="59.10453125" x2="23.28" y2="59.134375" width="0.3048" layer="16"/>
 </signal>
 <signal name="N$6">
 <contactref element="R16" pad="2"/>
@@ -4324,10 +4325,12 @@ Please make sure your boards conform to these design rules.</description>
 <signal name="N$16">
 <contactref element="LED5" pad="A"/>
 <contactref element="R5" pad="2"/>
-<wire x1="27.81" y1="61.595" x2="27.81" y2="61.09" width="0.3048" layer="16"/>
-<wire x1="27.81" y1="61.09" x2="26.416" y2="62.484" width="0.3048" layer="16"/>
-<wire x1="26.416" y1="62.484" x2="16.708" y2="62.484" width="0.3048" layer="16"/>
+<wire x1="28.7625" y1="59.134375" x2="28.7625" y2="58.629375" width="0.3048" layer="16"/>
+<wire x1="21.256625" y1="62.484" x2="16.708" y2="62.484" width="0.3048" layer="16"/>
 <wire x1="16.708" y1="62.484" x2="15.668" y2="61.444" width="0.3048" layer="16"/>
+<wire x1="21.256625" y1="62.484" x2="23.33625" y2="60.404375" width="0.3048" layer="16"/>
+<wire x1="23.33625" y1="60.404375" x2="27.4925" y2="60.404375" width="0.3048" layer="16"/>
+<wire x1="27.4925" y1="60.404375" x2="28.7625" y2="59.134375" width="0.3048" layer="16"/>
 </signal>
 <signal name="N$17">
 <contactref element="LED6" pad="A"/>
@@ -4444,7 +4447,7 @@ Please make sure your boards conform to these design rules.</description>
 <signal name="LED5">
 <contactref element="R5" pad="1"/>
 <contactref element="U$2" pad="P10"/>
-<wire x1="30.559375" y1="61.544375" x2="30.61" y2="61.595" width="0.3048" layer="16"/>
+<wire x1="31.511875" y1="59.08375" x2="31.5625" y2="59.134375" width="0.3048" layer="16"/>
 <wire x1="43.5625" y1="52.105" x2="41.6275" y2="52.105" width="0.3048" layer="16"/>
 <wire x1="41.6275" y1="52.105" x2="39.925625" y2="50.403125" width="0.3048" layer="16"/>
 <wire x1="39.925625" y1="50.403125" x2="35.798125" y2="50.403125" width="0.3048" layer="16"/>
@@ -4453,9 +4456,9 @@ Please make sure your boards conform to these design rules.</description>
 <wire x1="34.6075" y1="50.085625" x2="34.29" y2="50.403125" width="0.3048" layer="16"/>
 <wire x1="34.29" y1="50.403125" x2="34.210625" y2="50.403125" width="0.3048" layer="16"/>
 <via x="34.210625" y="50.403125" extent="1-16" drill="0.5"/>
-<wire x1="34.210625" y1="50.403125" x2="34.210625" y2="61.595" width="0.3048" layer="1"/>
-<via x="34.210625" y="61.595" extent="1-16" drill="0.5"/>
-<wire x1="34.210625" y1="61.595" x2="30.61" y2="61.595" width="0.3048" layer="16"/>
+<wire x1="34.210625" y1="50.403125" x2="34.210625" y2="59.134375" width="0.3048" layer="1"/>
+<via x="34.210625" y="59.134375" extent="1-16" drill="0.5"/>
+<wire x1="34.210625" y1="59.134375" x2="31.5625" y2="59.134375" width="0.3048" layer="16"/>
 </signal>
 <signal name="LED6">
 <contactref element="R6" pad="1"/>
@@ -4927,10 +4930,10 @@ Please make sure your boards conform to these design rules.</description>
 <wire x1="20.558125" y1="47.704375" x2="27.78125" y2="47.704375" width="0.3048" layer="1"/>
 <wire x1="27.78125" y1="47.704375" x2="28.73375" y2="48.656875" width="0.3048" layer="1"/>
 <via x="28.73375" y="48.656875" extent="1-16" drill="0.5"/>
-<wire x1="56.9125" y1="46.005" x2="63.388125" y2="46.005" width="0.4064" layer="16"/>
-<wire x1="63.388125" y1="46.005" x2="63.65875" y2="46.275625" width="0.4064" layer="16"/>
-<via x="63.65875" y="46.275625" extent="1-16" drill="0.5"/>
-<wire x1="63.65875" y1="46.275625" x2="72.0725" y2="46.275625" width="0.4064" layer="1"/>
+<wire x1="56.9125" y1="46.005" x2="63.62625" y2="46.005" width="0.4064" layer="16"/>
+<wire x1="63.62625" y1="46.005" x2="63.896875" y2="46.275625" width="0.4064" layer="16"/>
+<via x="63.896875" y="46.275625" extent="1-16" drill="0.5"/>
+<wire x1="63.896875" y1="46.275625" x2="72.0725" y2="46.275625" width="0.4064" layer="1"/>
 <wire x1="72.0725" y1="46.275625" x2="76.2" y2="50.403125" width="0.4064" layer="1"/>
 <via x="76.2" y="50.403125" extent="1-16" drill="0.5"/>
 <wire x1="76.2" y1="50.403125" x2="76.2" y2="48.3" width="0.4064" layer="16"/>
@@ -5023,7 +5026,7 @@ Please make sure your boards conform to these design rules.</description>
 <wire x1="34.686875" y1="48.73625" x2="33.02" y2="48.73625" width="0.3048" layer="1"/>
 <wire x1="33.02" y1="48.73625" x2="29.924375" y2="51.831875" width="0.3048" layer="1"/>
 <wire x1="29.924375" y1="51.831875" x2="29.924375" y2="57.5" width="0.3048" layer="1"/>
-<wire x1="29.924375" y1="57.5" x2="29.961875" y2="57.5375" width="0.3048" layer="1"/>
+<wire x1="29.924375" y1="57.5" x2="29.961875" y2="61.75375" width="0.3048" layer="1"/>
 </signal>
 <signal name="N$49">
 <contactref element="U$2" pad="P41"/>
@@ -5102,8 +5105,8 @@ Please make sure your boards conform to these design rules.</description>
 <signal name="N$23">
 <contactref element="R24" pad="2"/>
 <contactref element="LED12" pad="A"/>
-<wire x1="24.881875" y1="51.433125" x2="24.881875" y2="54.9975" width="0.3048" layer="1"/>
-<wire x1="24.881875" y1="54.9975" x2="27.421875" y2="57.5375" width="0.3048" layer="1"/>
+<wire x1="24.881875" y1="51.433125" x2="27.421875" y2="53.965625" width="0.3048" layer="1"/>
+<wire x1="27.421875" y1="53.965625" x2="27.421875" y2="61.75375" width="0.3048" layer="1"/>
 </signal>
 <signal name="N$26">
 <contactref element="X1" pad="D+"/>
@@ -5195,9 +5198,9 @@ Please make sure your boards conform to these design rules.</description>
 <wire x1="46.434375" y1="54.45125" x2="45.323125" y2="54.45125" width="0.3048" layer="16"/>
 <wire x1="45.323125" y1="54.45125" x2="44.529375" y2="55.245" width="0.3048" layer="16"/>
 <wire x1="44.529375" y1="55.245" x2="44.529375" y2="55.483125" width="0.3048" layer="16"/>
-<wire x1="44.529375" y1="55.483125" x2="40.243125" y2="59.769375" width="0.3048" layer="16"/>
-<wire x1="40.243125" y1="59.769375" x2="26.170625" y2="59.769375" width="0.3048" layer="16"/>
-<wire x1="26.170625" y1="59.769375" x2="24.98" y2="60.96" width="0.3048" layer="16"/>
+<wire x1="44.529375" y1="55.483125" x2="42.70375" y2="57.30875" width="0.3048" layer="16"/>
+<wire x1="42.70375" y1="57.30875" x2="26.805625" y2="57.30875" width="0.3048" layer="16"/>
+<wire x1="26.805625" y1="57.30875" x2="24.98" y2="59.134375" width="0.3048" layer="16"/>
 </signal>
 <signal name="TSC_G2_IO3">
 <contactref element="U$2" pad="P22"/>
@@ -5367,14 +5370,14 @@ Please make sure your boards conform to these design rules.</description>
 <approved hash="18,30,e49224ef12e0d29d"/>
 <approved hash="18,30,a99bb4f0828e9fe5"/>
 <approved hash="18,30,1f125b161b135f17"/>
+<approved hash="18,30,1834503410315831"/>
 <approved hash="18,30,1aa55e851e805aa0"/>
 <approved hash="18,30,17c7528d248861c2"/>
-<approved hash="18,30,1834503410315831"/>
 <approved hash="18,30,81c1bb05e092228d"/>
-<approved hash="18,30,720e16b682d596df"/>
-<approved hash="18,30,375f867f844d357d"/>
 <approved hash="18,30,1765da4aa49b668c"/>
 <approved hash="18,30,2547966794452775"/>
+<approved hash="18,30,720e16b682d596df"/>
+<approved hash="18,30,375f867f844d357d"/>
 <approved hash="18,30,66a6a53d2f31ecaa"/>
 <approved hash="18,30,fbbe4f854188f5b3"/>
 <approved hash="18,30,f477f360256a227d"/>
@@ -5383,40 +5386,24 @@ Please make sure your boards conform to these design rules.</description>
 <approved hash="18,30,81534ff345c98b69"/>
 <approved hash="18,30,3a1f37303d3a3015"/>
 <approved hash="18,30,4a2d8a3880024017"/>
-<approved hash="18,30,3c085ede1ede7c08"/>
-<approved hash="18,30,2d214ff70ff76d21"/>
-<approved hash="18,30,2a74449a049a6a74"/>
-<approved hash="18,30,211643bc03bc6116"/>
-<approved hash="18,30,28c34ae90ae968c3"/>
-<approved hash="18,30,27e5410b010b67e5"/>
-<approved hash="18,30,d60eb0d4f0d4960e"/>
 <approved hash="18,30,39b95b4f1b4f79b9"/>
 <approved hash="18,30,dc4abe90fe909c4a"/>
-<approved hash="18,30,d3b04d460d4793b1"/>
-<approved hash="18,30,d9fdbb03fb0399fd"/>
-<approved hash="18,30,d49fb625f625949f"/>
+<approved hash="18,30,2a74449a049a6a74"/>
+<approved hash="18,30,27e5410b010b67e5"/>
+<approved hash="18,30,28c34ae90ae968c3"/>
 <approved hash="18,30,3b2a55f015f07b2a"/>
-<approved hash="18,30,db6cb5b2f5b29b6c"/>
-<approved hash="18,30,2f52487808786f52"/>
 <approved hash="18,30,22875c2d1c2d6287"/>
-<approved hash="18,30,730f5c7b9c7cb308"/>
+<approved hash="18,30,d3b04d460d4793b1"/>
+<approved hash="18,30,db6cb5b2f5b29b6c"/>
+<approved hash="18,30,211643bc03bc6116"/>
+<approved hash="18,30,2d214ff70ff76d21"/>
+<approved hash="18,30,d60eb0d4f0d4960e"/>
+<approved hash="18,30,d9fdbb03fb0399fd"/>
+<approved hash="18,30,3c085ede1ede7c08"/>
+<approved hash="18,30,d49fb625f625949f"/>
+<approved hash="18,30,2f52487808786f52"/>
 <approved hash="18,30,78c2548b828caec5"/>
-<approved hash="18,30,45b4b394739785b7"/>
-<approved hash="18,30,3ab72097e0a9fa89"/>
-<approved hash="18,30,ab8991a951ab6b8b"/>
-<approved hash="18,30,188c06acc6aed88e"/>
-<approved hash="18,30,898ef7ae37a04980"/>
-<approved hash="18,30,7e8164a1a4a3be83"/>
-<approved hash="18,30,ef83d5a315a52f85"/>
-<approved hash="18,30,5c864aa68ab89c98"/>
-<approved hash="18,30,cd983bb8fbba0d9a"/>
-<approved hash="18,30,429aa8ba68bd829d"/>
-<approved hash="18,30,339d19bdd9bff39f"/>
-<approved hash="18,30,a09f8ebf4eb16091"/>
-<approved hash="18,30,11927fb2bfb4d194"/>
-<approved hash="18,30,8694ecb42cb64696"/>
-<approved hash="18,30,77975db79c49b669"/>
-<approved hash="18,30,e569d349134b256b"/>
+<approved hash="18,30,730f5c7b9c7cb308"/>
 <approved hash="18,30,34a6c2870284f4a5"/>
 <approved hash="18,30,dcef1bf1af015999"/>
 <approved hash="18,30,4ba5518491ba8b9b"/>
@@ -5434,8 +5421,24 @@ Please make sure your boards conform to these design rules.</description>
 <approved hash="18,30,f7869da75da53784"/>
 <approved hash="18,30,06852ca4ed5ac77b"/>
 <approved hash="18,30,947ba25a62585479"/>
-<approved hash="18,30,db43190bd9361b7e"/>
+<approved hash="18,30,45b4b394739785b7"/>
+<approved hash="18,30,3ab72097e0a9fa89"/>
+<approved hash="18,30,ab8991a951ab6b8b"/>
+<approved hash="18,30,188c06acc6aed88e"/>
+<approved hash="18,30,898ef7ae37a04980"/>
+<approved hash="18,30,7e8164a1a4a3be83"/>
+<approved hash="18,30,ef83d5a315a52f85"/>
+<approved hash="18,30,5c864aa68ab89c98"/>
+<approved hash="18,30,cd983bb8fbba0d9a"/>
+<approved hash="18,30,429aa8ba68bd829d"/>
+<approved hash="18,30,339d19bdd9bff39f"/>
+<approved hash="18,30,a09f8ebf4eb16091"/>
+<approved hash="18,30,11927fb2bfb4d194"/>
+<approved hash="18,30,8694ecb42cb64696"/>
+<approved hash="18,30,77975db79c49b669"/>
+<approved hash="18,30,e569d349134b256b"/>
 <approved hash="18,30,d08e11fbc7c606b3"/>
+<approved hash="18,30,db43190bd9361b7e"/>
 <approved hash="18,30,e7f0bff76bf333f4"/>
 <approved hash="18,30,c27fde360837147e"/>
 <approved hash="18,30,c9b2d6c616c709b3"/>
@@ -5449,40 +5452,40 @@ Please make sure your boards conform to these design rules.</description>
 <approved hash="18,30,2c20f0fdf9a3efcc"/>
 <approved hash="18,30,0997d752edf8e4ef"/>
 <approved hash="18,30,e53a6be5bfe2313d"/>
-<approved hash="18,30,cb79d41d141e0b7a"/>
 <approved hash="18,30,c0b4dced0aee16b7"/>
+<approved hash="18,30,cb79d41d141e0b7a"/>
 <approved hash="18,30,449b93862ea378a2"/>
 <approved hash="18,30,ab87773d2547ed26"/>
+<approved hash="18,30,9ea75e886972a95d"/>
 <approved hash="18,30,5b689e90956a5092"/>
 <approved hash="18,30,1027d008e7f227dd"/>
-<approved hash="18,30,9ea75e886972a95d"/>
-<approved hash="18,30,e85fef06d90cde55"/>
 <approved hash="18,30,2d902f1e2514279a"/>
+<approved hash="18,30,e85fef06d90cde55"/>
 <approved hash="18,30,2a4218e6e5247753"/>
 <approved hash="18,30,66df6186578c50d5"/>
 <approved hash="18,30,0ad032abe4a7ede5"/>
 <approved hash="18,30,26c046eeb221efde"/>
 <approved hash="18,30,fc935695f5baef32"/>
-<approved hash="18,30,2fa28c5ccc5d6fa3"/>
 <approved hash="18,30,cfe66c102c118fe7"/>
-<approved hash="18,30,2a1589cfc9ce6a14"/>
-<approved hash="18,30,cd7562af22ae8d74"/>
 <approved hash="18,30,d90d7f273f26990c"/>
-<approved hash="18,30,d1ba7654365591bb"/>
-<approved hash="18,30,d4d86b722b7394d9"/>
-<approved hash="18,30,2d3382edc2ec6d32"/>
-<approved hash="18,30,d74974e334e29748"/>
+<approved hash="18,30,cd7562af22ae8d74"/>
 <approved hash="18,30,dc2b73c533c49c2a"/>
-<approved hash="18,30,22c0817ac17b62c1"/>
+<approved hash="18,30,2a1589cfc9ce6a14"/>
+<approved hash="18,30,2fa28c5ccc5d6fa3"/>
 <approved hash="18,30,de9c7db63db79e9d"/>
-<approved hash="18,30,ca57698129808a56"/>
 <approved hash="18,30,25ef7a193a1965ef"/>
+<approved hash="18,30,ca57698129808a56"/>
 <approved hash="18,30,2051878bc78a6050"/>
+<approved hash="18,30,2d3382edc2ec6d32"/>
+<approved hash="18,30,22c0817ac17b62c1"/>
 <approved hash="18,30,db7e78a838a99b7f"/>
+<approved hash="18,30,d1ba7654365591bb"/>
+<approved hash="18,30,d74974e334e29748"/>
+<approved hash="18,30,d4d86b722b7394d9"/>
 <approved hash="18,30,5edf8fb13f4012ae"/>
 <approved hash="18,30,c88e94511805b85a"/>
-<approved hash="18,30,662646110f1e2f29"/>
 <approved hash="18,30,67b67742374d27b9"/>
+<approved hash="18,30,662646110f1e2f29"/>
 <approved hash="18,30,3e1b789d78323eb4"/>
 <approved hash="18,30,21dc28e8e6034394"/>
 <approved hash="18,30,9a38aee6e7df028b"/>
@@ -5491,8 +5494,8 @@ Please make sure your boards conform to these design rules.</description>
 <approved hash="18,30,0c71dc4c0657d66a"/>
 <approved hash="18,30,48e37062a96291e3"/>
 <approved hash="18,30,8144c552df589b4e"/>
-<approved hash="18,30,cf030b7c1d76d909"/>
 <approved hash="18,30,2d18ed75fb7f3b12"/>
+<approved hash="18,30,cf030b7c1d76d909"/>
 <approved hash="18,30,ee5c29cf23c5e456"/>
 <approved hash="18,30,d24dd04dca56c856"/>
 <approved hash="18,30,920b9b628d788411"/>
@@ -7395,7 +7398,8 @@ Please make sure your boards conform to these design rules.</description>
 <approved hash="6,16,7b407b2fdb2fdb40"/>
 <approved hash="6,16,1e9b61db607cdf7f"/>
 <approved hash="6,16,9e4b54e15a43f39a"/>
-<approved hash="6,16,ed3d33e63a93d9a4"/>
+<approved hash="6,16,374086e0da457222"/>
+<approved hash="6,16,85ca386b37cc3c6c"/>
 <approved hash="6,16,d54946c82d6701a3"/>
 <approved hash="6,16,e437736750465087"/>
 <approved hash="6,16,0dcd0027d36fde85"/>

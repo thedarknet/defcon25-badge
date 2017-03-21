@@ -8,7 +8,7 @@
 </settings>
 <grid distance="0.003125" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
 <layers>
-<layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
+<layer number="1" name="Top" color="4" fill="1" visible="no" active="yes"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
 <layer number="3" name="Route3" color="4" fill="3" visible="no" active="no"/>
 <layer number="4" name="Route4" color="1" fill="4" visible="no" active="no"/>
@@ -28,27 +28,27 @@
 <layer number="18" name="Vias" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="yes"/>
 <layer number="20" name="Dimension" color="15" fill="1" visible="yes" active="yes"/>
-<layer number="21" name="tPlace" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="21" name="tPlace" color="7" fill="1" visible="no" active="yes"/>
 <layer number="22" name="bPlace" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="yes"/>
+<layer number="23" name="tOrigins" color="15" fill="1" visible="no" active="yes"/>
 <layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="yes"/>
-<layer number="25" name="tNames" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="25" name="tNames" color="7" fill="1" visible="no" active="yes"/>
 <layer number="26" name="bNames" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="27" name="tValues" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="27" name="tValues" color="7" fill="1" visible="no" active="yes"/>
 <layer number="28" name="bValues" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="29" name="tStop" color="7" fill="3" visible="yes" active="yes"/>
+<layer number="29" name="tStop" color="7" fill="3" visible="no" active="yes"/>
 <layer number="30" name="bStop" color="7" fill="6" visible="yes" active="yes"/>
-<layer number="31" name="tCream" color="7" fill="4" visible="yes" active="yes"/>
+<layer number="31" name="tCream" color="7" fill="4" visible="no" active="yes"/>
 <layer number="32" name="bCream" color="7" fill="5" visible="yes" active="yes"/>
-<layer number="33" name="tFinish" color="6" fill="3" visible="yes" active="yes"/>
+<layer number="33" name="tFinish" color="6" fill="3" visible="no" active="yes"/>
 <layer number="34" name="bFinish" color="6" fill="6" visible="yes" active="yes"/>
-<layer number="35" name="tGlue" color="7" fill="4" visible="yes" active="yes"/>
+<layer number="35" name="tGlue" color="7" fill="4" visible="no" active="yes"/>
 <layer number="36" name="bGlue" color="7" fill="5" visible="yes" active="yes"/>
-<layer number="37" name="tTest" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="37" name="tTest" color="7" fill="1" visible="no" active="yes"/>
 <layer number="38" name="bTest" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="39" name="tKeepout" color="4" fill="11" visible="yes" active="yes"/>
+<layer number="39" name="tKeepout" color="4" fill="11" visible="no" active="yes"/>
 <layer number="40" name="bKeepout" color="1" fill="11" visible="yes" active="yes"/>
-<layer number="41" name="tRestrict" color="4" fill="10" visible="yes" active="yes"/>
+<layer number="41" name="tRestrict" color="4" fill="10" visible="no" active="yes"/>
 <layer number="42" name="bRestrict" color="1" fill="10" visible="yes" active="yes"/>
 <layer number="43" name="vRestrict" color="2" fill="10" visible="yes" active="yes"/>
 <layer number="44" name="Drills" color="7" fill="1" visible="yes" active="yes"/>
@@ -88,22 +88,22 @@
 <layer number="109" name="fp9" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="110" name="fp0" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="111" name="LPC17xx" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="112" name="tSilk" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="112" name="tSilk" color="7" fill="1" visible="no" active="yes"/>
 <layer number="113" name="IDFDebug" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="114" name="Badge_Outline" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="115" name="ReferenceISLANDS" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="116" name="Patch_BOT" color="9" fill="4" visible="yes" active="yes"/>
 <layer number="118" name="Rect_Pads" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="121" name="_tsilk" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="121" name="_tsilk" color="7" fill="1" visible="no" active="yes"/>
 <layer number="122" name="_bsilk" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="123" name="tTestmark" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="123" name="tTestmark" color="7" fill="1" visible="no" active="yes"/>
 <layer number="124" name="bTestmark" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="125" name="_tNames" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="125" name="_tNames" color="7" fill="1" visible="no" active="yes"/>
 <layer number="126" name="_bNames" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="127" name="_tValues" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="127" name="_tValues" color="7" fill="1" visible="no" active="yes"/>
 <layer number="128" name="_bValues" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="129" name="Mask" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="131" name="tAdjust" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="131" name="tAdjust" color="7" fill="1" visible="no" active="yes"/>
 <layer number="132" name="bAdjust" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="144" name="Drill_legend" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="150" name="Notes" color="7" fill="1" visible="yes" active="yes"/>
@@ -157,6 +157,7 @@
 <hole x="50.8" y="97.12451875" drill="3.2"/>
 <wire x1="50.8" y1="101.6" x2="50.8" y2="0" width="0" layer="20" curve="-180"/>
 <wire x1="50.8" y1="0" x2="50.8" y2="101.6" width="0" layer="20" curve="-180"/>
+<text x="93.6625" y="65.405" size="0.6096" layer="122" font="vector">RESET</text>
 </plain>
 <libraries>
 <library name="SYNShop">
@@ -296,7 +297,7 @@
 <wire x1="8" y1="-3.9" x2="8" y2="-4.1" width="0.127" layer="21"/>
 <wire x1="8" y1="-5.9" x2="8" y2="-6.1" width="0.127" layer="21"/>
 <wire x1="8" y1="-7.9" x2="8" y2="-8" width="0.127" layer="21"/>
-<text x="-4.4" y="6.315" size="1.27" layer="21">RFM69HCW</text>
+<text x="-4.4" y="6.315" size="1.27" layer="21" font="vector">RFM69HCW</text>
 <smd name="GND" x="-7.5" y="7" dx="2.9" dy="1.4224" layer="1"/>
 <smd name="MISO" x="-7.5" y="5" dx="2.9" dy="1.4224" layer="1"/>
 <smd name="MOSI" x="-7.5" y="3" dx="2.9" dy="1.4224" layer="1"/>
@@ -313,22 +314,22 @@
 <smd name="DIO3" x="7.5" y="-3" dx="2.9" dy="1.4224" layer="1"/>
 <smd name="GND3" x="7.5" y="-5" dx="2.9" dy="1.4224" layer="1"/>
 <smd name="ANT" x="7.5" y="-7" dx="2.9" dy="1.4224" layer="1"/>
-<text x="9.6" y="-7.4" size="0.8128" layer="21">ANT</text>
-<text x="9.6" y="-5.4" size="0.8128" layer="21">GND</text>
-<text x="9.6" y="-3.4" size="0.8128" layer="21">DIO3</text>
-<text x="9.6" y="-1.4" size="0.8128" layer="21">DIO4</text>
-<text x="9.6" y="0.6" size="0.8128" layer="21">3.3V</text>
-<text x="9.6" y="2.6" size="0.8128" layer="21">DIO0</text>
-<text x="9.6" y="4.6" size="0.8128" layer="21">DIO1</text>
-<text x="9.6" y="6.6" size="0.8128" layer="21">DIO2</text>
-<text x="-12.15" y="6.6" size="0.8128" layer="21">GND</text>
-<text x="-12.15" y="4.6" size="0.8128" layer="21">MISO</text>
-<text x="-12.15" y="2.6" size="0.8128" layer="21">MOSI</text>
-<text x="-12.15" y="0.6" size="0.8128" layer="21">SCK</text>
-<text x="-12.15" y="-1.4" size="0.8128" layer="21">NSS</text>
-<text x="-12.15" y="-3.4" size="0.8128" layer="21">RST</text>
-<text x="-12.15" y="-5.4" size="0.8128" layer="21">DIO5</text>
-<text x="-12.15" y="-7.4" size="0.8128" layer="21">GND</text>
+<text x="9.3" y="-7.4" size="0.8128" layer="21" font="vector">ANT</text>
+<text x="9.3" y="-5.4" size="0.8128" layer="21" font="vector">GND</text>
+<text x="9.3" y="-3.4" size="0.8128" layer="21" font="vector">DIO3</text>
+<text x="9.3" y="-1.4" size="0.8128" layer="21" font="vector">DIO4</text>
+<text x="9.3" y="0.6" size="0.8128" layer="21" font="vector">3.3V</text>
+<text x="9.3" y="2.6" size="0.8128" layer="21" font="vector">DIO0</text>
+<text x="9.3" y="4.6" size="0.8128" layer="21" font="vector">DIO1</text>
+<text x="9.3" y="6.6" size="0.8128" layer="21" font="vector">DIO2</text>
+<text x="-11.35" y="6.6" size="0.8128" layer="21" font="vector">GND</text>
+<text x="-11.85" y="4.6" size="0.8128" layer="21" font="vector">MISO</text>
+<text x="-11.85" y="2.6" size="0.8128" layer="21" font="vector">MOSI</text>
+<text x="-11.35" y="0.6" size="0.8128" layer="21" font="vector">SCK</text>
+<text x="-11.35" y="-1.4" size="0.8128" layer="21" font="vector">NSS</text>
+<text x="-11.35" y="-3.4" size="0.8128" layer="21" font="vector">RST</text>
+<text x="-11.85" y="-5.4" size="0.8128" layer="21" font="vector">DIO5</text>
+<text x="-11.35" y="-7.4" size="0.8128" layer="21" font="vector">GND</text>
 <wire x1="4.5" y1="-7.5" x2="2.5" y2="-7.5" width="0.127" layer="21"/>
 <wire x1="2.5" y1="-7.5" x2="4" y2="-6" width="0.127" layer="21"/>
 </package>
@@ -3964,80 +3965,202 @@ Please make sure your boards conform to these design rules.</description>
 <element name="TOUCH0" library="darknet_parts_library" package="CAP_TOUCH_PAD_0" value="CAP_TOUCH0" x="78.39201875" y="23.03271875"/>
 <element name="LED1" library="SYNShop" package="GULLWING_LED" value="" x="76.2" y="76.962" rot="MR180"/>
 <element name="LED2" library="SYNShop" package="GULLWING_LED" value="" x="58.674" y="87.63" rot="MR180"/>
-<element name="LED3" library="SYNShop" package="GULLWING_LED" value="" x="38.608" y="87.376" rot="MR180"/>
-<element name="LED4" library="SYNShop" package="GULLWING_LED" value="" x="21.336" y="76.962" rot="MR180"/>
-<element name="LED5" library="SYNShop" package="GULLWING_LED" value="" x="10.668" y="59.944" rot="MR180"/>
-<element name="LED6" library="SYNShop" package="GULLWING_LED" value="" x="10.414" y="39.116" rot="MR180"/>
-<element name="LED7" library="SYNShop" package="GULLWING_LED" value="" x="20.828" y="21.844" rot="MR180"/>
-<element name="LED8" library="SYNShop" package="GULLWING_LED" value="" x="38.608" y="11.684" rot="MR180"/>
-<element name="R1" library="darknet_parts_library" package="1206" value="47" x="81.28" y="68.42125" rot="MR180"/>
-<element name="R2" library="darknet_parts_library" package="1206" value="47" x="67.389375" y="80.248125" rot="MR0"/>
-<element name="R3" library="darknet_parts_library" package="1206" value="47" x="47.069375" y="80.16875" rot="MR0"/>
-<element name="R4" library="darknet_parts_library" package="1206" value="47" x="29.21" y="68.58" rot="MR0"/>
-<element name="R5" library="darknet_parts_library" package="1206" value="47" x="30.1625" y="59.134375" rot="MR0"/>
-<element name="R6" library="darknet_parts_library" package="1206" value="47" x="27.94" y="40.64" rot="MR0"/>
-<element name="R7" library="darknet_parts_library" package="1206" value="47" x="27.94" y="33.02" rot="MR0"/>
-<element name="R8" library="darknet_parts_library" package="1206" value="47" x="46.99" y="21.59" rot="MR0"/>
-<element name="LED9" library="SYNShop" package="GULLWING_LED" value="" x="58.42" y="11.43" rot="MR180"/>
-<element name="LED10" library="SYNShop" package="GULLWING_LED" value="" x="75.946" y="21.59" rot="MR180"/>
-<element name="R9" library="darknet_parts_library" package="1206" value="47" x="67.230625" y="21.2725" rot="MR0"/>
-<element name="R10" library="darknet_parts_library" package="1206" value="47" x="75.803125" y="35.08375" rot="MR180"/>
-<element name="TOUCHHOOK" library="darknet_parts_library" package="CAP_TOUCH_PAD_HOOK" value="CAP_TOUCHHOOK" x="86.106" y="35.56"/>
-<element name="U$15" library="SYNShop" package="16PIN-PCB-SMD" value="RFM69HCWRFN69HCWSMD" x="77.205" y="55.795" rot="MR270"/>
-<element name="R11" library="darknet_parts_library" package="0603-RES" value="1K" x="76.28375" y="69.3725" rot="MR180"/>
-<element name="R12" library="darknet_parts_library" package="0603-RES" value="1K" x="61.9125" y="77.866875" rot="MR90"/>
-<element name="R13" library="darknet_parts_library" package="0603-RES" value="1K" x="39.84625" y="78.025625" rot="MR90"/>
-<element name="R14" library="darknet_parts_library" package="0603-RES" value="1K" x="24.13" y="68.58" rot="MR0"/>
-<element name="R15" library="darknet_parts_library" package="0603-RES" value="1K" x="24.13" y="59.134375" rot="MR0"/>
-<element name="R16" library="darknet_parts_library" package="0603-RES" value="1K" x="22.86" y="40.64" rot="MR0"/>
-<element name="R17" library="darknet_parts_library" package="0603-RES" value="1K" x="22.780625" y="33.099375" rot="MR0"/>
-<element name="R18" library="darknet_parts_library" package="0603-RES" value="1K" x="42.06875" y="24.60625" rot="MR0"/>
-<element name="R19" library="darknet_parts_library" package="0603-RES" value="1K" x="61.039375" y="23.97125" rot="MR0"/>
-<element name="R20" library="darknet_parts_library" package="0603-RES" value="1K" x="75.803125" y="32.86125" rot="MR180"/>
-<element name="R21" library="darknet_parts_library" package="0603-RES" value="1K" x="75.565" y="39.965" rot="MR180"/>
-<element name="U$2" library="darknet_parts_library" package="LQFP64" value="STM32F302XC" x="49.2125" y="51.355" rot="MR180"/>
-<element name="C12" library="darknet_parts_library" package="C0603" value="0.1uF" x="44.8125" y="43.655" rot="MR0"/>
-<element name="C13" library="darknet_parts_library" package="C0603" value="0.1uF" x="56.9125" y="46.855" rot="MR270"/>
-<element name="C14" library="darknet_parts_library" package="C0603" value="0.1uF" x="53.7125" y="59.105" rot="MR180"/>
-<element name="C15" library="darknet_parts_library" package="C0603" value="0.01uF" x="38.43375" y="53.24" smashed="yes" rot="MR180">
-<attribute name="NAME" x="37.54475" y="52.478" size="1.27" layer="26" rot="MR180"/>
-<attribute name="VALUE" x="37.54475" y="55.272" size="1.27" layer="28" rot="MR180"/>
+<element name="LED3" library="SYNShop" package="GULLWING_LED" value="" x="38.608" y="87.376" smashed="yes" rot="MR180"/>
+<element name="LED4" library="SYNShop" package="GULLWING_LED" value="" x="21.336" y="76.962" smashed="yes" rot="MR180"/>
+<element name="LED5" library="SYNShop" package="GULLWING_LED" value="" x="10.668" y="59.944" smashed="yes" rot="MR180"/>
+<element name="LED6" library="SYNShop" package="GULLWING_LED" value="" x="10.414" y="39.116" smashed="yes" rot="MR180"/>
+<element name="LED7" library="SYNShop" package="GULLWING_LED" value="" x="20.828" y="21.844" smashed="yes" rot="MR180"/>
+<element name="LED8" library="SYNShop" package="GULLWING_LED" value="" x="38.608" y="11.684" smashed="yes" rot="MR180"/>
+<element name="R1" library="darknet_parts_library" package="1206" value="47" x="81.28" y="68.58" smashed="yes" rot="MR180">
+<attribute name="NAME" x="82.55" y="70.532625" size="0.6096" layer="26" font="vector" rot="MR180"/>
 </element>
-<element name="C16" library="darknet_parts_library" package="C0603" value="4.7uF" x="53.7125" y="61.255" rot="MR180"/>
-<element name="U$11" library="darknet_parts_library" package="SOT23-5" value="DS21984E" x="48.145625" y="69.63625" rot="MR0"/>
-<element name="R22" library="darknet_parts_library" package="0603-RES" value="" x="48.195625" y="72.63625" rot="MR180"/>
-<element name="R23" library="darknet_parts_library" package="0603-RES" value="" x="48.195625" y="74.68625" rot="MR0"/>
-<element name="LED11" library="SYNShop" package="LED-0603" value="" x="50.645625" y="69.73625" rot="MR180"/>
-<element name="C17" library="darknet_parts_library" package="C0603" value="1uF" x="44.995625" y="69.78625" rot="MR270"/>
-<element name="C18" library="darknet_parts_library" package="C0603" value="" x="45.045625" y="73.83625" rot="MR90"/>
-<element name="X1" library="SYNShop" package="USB-MICROB" value="10118193-0001LF" x="94.4775" y="71.12625" rot="MR245"/>
-<element name="U$17" library="darknet_parts_library" package="IR-MODULE_FLAT" value="SOP22FLAT" x="28.691875" y="45.48375" rot="R180"/>
-<element name="LED12" library="SYNShop" package="LED5MM" value="" x="28.691875" y="61.75375"/>
-<element name="R24" library="darknet_parts_library" package="0207/7" value="56" x="28.691875" y="51.433125" rot="R180"/>
-<element name="CN1" library="adafruit" package="JST-PH-2-THM-RA" value="" x="40.218125" y="69.965" rot="MR270"/>
-<element name="SW1" library="SYNShop" package="TACTILE-2PIN-NARROW" value="RESET" x="94.855625" y="63.341875" rot="MR0"/>
-<element name="R25" library="darknet_parts_library" package="0603-RES" value="" x="88.133125" y="60.586875" rot="MR0"/>
-<element name="R26" library="darknet_parts_library" package="0603-RES" value="27" x="88.10375" y="67.16375" rot="MR0"/>
-<element name="R27" library="darknet_parts_library" package="0603-RES" value="27" x="88.10375" y="65.11375" rot="MR0"/>
-<element name="C19" library="darknet_parts_library" package="C0603" value="47pF" x="88.10375" y="63.06375" rot="MR180"/>
-<element name="C20" library="darknet_parts_library" package="C0603" value="47pF" x="88.10375" y="69.21375" rot="MR180"/>
-<element name="L1" library="dp_devices" package="FB603" value="" x="88.10375" y="71.2025" rot="MR180"/>
-<element name="Y1" library="SparkFun" package="RESONATOR-SMD" value="RESONATORSMD" x="40.2125" y="48.055" rot="MR90"/>
-<element name="F1" library="SparkFun" package="PTC-1206" value="500uA" x="48.60375" y="66.350625" rot="MR180"/>
-<element name="C21" library="darknet_parts_library" package="C0603" value="1uF" x="44.774375" y="41.4175" rot="MR0"/>
-<element name="LED13" library="SYNShop" package="LED-0603" value="" x="40.296875" y="41.419375" rot="MR90"/>
-<element name="R28" library="darknet_parts_library" package="0603-RES" value="56" x="40.29" y="43.485" rot="MR0"/>
+<element name="R2" library="darknet_parts_library" package="1206" value="47" x="67.389375" y="80.248125" smashed="yes" rot="MR0">
+<attribute name="NAME" x="67.865625" y="81.708625" size="0.6096" layer="26" font="vector" rot="MR0"/>
+</element>
+<element name="R3" library="darknet_parts_library" package="1206" value="47" x="47.069375" y="80.16875" smashed="yes" rot="MR0">
+<attribute name="NAME" x="47.386875" y="81.549875" size="0.6096" layer="26" font="vector" rot="MR0"/>
+</element>
+<element name="R4" library="darknet_parts_library" package="1206" value="47" x="29.21" y="68.58" smashed="yes" rot="MR0">
+<attribute name="NAME" x="29.68625" y="66.627375" size="0.6096" layer="26" font="vector" rot="MR0"/>
+</element>
+<element name="R5" library="darknet_parts_library" package="1206" value="47" x="30.1625" y="59.134375" smashed="yes" rot="MR0">
+<attribute name="NAME" x="30.718125" y="57.261125" size="0.6096" layer="26" font="vector" rot="MR0"/>
+</element>
+<element name="R6" library="darknet_parts_library" package="1206" value="47" x="27.94" y="40.64" smashed="yes" rot="MR0">
+<attribute name="NAME" x="28.495625" y="38.76675" size="0.6096" layer="26" font="vector" rot="MR0"/>
+</element>
+<element name="R7" library="darknet_parts_library" package="1206" value="47" x="27.94" y="33.02" smashed="yes" rot="MR0">
+<attribute name="NAME" x="28.41625" y="34.32175" size="0.6096" layer="26" font="vector" rot="MR0"/>
+</element>
+<element name="R8" library="darknet_parts_library" package="1206" value="47" x="46.99" y="21.59" smashed="yes" rot="MR0">
+<attribute name="NAME" x="47.545625" y="19.71675" size="0.6096" layer="26" font="vector" rot="MR0"/>
+</element>
+<element name="LED9" library="SYNShop" package="GULLWING_LED" value="" x="58.42" y="11.43" smashed="yes" rot="MR180"/>
+<element name="LED10" library="SYNShop" package="GULLWING_LED" value="" x="75.946" y="21.59" smashed="yes" rot="MR180"/>
+<element name="R9" library="darknet_parts_library" package="1206" value="47" x="67.230625" y="21.2725" smashed="yes" rot="MR0">
+<attribute name="NAME" x="67.78625" y="19.558" size="0.6096" layer="26" font="vector" rot="MR0"/>
+</element>
+<element name="R10" library="darknet_parts_library" package="1206" value="47" x="75.803125" y="35.08375" smashed="yes" rot="MR180">
+<attribute name="NAME" x="74.77125" y="36.957" size="0.6096" layer="26" font="vector" rot="MR180"/>
+</element>
+<element name="TOUCHHOOK" library="darknet_parts_library" package="CAP_TOUCH_PAD_HOOK" value="CAP_TOUCHHOOK" x="86.106" y="35.56"/>
+<element name="U$15" library="SYNShop" package="16PIN-PCB-SMD" value="RFM69HCWRFN69HCWSMD" x="77.205" y="55.795" smashed="yes" rot="MR270"/>
+<element name="R11" library="darknet_parts_library" package="0603-RES" value="1K" x="76.28375" y="69.3725" smashed="yes" rot="MR180">
+<attribute name="NAME" x="73.251625" y="70.833" size="0.6096" layer="26" font="vector" rot="MR180"/>
+</element>
+<element name="R12" library="darknet_parts_library" package="0603-RES" value="1K" x="61.9125" y="77.866875" smashed="yes" rot="MR90">
+<attribute name="NAME" x="62.722125" y="75.136375" size="0.6096" layer="26" font="vector" rot="MR0"/>
+</element>
+<element name="R13" library="darknet_parts_library" package="0603-RES" value="1K" x="39.84625" y="78.025625" smashed="yes" rot="MR90">
+<attribute name="NAME" x="38.6715" y="79.66075" size="0.6096" layer="26" font="vector" rot="MR0"/>
+</element>
+<element name="R14" library="darknet_parts_library" package="0603-RES" value="1K" x="24.13" y="68.58" smashed="yes" rot="MR0">
+<attribute name="NAME" x="25.019" y="67.040125" size="0.6096" layer="26" font="vector" rot="MR0"/>
+</element>
+<element name="R15" library="darknet_parts_library" package="0603-RES" value="1K" x="24.13" y="59.134375" smashed="yes" rot="MR0">
+<attribute name="NAME" x="24.86025" y="57.43575" size="0.6096" layer="26" font="vector" rot="MR0"/>
+</element>
+<element name="R16" library="darknet_parts_library" package="0603-RES" value="1K" x="22.86" y="40.64" smashed="yes" rot="MR0">
+<attribute name="NAME" x="23.59025" y="39.02075" size="0.6096" layer="26" font="vector" rot="MR0"/>
+</element>
+<element name="R17" library="darknet_parts_library" package="0603-RES" value="1K" x="22.780625" y="33.099375" smashed="yes" rot="MR0">
+<attribute name="NAME" x="23.4315" y="34.178875" size="0.6096" layer="26" font="vector" rot="MR0"/>
+</element>
+<element name="R18" library="darknet_parts_library" package="0603-RES" value="1K" x="42.06875" y="24.60625" smashed="yes" rot="MR0">
+<attribute name="NAME" x="42.878375" y="22.987" size="0.6096" layer="26" font="vector" rot="MR0"/>
+</element>
+<element name="R19" library="darknet_parts_library" package="0603-RES" value="1K" x="61.039375" y="23.97125" smashed="yes" rot="MR0">
+<attribute name="NAME" x="61.928375" y="22.272625" size="0.6096" layer="26" font="vector" rot="MR0"/>
+</element>
+<element name="R20" library="darknet_parts_library" package="0603-RES" value="1K" x="75.803125" y="32.86125" smashed="yes" rot="MR180">
+<attribute name="NAME" x="74.914125" y="31.78175" size="0.6096" layer="26" font="vector" rot="MR180"/>
+</element>
+<element name="R21" library="darknet_parts_library" package="0603-RES" value="1K" x="75.565" y="39.965" smashed="yes" rot="MR180">
+<attribute name="NAME" x="74.676" y="39.04425" size="0.6096" layer="26" font="vector" rot="MR180"/>
+</element>
+<element name="U$2" library="darknet_parts_library" package="LQFP64" value="STM32F302XC" x="49.2125" y="51.355" smashed="yes" rot="MR180"/>
+<element name="C12" library="darknet_parts_library" package="C0603" value="0.1uF" x="44.8125" y="43.655" smashed="yes" rot="MR0">
+<attribute name="NAME" x="44.90775" y="44.57575" size="0.6096" layer="26" font="vector" rot="MR0"/>
+</element>
+<element name="C13" library="darknet_parts_library" package="C0603" value="0.1uF" x="56.9125" y="46.855" smashed="yes" rot="MR270">
+<attribute name="NAME" x="57.26175" y="45.283375" size="0.6096" layer="26" font="vector" rot="MR270"/>
+</element>
+<element name="C14" library="darknet_parts_library" package="C0603" value="0.1uF" x="53.7125" y="59.105" smashed="yes" rot="MR180">
+<attribute name="NAME" x="55.442875" y="59.374875" size="0.6096" layer="26" font="vector" rot="MR180"/>
+</element>
+<element name="C15" library="darknet_parts_library" package="C0603" value="0.01uF" x="38.43375" y="53.24" smashed="yes" rot="MR180">
+<attribute name="NAME" x="37.7035" y="52.398625" size="0.6096" layer="26" font="vector" rot="MR180"/>
+</element>
+<element name="C16" library="darknet_parts_library" package="C0603" value="4.7uF" x="53.7125" y="61.255" smashed="yes" rot="MR180">
+<attribute name="NAME" x="52.902875" y="62.7155" size="0.6096" layer="26" font="vector" rot="MR180"/>
+</element>
+<element name="U2" library="darknet_parts_library" package="SOT23-5" value="DS21984E" x="48.145625" y="69.63625" smashed="yes" rot="MR0">
+<attribute name="NAME" x="46.537" y="70.323" size="0.6096" layer="26" font="vector" rot="MR270"/>
+</element>
+<element name="R22" library="darknet_parts_library" package="0603-RES" value="" x="48.195625" y="72.63625" smashed="yes" rot="MR180">
+<attribute name="NAME" x="50.04575" y="71.8335" size="0.6096" layer="26" font="vector" rot="MR90"/>
+<attribute name="VALUE" x="47.179625" y="73.77925" size="0.4064" layer="28" font="vector" rot="MR180"/>
+</element>
+<element name="R23" library="darknet_parts_library" package="0603-RES" value="" x="48.195625" y="74.68625" smashed="yes" rot="MR0">
+<attribute name="NAME" x="50.59925" y="75.595875" size="0.6096" layer="26" font="vector" rot="MR270"/>
+<attribute name="VALUE" x="49.211625" y="73.54325" size="0.4064" layer="28" font="vector" rot="MR0"/>
+</element>
+<element name="LED11" library="SYNShop" package="LED-0603" value="" x="50.645625" y="69.73625" smashed="yes" rot="MR180">
+<attribute name="NAME" x="52.09025" y="71.180875" size="0.6096" layer="26" font="vector" rot="MR270"/>
+<attribute name="VALUE" x="51.725125" y="70.75225" size="0.4064" layer="28" rot="MR270"/>
+</element>
+<element name="C17" library="darknet_parts_library" package="C0603" value="1uF" x="44.995625" y="69.78625" smashed="yes" rot="MR270">
+<attribute name="NAME" x="43.9955" y="70.67525" size="0.6096" layer="26" font="vector" rot="MR270"/>
+</element>
+<element name="C18" library="darknet_parts_library" package="C0603" value="" x="45.045625" y="73.83625" smashed="yes" rot="MR90">
+<attribute name="NAME" x="43.50575" y="72.94725" size="0.6096" layer="26" font="vector" rot="MR90"/>
+<attribute name="VALUE" x="43.013625" y="72.94725" size="1.27" layer="28" rot="MR90"/>
+</element>
+<element name="X1" library="SYNShop" package="USB-MICROB" value="10118193-0001LF" x="94.4775" y="71.12625" smashed="yes" rot="MR245">
+<attribute name="NAME" x="94.11851875" y="72.72425625" size="0.6096" layer="26" font="vector" rot="MR245"/>
+<attribute name="VALUE" x="96.549940625" y="74.194578125" size="0.8128" layer="28" rot="MR245"/>
+</element>
+<element name="U$17" library="darknet_parts_library" package="IR-MODULE_FLAT" value="SOP22FLAT" x="28.691875" y="45.48375" smashed="yes" rot="R180">
+<attribute name="NAME" x="31.866875" y="47.38875" size="0.8128" layer="25" ratio="10"/>
+<attribute name="VALUE" x="31.866875" y="43.57875" size="0.8128" layer="27" ratio="10"/>
+</element>
+<element name="LED12" library="SYNShop" package="LED5MM" value="" x="28.691875" y="61.75375" smashed="yes">
+<attribute name="NAME" x="31.866875" y="62.28715" size="0.8128" layer="25" ratio="10"/>
+<attribute name="VALUE" x="31.892275" y="59.95035" size="1.27" layer="27" ratio="10"/>
+</element>
+<element name="R24" library="darknet_parts_library" package="0207/7" value="56" x="28.691875" y="50.8" smashed="yes" rot="R180">
+<attribute name="NAME" x="31.231875" y="49.403" size="0.8128" layer="25" ratio="10" rot="R180"/>
+<attribute name="VALUE" x="30.977875" y="51.3588" size="0.8128" layer="27" ratio="10" rot="R180"/>
+</element>
+<element name="CN1" library="adafruit" package="JST-PH-2-THM-RA" value="" x="40.218125" y="69.965" smashed="yes" rot="MR270">
+<attribute name="NAME" x="39.4125" y="66.560625" size="0.6096" layer="26" font="vector" rot="MR180"/>
+</element>
+<element name="SW1" library="SYNShop" package="TACTILE-2PIN-NARROW" value="RESET" x="94.855625" y="63.341875" smashed="yes" rot="MR0">
+<attribute name="NAME" x="95.5065" y="62.992625" size="0.6096" layer="26" font="vector" ratio="10" rot="MR0"/>
+</element>
+<element name="R25" library="darknet_parts_library" package="0603-RES" value="" x="88.133125" y="60.586875" smashed="yes" rot="MR0">
+<attribute name="NAME" x="86.288625" y="61.479" size="0.6096" layer="26" font="vector" rot="MR270"/>
+<attribute name="VALUE" x="89.149125" y="59.443875" size="0.4064" layer="28" font="vector" rot="MR0"/>
+</element>
+<element name="R26" library="darknet_parts_library" package="0603-RES" value="27" x="88.10375" y="67.16375" smashed="yes" rot="MR0">
+<attribute name="NAME" x="86.2205" y="67.958375" size="0.6096" layer="26" font="vector" rot="MR270"/>
+</element>
+<element name="R27" library="darknet_parts_library" package="0603-RES" value="27" x="88.10375" y="65.11375" smashed="yes" rot="MR0">
+<attribute name="NAME" x="86.286125" y="65.974" size="0.6096" layer="26" font="vector" rot="MR270"/>
+</element>
+<element name="C19" library="darknet_parts_library" package="C0603" value="47pF" x="88.10375" y="63.06375" smashed="yes" rot="MR180">
+<attribute name="NAME" x="85.732625" y="62.291" size="0.6096" layer="26" font="vector" rot="MR90"/>
+</element>
+<element name="C20" library="darknet_parts_library" package="C0603" value="47pF" x="88.10375" y="69.21375" smashed="yes" rot="MR180">
+<attribute name="NAME" x="89.901375" y="68.402875" size="0.6096" layer="26" font="vector" rot="MR90"/>
+</element>
+<element name="L1" library="dp_devices" package="FB603" value="" x="88.10375" y="71.2025" smashed="yes" rot="MR180">
+<attribute name="NAME" x="85.563125" y="70.879375" size="0.6096" layer="26" font="vector" ratio="10" rot="MR90"/>
+<attribute name="VALUE" x="85.88125" y="73.7425" size="1.27" layer="28" font="vector" ratio="10" rot="MR180"/>
+</element>
+<element name="Y1" library="SparkFun" package="RESONATOR-SMD" value="RESONATORSMD" x="40.2125" y="48.055" smashed="yes" rot="MR90">
+<attribute name="NAME" x="41.4825" y="47.64225" size="0.6096" layer="26" font="vector" rot="MR90"/>
+</element>
+<element name="F1" library="SparkFun" package="PTC-1206" value="500uA" x="48.60375" y="66.350625" smashed="yes" rot="MR180">
+<attribute name="NAME" x="48.425625" y="64.145375" size="0.6096" layer="26" font="vector" rot="MR90"/>
+</element>
+<element name="C21" library="darknet_parts_library" package="C0603" value="1uF" x="44.774375" y="41.4175" smashed="yes" rot="MR0">
+<attribute name="NAME" x="44.79025" y="39.79825" size="0.6096" layer="26" font="vector" rot="MR0"/>
+</element>
+<element name="LED13" library="SYNShop" package="LED-0603" value="" x="40.296875" y="41.419375" smashed="yes" rot="MR90">
+<attribute name="NAME" x="35.67725" y="41.673375" size="0.6096" layer="26" font="vector" rot="MR180"/>
+<attribute name="VALUE" x="39.280875" y="42.498875" size="0.4064" layer="28" rot="MR180"/>
+</element>
+<element name="R28" library="darknet_parts_library" package="0603-RES" value="56" x="40.29" y="43.485" smashed="yes" rot="MR0">
+<attribute name="NAME" x="38.242125" y="43.13575" size="0.6096" layer="26" font="vector" rot="MR0"/>
+</element>
 <element name="STLINK" library="darknet_parts_library" package="1X04" value="STLINK-V2-CONNECTOR" x="3.306875" y="49.688125" rot="R270"/>
-<element name="SAMPLE_CAP_G3" library="darknet_parts_library" package="C0603" value="0.047uF" x="50.845625" y="60.436875" rot="MR90"/>
-<element name="SAMPLE_CAP_G1" library="darknet_parts_library" package="C0603" value="0.047uF" x="45.425" y="60.436875" rot="MR90"/>
-<element name="SAMPLE_CAP_G2" library="darknet_parts_library" package="C0603" value="0.047uF" x="47.775" y="60.436875" rot="MR90"/>
-<element name="SAMPLE_CAP_G5" library="darknet_parts_library" package="C0603" value="0.047uF" x="48.831875" y="41.529375" rot="MR180"/>
-<element name="U$19" library="darknet_parts_library" package="SOT23-5" value="TLV702" x="53.87875" y="67.35125" rot="MR90"/>
-<element name="U$21" library="darknet_parts_library" package="CHIP_ANTENNA_1.8X8MM" value="CHIP_ANTENNA" x="96.5" y="51" rot="MR180"/>
-<element name="C1" library="darknet_parts_library" package="C0603" value="0.5pF" x="91.23" y="50.04375" rot="MR90"/>
-<element name="L2" library="darknet_parts_library" package="0603" value="10nH" x="88.699375" y="50.8825" rot="MR180"/>
-<element name="L3" library="darknet_parts_library" package="0603" value="4.7nH" x="86.15875" y="50.04375" rot="MR90"/>
-<element name="U$22" library="darknet_parts_library" package="ST7735S_LCD_DISPLAY" value="ST7735S_LCD_MODULE" x="50.8" y="50.8" rot="R180"/>
+<element name="C22" library="darknet_parts_library" package="C0603" value="0.047uF" x="50.845625" y="60.436875" smashed="yes" rot="MR90">
+<attribute name="NAME" x="49.4645" y="59.62725" size="0.6096" layer="26" font="vector" rot="MR90"/>
+</element>
+<element name="C23" library="darknet_parts_library" package="C0603" value="0.047uF" x="45.425" y="60.436875" smashed="yes" rot="MR90">
+<attribute name="NAME" x="43.9645" y="59.706625" size="0.6096" layer="26" font="vector" rot="MR90"/>
+</element>
+<element name="C24" library="darknet_parts_library" package="C0603" value="0.047uF" x="47.775" y="60.436875" smashed="yes" rot="MR90">
+<attribute name="NAME" x="46.393875" y="59.786" size="0.6096" layer="26" font="vector" rot="MR90"/>
+</element>
+<element name="C25" library="darknet_parts_library" package="C0603" value="0.047uF" x="48.831875" y="41.529375" smashed="yes" rot="MR180">
+<attribute name="NAME" x="48.02225" y="40.291125" size="0.6096" layer="26" font="vector" rot="MR180"/>
+</element>
+<element name="U1" library="darknet_parts_library" package="SOT23-5" value="TLV702" x="53.87875" y="67.35125" smashed="yes" rot="MR90">
+<attribute name="NAME" x="53.513625" y="64.62075" size="0.6096" layer="26" font="vector" rot="MR90"/>
+</element>
+<element name="U$21" library="darknet_parts_library" package="CHIP_ANTENNA_1.8X8MM" value="CHIP_ANTENNA" x="96.5" y="51" smashed="yes" rot="MR180"/>
+<element name="C1" library="darknet_parts_library" package="C0603" value="0.5pF" x="91.23" y="50.04375" smashed="yes" rot="MR90">
+<attribute name="NAME" x="91.735875" y="47.542" size="0.6096" layer="26" font="vector" rot="MR0"/>
+</element>
+<element name="L2" library="darknet_parts_library" package="0603" value="10nH" x="88.699375" y="50.8825" smashed="yes" rot="MR180">
+<attribute name="NAME" x="89.195875" y="49.177625" size="0.6096" layer="26" font="vector" rot="MR0"/>
+</element>
+<element name="L3" library="darknet_parts_library" package="0603" value="4.7nH" x="86.15875" y="50.04375" smashed="yes" rot="MR90">
+<attribute name="NAME" x="86.655875" y="47.55075" size="0.6096" layer="26" font="vector" rot="MR0"/>
+</element>
+<element name="U$22" library="darknet_parts_library" package="ST7735S_LCD_DISPLAY" value="ST7735S_LCD_MODULE" x="50.8" y="50.8" smashed="yes" rot="R180"/>
 <element name="U$12" library="darknet_parts_library" package="KRUX_LOGO" value="KRUX_LOGO" x="11.668125" y="73.66" rot="MR0"/>
 <element name="U$23" library="darknet_parts_library" package="CMD_C0DE_LOGO" value="CMD_C0DE_LOGO" x="11.43" y="28.41625" rot="MR0"/>
 </elements>
@@ -4134,7 +4257,7 @@ Please make sure your boards conform to these design rules.</description>
 <wire x1="45.6625" y1="43.655" x2="45.6625" y2="44.355" width="0.254" layer="16"/>
 <wire x1="45.6625" y1="44.355" x2="45.9625" y2="44.655" width="0.254" layer="16"/>
 <contactref element="C16" pad="1"/>
-<contactref element="U$11" pad="2"/>
+<contactref element="U2" pad="2"/>
 <contactref element="R22" pad="1"/>
 <contactref element="C17" pad="1"/>
 <contactref element="C18" pad="1"/>
@@ -4164,11 +4287,11 @@ Please make sure your boards conform to these design rules.</description>
 <contactref element="Y1" pad="2"/>
 <contactref element="LED13" pad="C"/>
 <contactref element="STLINK" pad="GND"/>
-<contactref element="SAMPLE_CAP_G1" pad="2"/>
-<contactref element="SAMPLE_CAP_G2" pad="2"/>
-<contactref element="SAMPLE_CAP_G5" pad="2"/>
-<contactref element="SAMPLE_CAP_G3" pad="2"/>
-<contactref element="U$19" pad="2"/>
+<contactref element="C23" pad="2"/>
+<contactref element="C24" pad="2"/>
+<contactref element="C25" pad="2"/>
+<contactref element="C22" pad="2"/>
+<contactref element="U1" pad="2"/>
 <contactref element="C21" pad="1"/>
 <contactref element="C1" pad="1"/>
 <contactref element="L3" pad="1"/>
@@ -4199,7 +4322,8 @@ Please make sure your boards conform to these design rules.</description>
 <via x="41.043125" y="39.86625" extent="1-16" drill="0.5"/>
 <via x="45.646875" y="39.86625" extent="1-16" drill="0.5"/>
 <via x="85.651875" y="69.235" extent="1-16" drill="0.5"/>
-<wire x1="50.845625" y1="61.286875" x2="47.775" y2="61.286875" width="0" layer="19" extent="16-16"/>
+<via x="51.838125" y="62.488125" extent="1-16" drill="0.5"/>
+<via x="47.4725" y="62.72625" extent="1-16" drill="0.5"/>
 </signal>
 <signal name="N$1">
 <contactref element="R11" pad="2"/>
@@ -4295,7 +4419,7 @@ Please make sure your boards conform to these design rules.</description>
 <signal name="N$12">
 <contactref element="LED1" pad="A"/>
 <contactref element="R1" pad="2"/>
-<wire x1="82.68" y1="68.42125" x2="82.52125" y2="69.4025" width="0.3048" layer="16"/>
+<wire x1="82.68" y1="68.58" x2="82.52125" y2="69.4025" width="0.3048" layer="16"/>
 <wire x1="82.52125" y1="69.4025" x2="82.39125" y2="69.5325" width="0.3048" layer="16"/>
 <wire x1="82.39125" y1="69.5325" x2="82.42" y2="77.242" width="0.3048" layer="16"/>
 <wire x1="82.42" y1="77.242" x2="81.2" y2="78.462" width="0.3048" layer="16"/>
@@ -4387,7 +4511,9 @@ Please make sure your boards conform to these design rules.</description>
 <wire x1="64.4525" y1="66.913125" x2="65.960625" y2="68.42125" width="0.3048" layer="1"/>
 <wire x1="65.960625" y1="68.42125" x2="73.104375" y2="68.42125" width="0.3048" layer="1"/>
 <via x="73.104375" y="68.42125" extent="1-16" drill="0.5" diameter="0.3048"/>
-<wire x1="73.104375" y1="68.42125" x2="79.88" y2="68.42125" width="0.3048" layer="16"/>
+<wire x1="73.104375" y1="68.42125" x2="79.136875" y2="68.42125" width="0.3048" layer="16"/>
+<wire x1="79.136875" y1="68.42125" x2="79.295625" y2="68.58" width="0.3048" layer="16"/>
+<wire x1="79.295625" y1="68.58" x2="79.88" y2="68.58" width="0.3048" layer="16"/>
 </signal>
 <signal name="LED2">
 <contactref element="R2" pad="1"/>
@@ -4673,7 +4799,7 @@ Please make sure your boards conform to these design rules.</description>
 </signal>
 <signal name="TSC_G1_IO4">
 <contactref element="U$2" pad="P17"/>
-<contactref element="SAMPLE_CAP_G1" pad="1"/>
+<contactref element="C23" pad="1"/>
 <wire x1="45.4625" y1="57.005" x2="45.4625" y2="59.27125" width="0.3048" layer="16"/>
 <wire x1="45.4625" y1="59.27125" x2="45.425" y2="59.586875" width="0.3048" layer="16"/>
 </signal>
@@ -4704,7 +4830,7 @@ Please make sure your boards conform to these design rules.</description>
 </signal>
 <signal name="TSC_G3_IO4">
 <contactref element="U$2" pad="P28"/>
-<contactref element="SAMPLE_CAP_G3" pad="1"/>
+<contactref element="C22" pad="1"/>
 <wire x1="50.9625" y1="57.005" x2="50.9625" y2="59.231875" width="0.3048" layer="16"/>
 <wire x1="50.9625" y1="59.231875" x2="50.845625" y2="59.586875" width="0.3048" layer="16"/>
 </signal>
@@ -4878,7 +5004,7 @@ Please make sure your boards conform to these design rules.</description>
 <contactref element="R25" pad="2"/>
 <contactref element="C21" pad="2"/>
 <contactref element="STLINK" pad="VCC"/>
-<contactref element="U$19" pad="5"/>
+<contactref element="U1" pad="5"/>
 <contactref element="U$22" pad="VCC"/>
 <wire x1="43.9625" y1="43.655" x2="43.9625" y2="41.455625" width="0.4064" layer="16"/>
 <wire x1="43.9625" y1="41.455625" x2="43.924375" y2="41.4175" width="0.3048" layer="16"/>
@@ -4974,8 +5100,8 @@ Please make sure your boards conform to these design rules.</description>
 <wire x1="35.163125" y1="49.926875" x2="34.44875" y2="49.2125" width="0.3048" layer="1"/>
 <wire x1="34.44875" y1="49.2125" x2="33.258125" y2="49.2125" width="0.3048" layer="1"/>
 <wire x1="33.258125" y1="49.2125" x2="32.54375" y2="49.926875" width="0.3048" layer="1"/>
-<wire x1="32.54375" y1="49.926875" x2="32.54375" y2="51.39125" width="0.3048" layer="1"/>
-<wire x1="32.54375" y1="51.39125" x2="32.501875" y2="51.433125" width="0.3048" layer="1"/>
+<wire x1="32.54375" y1="49.926875" x2="32.54375" y2="50.75625" width="0.3048" layer="1"/>
+<wire x1="32.54375" y1="50.75625" x2="32.501875" y2="50.8" width="0.3048" layer="1"/>
 </signal>
 <signal name="RCC_OSC_IN">
 <contactref element="U$2" pad="P5"/>
@@ -5007,7 +5133,7 @@ Please make sure your boards conform to these design rules.</description>
 </signal>
 <signal name="TSC_G5_IO4">
 <contactref element="U$2" pad="P59"/>
-<contactref element="SAMPLE_CAP_G5" pad="1"/>
+<contactref element="C25" pad="1"/>
 <wire x1="47.9625" y1="45.705" x2="47.9625" y2="41.54875" width="0.3048" layer="16"/>
 <wire x1="47.9625" y1="41.54875" x2="47.981875" y2="41.529375" width="0.3048" layer="16"/>
 </signal>
@@ -5023,9 +5149,9 @@ Please make sure your boards conform to these design rules.</description>
 <wire x1="47.3075" y1="49.609375" x2="47.14875" y2="49.450625" width="0.3048" layer="1"/>
 <wire x1="47.14875" y1="49.450625" x2="35.40125" y2="49.450625" width="0.3048" layer="1"/>
 <wire x1="35.40125" y1="49.450625" x2="34.686875" y2="48.73625" width="0.3048" layer="1"/>
-<wire x1="34.686875" y1="48.73625" x2="33.02" y2="48.73625" width="0.3048" layer="1"/>
-<wire x1="33.02" y1="48.73625" x2="29.924375" y2="51.831875" width="0.3048" layer="1"/>
-<wire x1="29.924375" y1="51.831875" x2="29.924375" y2="57.5" width="0.3048" layer="1"/>
+<wire x1="34.686875" y1="48.73625" x2="32.623125" y2="48.73625" width="0.3048" layer="1"/>
+<wire x1="32.623125" y1="48.73625" x2="29.924375" y2="51.435" width="0.3048" layer="1"/>
+<wire x1="29.924375" y1="51.435" x2="29.924375" y2="57.5" width="0.3048" layer="1"/>
 <wire x1="29.924375" y1="57.5" x2="29.961875" y2="61.75375" width="0.3048" layer="1"/>
 </signal>
 <signal name="N$49">
@@ -5053,7 +5179,7 @@ Please make sure your boards conform to these design rules.</description>
 <contactref element="U$2" pad="P60"/>
 </signal>
 <signal name="N$22">
-<contactref element="U$11" pad="5"/>
+<contactref element="U2" pad="5"/>
 <contactref element="R22" pad="2"/>
 <wire x1="49.045625" y1="72.63625" x2="49.095625" y2="70.73625" width="0.4064" layer="16"/>
 </signal>
@@ -5066,12 +5192,12 @@ Please make sure your boards conform to these design rules.</description>
 </signal>
 <signal name="N$25">
 <contactref element="LED11" pad="C"/>
-<contactref element="U$11" pad="1"/>
+<contactref element="U2" pad="1"/>
 <wire x1="49.095625" y1="68.63625" x2="50.295625" y2="68.63625" width="0.3048" layer="16"/>
 <wire x1="50.295625" y1="68.63625" x2="50.645625" y2="68.98625" width="0.3048" layer="16"/>
 </signal>
 <signal name="VCC0">
-<contactref element="U$11" pad="4"/>
+<contactref element="U2" pad="4"/>
 <contactref element="R23" pad="2"/>
 <contactref element="C18" pad="2"/>
 <wire x1="47.195625" y1="70.73625" x2="46.645625" y2="70.73625" width="0.4064" layer="16"/>
@@ -5105,8 +5231,8 @@ Please make sure your boards conform to these design rules.</description>
 <signal name="N$23">
 <contactref element="R24" pad="2"/>
 <contactref element="LED12" pad="A"/>
-<wire x1="24.881875" y1="51.433125" x2="27.421875" y2="53.965625" width="0.3048" layer="1"/>
-<wire x1="27.421875" y1="53.965625" x2="27.421875" y2="61.75375" width="0.3048" layer="1"/>
+<wire x1="24.881875" y1="50.8" x2="27.421875" y2="53.330625" width="0.3048" layer="1"/>
+<wire x1="27.421875" y1="53.330625" x2="27.421875" y2="61.75375" width="0.3048" layer="1"/>
 </signal>
 <signal name="N$26">
 <contactref element="X1" pad="D+"/>
@@ -5148,7 +5274,7 @@ Please make sure your boards conform to these design rules.</description>
 <wire x1="51.990625" y1="56.976875" x2="51.9625" y2="57.005" width="0.3048" layer="16"/>
 </signal>
 <signal name="VCC1">
-<contactref element="U$11" pad="3"/>
+<contactref element="U2" pad="3"/>
 <contactref element="C17" pad="2"/>
 <wire x1="47.195625" y1="68.63625" x2="45.395625" y2="68.63625" width="0.4064" layer="16"/>
 <wire x1="45.395625" y1="68.63625" x2="44.995625" y2="68.93625" width="0.4064" layer="16"/>
@@ -5187,8 +5313,10 @@ Please make sure your boards conform to these design rules.</description>
 <wire x1="45.56125" y1="55.006875" x2="45.005625" y2="55.5625" width="0.3048" layer="16"/>
 <wire x1="45.005625" y1="55.5625" x2="45.005625" y2="55.800625" width="0.3048" layer="16"/>
 <wire x1="45.005625" y1="55.800625" x2="34.369375" y2="66.436875" width="0.3048" layer="16"/>
-<wire x1="34.369375" y1="66.436875" x2="27.123125" y2="66.436875" width="0.3048" layer="16"/>
-<wire x1="27.123125" y1="66.436875" x2="24.98" y2="68.58" width="0.3048" layer="16"/>
+<wire x1="34.369375" y1="66.436875" x2="26.72625" y2="66.436875" width="0.3048" layer="16"/>
+<wire x1="26.72625" y1="66.436875" x2="25.003125" y2="68.183125" width="0.3048" layer="16"/>
+<wire x1="25.003125" y1="68.183125" x2="24.98" y2="68.20625" width="0.3048" layer="16"/>
+<wire x1="24.98" y1="68.20625" x2="24.98" y2="68.58" width="0.3048" layer="16"/>
 </signal>
 <signal name="TSC_G2_IO2">
 <contactref element="U$2" pad="P21"/>
@@ -5204,7 +5332,7 @@ Please make sure your boards conform to these design rules.</description>
 </signal>
 <signal name="TSC_G2_IO3">
 <contactref element="U$2" pad="P22"/>
-<contactref element="SAMPLE_CAP_G2" pad="1"/>
+<contactref element="C24" pad="1"/>
 <wire x1="47.9625" y1="57.005" x2="47.9625" y2="59.359375" width="0.3048" layer="16"/>
 <wire x1="47.9625" y1="59.359375" x2="47.775" y2="59.586875" width="0.3048" layer="16"/>
 </signal>
@@ -5302,8 +5430,8 @@ Please make sure your boards conform to these design rules.</description>
 </signal>
 <signal name="N$30">
 <contactref element="F1" pad="2"/>
-<contactref element="U$19" pad="1"/>
-<contactref element="U$19" pad="3"/>
+<contactref element="U1" pad="1"/>
+<contactref element="U1" pad="3"/>
 <wire x1="52.87875" y1="66.40125" x2="51.7525" y2="66.40125" width="0.4064" layer="16"/>
 <wire x1="51.7525" y1="66.40125" x2="50.054375" y2="66.40125" width="0.4064" layer="16"/>
 <wire x1="50.054375" y1="66.40125" x2="50.00375" y2="66.350625" width="0.4064" layer="16"/>
@@ -5333,6 +5461,70 @@ Please make sure your boards conform to these design rules.</description>
 </signal>
 </signals>
 <errors>
+<approved hash="18,30,e49224ef12e0d29d"/>
+<approved hash="18,30,a99bb4f0828e9fe5"/>
+<approved hash="18,30,1f125b161b135f17"/>
+<approved hash="18,30,1834503410315831"/>
+<approved hash="18,30,1aa55e851e805aa0"/>
+<approved hash="18,30,17c7528d248861c2"/>
+<approved hash="18,30,81c1bb05e092228d"/>
+<approved hash="18,30,66a6a53d2f31ecaa"/>
+<approved hash="18,30,fbbe4f854188f5b3"/>
+<approved hash="18,30,f477f360256a227d"/>
+<approved hash="18,30,115212fb18f11b58"/>
+<approved hash="18,30,b42e4e6898526214"/>
+<approved hash="18,30,81534ff345c98b69"/>
+<approved hash="18,30,3a1f37303d3a3015"/>
+<approved hash="18,30,4a2d8a3880024017"/>
+<approved hash="18,30,78c2548b828caec5"/>
+<approved hash="18,30,730f5c7b9c7cb308"/>
+<approved hash="18,30,d08e11fbc7c606b3"/>
+<approved hash="18,30,db43190bd9361b7e"/>
+<approved hash="18,30,e7f0bff76bf333f4"/>
+<approved hash="18,30,c27fde360837147e"/>
+<approved hash="18,30,c9b2d6c616c709b3"/>
+<approved hash="18,30,87ff291e0413aaf2"/>
+<approved hash="18,30,2b72e0a0cda50677"/>
+<approved hash="18,30,8a408425a926a743"/>
+<approved hash="18,30,9d58d3e9c5ec8b5d"/>
+<approved hash="18,30,405f43f855e25645"/>
+<approved hash="18,30,2c20f0fdf9a3efcc"/>
+<approved hash="18,30,0997d752edf8e4ef"/>
+<approved hash="18,30,e53a6be5bfe2313d"/>
+<approved hash="18,30,c0b4dced0aee16b7"/>
+<approved hash="18,30,cb79d41d141e0b7a"/>
+<approved hash="18,30,9ea75e886972a95d"/>
+<approved hash="18,30,5b689e90956a5092"/>
+<approved hash="18,30,1027d008e7f227dd"/>
+<approved hash="18,30,2d902f1e2514279a"/>
+<approved hash="18,30,e85fef06d90cde55"/>
+<approved hash="18,30,2a4218e6e5247753"/>
+<approved hash="18,30,66df6186578c50d5"/>
+<approved hash="18,30,0ad032abe4a7ede5"/>
+<approved hash="18,30,67b67742374d27b9"/>
+<approved hash="18,30,662646110f1e2f29"/>
+<approved hash="18,30,3e1b789d78323eb4"/>
+<approved hash="18,30,21dc28e8e6034394"/>
+<approved hash="18,30,e7f0eb71317f3dfe"/>
+<approved hash="18,30,0c71dc4c0657d66a"/>
+<approved hash="18,30,48e37062a96291e3"/>
+<approved hash="18,30,8144c552df589b4e"/>
+<approved hash="18,30,2d18ed75fb7f3b12"/>
+<approved hash="18,30,cf030b7c1d76d909"/>
+<approved hash="18,30,ee5c29cf23c5e456"/>
+<approved hash="18,30,d24dd04dca56c856"/>
+<approved hash="18,30,920b9b628d788411"/>
+<approved hash="18,30,e9492f4942ddd2bb"/>
+<approved hash="18,30,686e28c6b73c553b"/>
+<approved hash="18,30,e30e5aeb5666f1ba"/>
+<approved hash="18,30,70107d6b6b71660a"/>
+<approved hash="18,30,b354b9d1b3cbb94e"/>
+<approved hash="18,30,ec756520b1d21c54"/>
+<approved hash="18,30,451935d875d20513"/>
+<approved hash="18,30,2410511811196411"/>
+<approved hash="18,30,2ca349681f697aa2"/>
+<approved hash="18,30,9a38aee6e7df028b"/>
+<approved hash="18,30,84f35a202e1d4aa3"/>
 <approved hash="3,1,34bf4cfa01d6861f"/>
 <approved hash="3,1,71b7cda1ffec9eee"/>
 <approved hash="3,1,c13fd1e16399d527"/>
@@ -5367,43 +5559,42 @@ Please make sure your boards conform to these design rules.</description>
 <approved hash="3,1,0e628862ae30d172"/>
 <approved hash="3,1,38afe4d056d20db8"/>
 <approved hash="3,1,5983e3b863b5e185"/>
-<approved hash="18,30,e49224ef12e0d29d"/>
-<approved hash="18,30,a99bb4f0828e9fe5"/>
-<approved hash="18,30,1f125b161b135f17"/>
-<approved hash="18,30,1834503410315831"/>
-<approved hash="18,30,1aa55e851e805aa0"/>
-<approved hash="18,30,17c7528d248861c2"/>
-<approved hash="18,30,81c1bb05e092228d"/>
-<approved hash="18,30,1765da4aa49b668c"/>
-<approved hash="18,30,2547966794452775"/>
 <approved hash="18,30,720e16b682d596df"/>
 <approved hash="18,30,375f867f844d357d"/>
-<approved hash="18,30,66a6a53d2f31ecaa"/>
-<approved hash="18,30,fbbe4f854188f5b3"/>
-<approved hash="18,30,f477f360256a227d"/>
-<approved hash="18,30,115212fb18f11b58"/>
-<approved hash="18,30,b42e4e6898526214"/>
-<approved hash="18,30,81534ff345c98b69"/>
-<approved hash="18,30,3a1f37303d3a3015"/>
-<approved hash="18,30,4a2d8a3880024017"/>
-<approved hash="18,30,39b95b4f1b4f79b9"/>
-<approved hash="18,30,dc4abe90fe909c4a"/>
-<approved hash="18,30,2a74449a049a6a74"/>
-<approved hash="18,30,27e5410b010b67e5"/>
-<approved hash="18,30,28c34ae90ae968c3"/>
-<approved hash="18,30,3b2a55f015f07b2a"/>
-<approved hash="18,30,22875c2d1c2d6287"/>
-<approved hash="18,30,d3b04d460d4793b1"/>
-<approved hash="18,30,db6cb5b2f5b29b6c"/>
-<approved hash="18,30,211643bc03bc6116"/>
+<approved hash="18,30,1765da4aa49b668c"/>
+<approved hash="18,30,2547966794452775"/>
 <approved hash="18,30,2d214ff70ff76d21"/>
-<approved hash="18,30,d60eb0d4f0d4960e"/>
-<approved hash="18,30,d9fdbb03fb0399fd"/>
+<approved hash="18,30,d3b04d460d4793b1"/>
 <approved hash="18,30,3c085ede1ede7c08"/>
+<approved hash="18,30,22875c2d1c2d6287"/>
+<approved hash="18,30,d60eb0d4f0d4960e"/>
+<approved hash="18,30,39b95b4f1b4f79b9"/>
+<approved hash="18,30,3b2a55f015f07b2a"/>
 <approved hash="18,30,d49fb625f625949f"/>
+<approved hash="18,30,27e5410b010b67e5"/>
+<approved hash="18,30,d9fdbb03fb0399fd"/>
+<approved hash="18,30,db6cb5b2f5b29b6c"/>
+<approved hash="18,30,dc4abe90fe909c4a"/>
+<approved hash="18,30,211643bc03bc6116"/>
+<approved hash="18,30,28c34ae90ae968c3"/>
 <approved hash="18,30,2f52487808786f52"/>
-<approved hash="18,30,78c2548b828caec5"/>
-<approved hash="18,30,730f5c7b9c7cb308"/>
+<approved hash="18,30,2a74449a049a6a74"/>
+<approved hash="18,30,45b4b394739785b7"/>
+<approved hash="18,30,3ab72097e0a9fa89"/>
+<approved hash="18,30,ab8991a951ab6b8b"/>
+<approved hash="18,30,188c06acc6aed88e"/>
+<approved hash="18,30,898ef7ae37a04980"/>
+<approved hash="18,30,7e8164a1a4a3be83"/>
+<approved hash="18,30,ef83d5a315a52f85"/>
+<approved hash="18,30,5c864aa68ab89c98"/>
+<approved hash="18,30,cd983bb8fbba0d9a"/>
+<approved hash="18,30,429aa8ba68bd829d"/>
+<approved hash="18,30,339d19bdd9bff39f"/>
+<approved hash="18,30,a09f8ebf4eb16091"/>
+<approved hash="18,30,11927fb2bfb4d194"/>
+<approved hash="18,30,8694ecb42cb64696"/>
+<approved hash="18,30,77975db79c49b669"/>
+<approved hash="18,30,e569d349134b256b"/>
 <approved hash="18,30,34a6c2870284f4a5"/>
 <approved hash="18,30,dcef1bf1af015999"/>
 <approved hash="18,30,4ba5518491ba8b9b"/>
@@ -5421,93 +5612,30 @@ Please make sure your boards conform to these design rules.</description>
 <approved hash="18,30,f7869da75da53784"/>
 <approved hash="18,30,06852ca4ed5ac77b"/>
 <approved hash="18,30,947ba25a62585479"/>
-<approved hash="18,30,45b4b394739785b7"/>
-<approved hash="18,30,3ab72097e0a9fa89"/>
-<approved hash="18,30,ab8991a951ab6b8b"/>
-<approved hash="18,30,188c06acc6aed88e"/>
-<approved hash="18,30,898ef7ae37a04980"/>
-<approved hash="18,30,7e8164a1a4a3be83"/>
-<approved hash="18,30,ef83d5a315a52f85"/>
-<approved hash="18,30,5c864aa68ab89c98"/>
-<approved hash="18,30,cd983bb8fbba0d9a"/>
-<approved hash="18,30,429aa8ba68bd829d"/>
-<approved hash="18,30,339d19bdd9bff39f"/>
-<approved hash="18,30,a09f8ebf4eb16091"/>
-<approved hash="18,30,11927fb2bfb4d194"/>
-<approved hash="18,30,8694ecb42cb64696"/>
-<approved hash="18,30,77975db79c49b669"/>
-<approved hash="18,30,e569d349134b256b"/>
-<approved hash="18,30,d08e11fbc7c606b3"/>
-<approved hash="18,30,db43190bd9361b7e"/>
-<approved hash="18,30,e7f0bff76bf333f4"/>
-<approved hash="18,30,c27fde360837147e"/>
-<approved hash="18,30,c9b2d6c616c709b3"/>
 <approved hash="18,30,e3f1f1f6160aa143"/>
 <approved hash="18,30,5c21556ad24c5a1b"/>
-<approved hash="18,30,87ff291e0413aaf2"/>
-<approved hash="18,30,2b72e0a0cda50677"/>
-<approved hash="18,30,8a408425a926a743"/>
-<approved hash="18,30,9d58d3e9c5ec8b5d"/>
-<approved hash="18,30,405f43f855e25645"/>
-<approved hash="18,30,2c20f0fdf9a3efcc"/>
-<approved hash="18,30,0997d752edf8e4ef"/>
-<approved hash="18,30,e53a6be5bfe2313d"/>
-<approved hash="18,30,c0b4dced0aee16b7"/>
-<approved hash="18,30,cb79d41d141e0b7a"/>
 <approved hash="18,30,449b93862ea378a2"/>
 <approved hash="18,30,ab87773d2547ed26"/>
-<approved hash="18,30,9ea75e886972a95d"/>
-<approved hash="18,30,5b689e90956a5092"/>
-<approved hash="18,30,1027d008e7f227dd"/>
-<approved hash="18,30,2d902f1e2514279a"/>
-<approved hash="18,30,e85fef06d90cde55"/>
-<approved hash="18,30,2a4218e6e5247753"/>
-<approved hash="18,30,66df6186578c50d5"/>
-<approved hash="18,30,0ad032abe4a7ede5"/>
-<approved hash="18,30,26c046eeb221efde"/>
 <approved hash="18,30,fc935695f5baef32"/>
-<approved hash="18,30,cfe66c102c118fe7"/>
-<approved hash="18,30,d90d7f273f26990c"/>
-<approved hash="18,30,cd7562af22ae8d74"/>
-<approved hash="18,30,dc2b73c533c49c2a"/>
-<approved hash="18,30,2a1589cfc9ce6a14"/>
-<approved hash="18,30,2fa28c5ccc5d6fa3"/>
-<approved hash="18,30,de9c7db63db79e9d"/>
-<approved hash="18,30,25ef7a193a1965ef"/>
-<approved hash="18,30,ca57698129808a56"/>
-<approved hash="18,30,2051878bc78a6050"/>
-<approved hash="18,30,2d3382edc2ec6d32"/>
-<approved hash="18,30,22c0817ac17b62c1"/>
-<approved hash="18,30,db7e78a838a99b7f"/>
-<approved hash="18,30,d1ba7654365591bb"/>
+<approved hash="18,30,26c046eeb221efde"/>
 <approved hash="18,30,d74974e334e29748"/>
+<approved hash="18,30,de9c7db63db79e9d"/>
+<approved hash="18,30,ca57698129808a56"/>
+<approved hash="18,30,dc2b73c533c49c2a"/>
+<approved hash="18,30,d90d7f273f26990c"/>
+<approved hash="18,30,cfe66c102c118fe7"/>
+<approved hash="18,30,2a1589cfc9ce6a14"/>
+<approved hash="18,30,cd7562af22ae8d74"/>
+<approved hash="18,30,2fa28c5ccc5d6fa3"/>
+<approved hash="18,30,d1ba7654365591bb"/>
+<approved hash="18,30,2d3382edc2ec6d32"/>
+<approved hash="18,30,db7e78a838a99b7f"/>
+<approved hash="18,30,22c0817ac17b62c1"/>
+<approved hash="18,30,25ef7a193a1965ef"/>
+<approved hash="18,30,2051878bc78a6050"/>
 <approved hash="18,30,d4d86b722b7394d9"/>
 <approved hash="18,30,5edf8fb13f4012ae"/>
 <approved hash="18,30,c88e94511805b85a"/>
-<approved hash="18,30,67b67742374d27b9"/>
-<approved hash="18,30,662646110f1e2f29"/>
-<approved hash="18,30,3e1b789d78323eb4"/>
-<approved hash="18,30,21dc28e8e6034394"/>
-<approved hash="18,30,9a38aee6e7df028b"/>
-<approved hash="18,30,84f35a202e1d4aa3"/>
-<approved hash="18,30,e7f0eb71317f3dfe"/>
-<approved hash="18,30,0c71dc4c0657d66a"/>
-<approved hash="18,30,48e37062a96291e3"/>
-<approved hash="18,30,8144c552df589b4e"/>
-<approved hash="18,30,2d18ed75fb7f3b12"/>
-<approved hash="18,30,cf030b7c1d76d909"/>
-<approved hash="18,30,ee5c29cf23c5e456"/>
-<approved hash="18,30,d24dd04dca56c856"/>
-<approved hash="18,30,920b9b628d788411"/>
-<approved hash="18,30,e9492f4942ddd2bb"/>
-<approved hash="18,30,686e28c6b73c553b"/>
-<approved hash="18,30,e30e5aeb5666f1ba"/>
-<approved hash="18,30,70107d6b6b71660a"/>
-<approved hash="18,30,b354b9d1b3cbb94e"/>
-<approved hash="18,30,ec756520b1d21c54"/>
-<approved hash="18,30,451935d875d20513"/>
-<approved hash="18,30,2410511811196411"/>
-<approved hash="18,30,2ca349681f697aa2"/>
 <approved hash="5,1,966911c0c47667b5"/>
 <approved hash="6,1,abc0ae02094a0c88"/>
 <approved hash="6,1,5929832aa83fdbee"/>

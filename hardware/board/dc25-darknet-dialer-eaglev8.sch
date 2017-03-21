@@ -472,7 +472,7 @@
 <wire x1="8" y1="-3.9" x2="8" y2="-4.1" width="0.127" layer="21"/>
 <wire x1="8" y1="-5.9" x2="8" y2="-6.1" width="0.127" layer="21"/>
 <wire x1="8" y1="-7.9" x2="8" y2="-8" width="0.127" layer="21"/>
-<text x="-4.4" y="6.315" size="1.27" layer="21">RFM69HCW</text>
+<text x="-4.4" y="6.315" size="1.27" layer="21" font="vector">RFM69HCW</text>
 <smd name="GND" x="-7.5" y="7" dx="2.9" dy="1.4224" layer="1"/>
 <smd name="MISO" x="-7.5" y="5" dx="2.9" dy="1.4224" layer="1"/>
 <smd name="MOSI" x="-7.5" y="3" dx="2.9" dy="1.4224" layer="1"/>
@@ -489,22 +489,22 @@
 <smd name="DIO3" x="7.5" y="-3" dx="2.9" dy="1.4224" layer="1"/>
 <smd name="GND3" x="7.5" y="-5" dx="2.9" dy="1.4224" layer="1"/>
 <smd name="ANT" x="7.5" y="-7" dx="2.9" dy="1.4224" layer="1"/>
-<text x="9.6" y="-7.4" size="0.8128" layer="21">ANT</text>
-<text x="9.6" y="-5.4" size="0.8128" layer="21">GND</text>
-<text x="9.6" y="-3.4" size="0.8128" layer="21">DIO3</text>
-<text x="9.6" y="-1.4" size="0.8128" layer="21">DIO4</text>
-<text x="9.6" y="0.6" size="0.8128" layer="21">3.3V</text>
-<text x="9.6" y="2.6" size="0.8128" layer="21">DIO0</text>
-<text x="9.6" y="4.6" size="0.8128" layer="21">DIO1</text>
-<text x="9.6" y="6.6" size="0.8128" layer="21">DIO2</text>
-<text x="-12.15" y="6.6" size="0.8128" layer="21">GND</text>
-<text x="-12.15" y="4.6" size="0.8128" layer="21">MISO</text>
-<text x="-12.15" y="2.6" size="0.8128" layer="21">MOSI</text>
-<text x="-12.15" y="0.6" size="0.8128" layer="21">SCK</text>
-<text x="-12.15" y="-1.4" size="0.8128" layer="21">NSS</text>
-<text x="-12.15" y="-3.4" size="0.8128" layer="21">RST</text>
-<text x="-12.15" y="-5.4" size="0.8128" layer="21">DIO5</text>
-<text x="-12.15" y="-7.4" size="0.8128" layer="21">GND</text>
+<text x="9.3" y="-7.4" size="0.8128" layer="21" font="vector">ANT</text>
+<text x="9.3" y="-5.4" size="0.8128" layer="21" font="vector">GND</text>
+<text x="9.3" y="-3.4" size="0.8128" layer="21" font="vector">DIO3</text>
+<text x="9.3" y="-1.4" size="0.8128" layer="21" font="vector">DIO4</text>
+<text x="9.3" y="0.6" size="0.8128" layer="21" font="vector">3.3V</text>
+<text x="9.3" y="2.6" size="0.8128" layer="21" font="vector">DIO0</text>
+<text x="9.3" y="4.6" size="0.8128" layer="21" font="vector">DIO1</text>
+<text x="9.3" y="6.6" size="0.8128" layer="21" font="vector">DIO2</text>
+<text x="-11.35" y="6.6" size="0.8128" layer="21" font="vector">GND</text>
+<text x="-11.85" y="4.6" size="0.8128" layer="21" font="vector">MISO</text>
+<text x="-11.85" y="2.6" size="0.8128" layer="21" font="vector">MOSI</text>
+<text x="-11.35" y="0.6" size="0.8128" layer="21" font="vector">SCK</text>
+<text x="-11.35" y="-1.4" size="0.8128" layer="21" font="vector">NSS</text>
+<text x="-11.35" y="-3.4" size="0.8128" layer="21" font="vector">RST</text>
+<text x="-11.85" y="-5.4" size="0.8128" layer="21" font="vector">DIO5</text>
+<text x="-11.35" y="-7.4" size="0.8128" layer="21" font="vector">GND</text>
 <wire x1="4.5" y1="-7.5" x2="2.5" y2="-7.5" width="0.127" layer="21"/>
 <wire x1="2.5" y1="-7.5" x2="4" y2="-6" width="0.127" layer="21"/>
 </package>
@@ -11428,7 +11428,7 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <part name="GND21" library="SYNShop" deviceset="GND" device=""/>
 <part name="U$10" library="SYNShop" deviceset="VCC" device=""/>
 <part name="C16" library="darknet_parts_library" deviceset="C-US" device="C0603" value="4.7uF"/>
-<part name="U$11" library="darknet_parts_library" deviceset="DS21984E" device=""/>
+<part name="U2" library="darknet_parts_library" deviceset="DS21984E" device=""/>
 <part name="R22" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES"/>
 <part name="GND22" library="SYNShop" deviceset="GND" device=""/>
 <part name="GND23" library="SYNShop" deviceset="GND" device=""/>
@@ -11467,17 +11467,17 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <part name="LED13" library="SYNShop" deviceset="LED" device="0603"/>
 <part name="R28" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="56"/>
 <part name="STLINK" library="darknet_parts_library" deviceset="STLINK-V2-CONNECTOR" device=""/>
-<part name="SAMPLE_CAP_G3" library="darknet_parts_library" deviceset="C-US" device="C0603" value="0.047uF"/>
-<part name="SAMPLE_CAP_G1" library="darknet_parts_library" deviceset="C-US" device="C0603" value="0.047uF"/>
-<part name="SAMPLE_CAP_G2" library="darknet_parts_library" deviceset="C-US" device="C0603" value="0.047uF"/>
-<part name="SAMPLE_CAP_G5" library="darknet_parts_library" deviceset="C-US" device="C0603" value="0.047uF"/>
+<part name="C22" library="darknet_parts_library" deviceset="C-US" device="C0603" value="0.047uF"/>
+<part name="C23" library="darknet_parts_library" deviceset="C-US" device="C0603" value="0.047uF"/>
+<part name="C24" library="darknet_parts_library" deviceset="C-US" device="C0603" value="0.047uF"/>
+<part name="C25" library="darknet_parts_library" deviceset="C-US" device="C0603" value="0.047uF"/>
 <part name="GND1" library="SYNShop" deviceset="GND" device=""/>
 <part name="GND11" library="SYNShop" deviceset="GND" device=""/>
 <part name="GND12" library="SYNShop" deviceset="GND" device=""/>
 <part name="GND13" library="SYNShop" deviceset="GND" device=""/>
 <part name="U$14" library="SYNShop" deviceset="VCC" device=""/>
 <part name="GND14" library="SYNShop" deviceset="GND" device=""/>
-<part name="U$19" library="darknet_parts_library" deviceset="TLV702" device=""/>
+<part name="U1" library="darknet_parts_library" deviceset="TLV702" device=""/>
 <part name="GND15" library="SYNShop" deviceset="GND" device=""/>
 <part name="U$21" library="darknet_parts_library" deviceset="CHIP_ANTENNA" device=""/>
 <part name="C1" library="darknet_parts_library" deviceset="C-US" device="C0603" value="0.5pF"/>
@@ -11565,7 +11565,7 @@ Here.. need to make part</text>
 <instance part="GND21" gate="1" x="58.42" y="35.56"/>
 <instance part="U$10" gate="G$1" x="58.42" y="45.72"/>
 <instance part="C16" gate="G$1" x="17.78" y="40.64" rot="R180"/>
-<instance part="U$11" gate="G$1" x="106.68" y="294.64"/>
+<instance part="U2" gate="G$1" x="106.68" y="294.64"/>
 <instance part="R22" gate="G$1" x="121.92" y="289.56" rot="R90"/>
 <instance part="GND22" gate="1" x="121.92" y="279.4"/>
 <instance part="GND23" gate="1" x="129.54" y="292.1"/>
@@ -11604,17 +11604,17 @@ Here.. need to make part</text>
 <instance part="LED13" gate="G$1" x="254" y="76.2" rot="R90"/>
 <instance part="R28" gate="G$1" x="246.38" y="76.2"/>
 <instance part="STLINK" gate="G$1" x="238.76" y="274.32"/>
-<instance part="SAMPLE_CAP_G3" gate="G$1" x="332.74" y="187.96" rot="R90"/>
-<instance part="SAMPLE_CAP_G1" gate="G$1" x="332.74" y="144.78" rot="R90"/>
-<instance part="SAMPLE_CAP_G2" gate="G$1" x="332.74" y="114.3" rot="R90"/>
-<instance part="SAMPLE_CAP_G5" gate="G$1" x="332.74" y="86.36" rot="R90"/>
+<instance part="C22" gate="G$1" x="332.74" y="187.96" rot="R90"/>
+<instance part="C23" gate="G$1" x="332.74" y="144.78" rot="R90"/>
+<instance part="C24" gate="G$1" x="332.74" y="114.3" rot="R90"/>
+<instance part="C25" gate="G$1" x="332.74" y="86.36" rot="R90"/>
 <instance part="GND1" gate="1" x="340.36" y="81.28"/>
 <instance part="GND11" gate="1" x="340.36" y="109.22"/>
 <instance part="GND12" gate="1" x="340.36" y="139.7"/>
 <instance part="GND13" gate="1" x="340.36" y="182.88"/>
 <instance part="U$14" gate="G$1" x="264.16" y="274.32"/>
 <instance part="GND14" gate="1" x="264.16" y="256.54"/>
-<instance part="U$19" gate="G$1" x="101.6" y="391.16"/>
+<instance part="U1" gate="G$1" x="101.6" y="391.16"/>
 <instance part="GND15" gate="1" x="101.6" y="373.38"/>
 <instance part="U$21" gate="G$1" x="177.8" y="170.18"/>
 <instance part="C1" gate="G$1" x="162.56" y="157.48" rot="R180"/>
@@ -11798,7 +11798,7 @@ Here.. need to make part</text>
 <junction x="27.94" y="38.1"/>
 </segment>
 <segment>
-<pinref part="U$11" gate="G$1" pin="VSS"/>
+<pinref part="U2" gate="G$1" pin="VSS"/>
 <pinref part="R22" gate="G$1" pin="1"/>
 <wire x1="119.38" y1="284.48" x2="121.92" y2="284.48" width="0.1524" layer="91"/>
 <pinref part="GND22" gate="1" pin="GND"/>
@@ -11855,32 +11855,32 @@ Here.. need to make part</text>
 <pinref part="GND14" gate="1" pin="GND"/>
 </segment>
 <segment>
-<pinref part="SAMPLE_CAP_G1" gate="G$1" pin="2"/>
+<pinref part="C23" gate="G$1" pin="2"/>
 <pinref part="GND12" gate="1" pin="GND"/>
 <wire x1="337.82" y1="144.78" x2="340.36" y2="144.78" width="0.1524" layer="91"/>
 <wire x1="340.36" y1="144.78" x2="340.36" y2="142.24" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="SAMPLE_CAP_G2" gate="G$1" pin="2"/>
+<pinref part="C24" gate="G$1" pin="2"/>
 <pinref part="GND11" gate="1" pin="GND"/>
 <wire x1="337.82" y1="114.3" x2="340.36" y2="114.3" width="0.1524" layer="91"/>
 <wire x1="340.36" y1="114.3" x2="340.36" y2="111.76" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="SAMPLE_CAP_G5" gate="G$1" pin="2"/>
+<pinref part="C25" gate="G$1" pin="2"/>
 <pinref part="GND1" gate="1" pin="GND"/>
 <wire x1="337.82" y1="86.36" x2="340.36" y2="86.36" width="0.1524" layer="91"/>
 <wire x1="340.36" y1="86.36" x2="340.36" y2="83.82" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="SAMPLE_CAP_G3" gate="G$1" pin="2"/>
+<pinref part="C22" gate="G$1" pin="2"/>
 <pinref part="GND13" gate="1" pin="GND"/>
 <wire x1="337.82" y1="187.96" x2="340.36" y2="187.96" width="0.1524" layer="91"/>
 <wire x1="340.36" y1="187.96" x2="340.36" y2="185.42" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="GND15" gate="1" pin="GND"/>
-<pinref part="U$19" gate="G$1" pin="GND"/>
+<pinref part="U1" gate="G$1" pin="GND"/>
 <wire x1="101.6" y1="375.92" x2="101.6" y2="378.46" width="0.1524" layer="91"/>
 <pinref part="C21" gate="G$1" pin="1"/>
 <wire x1="101.6" y1="378.46" x2="124.46" y2="378.46" width="0.1524" layer="91"/>
@@ -12195,7 +12195,7 @@ Here.. need to make part</text>
 <label x="73.66" y="45.72" size="1.778" layer="95" rot="R270"/>
 </segment>
 <segment>
-<pinref part="SAMPLE_CAP_G1" gate="G$1" pin="1"/>
+<pinref part="C23" gate="G$1" pin="1"/>
 <wire x1="330.2" y1="144.78" x2="297.18" y2="144.78" width="0.1524" layer="91"/>
 <label x="294.64" y="144.78" size="1.778" layer="95" rot="MR0"/>
 </segment>
@@ -12232,7 +12232,7 @@ Here.. need to make part</text>
 </segment>
 <segment>
 <label x="294.64" y="187.96" size="1.778" layer="95" rot="R180"/>
-<pinref part="SAMPLE_CAP_G3" gate="G$1" pin="1"/>
+<pinref part="C22" gate="G$1" pin="1"/>
 <wire x1="330.2" y1="187.96" x2="297.18" y2="187.96" width="0.1524" layer="91"/>
 </segment>
 </net>
@@ -12423,7 +12423,7 @@ Here.. need to make part</text>
 <wire x1="124.46" y1="396.24" x2="134.62" y2="396.24" width="0.1524" layer="91"/>
 <wire x1="134.62" y1="396.24" x2="134.62" y2="401.32" width="0.1524" layer="91"/>
 <pinref part="U$13" gate="G$1" pin="VCC"/>
-<pinref part="U$19" gate="G$1" pin="VOUT"/>
+<pinref part="U1" gate="G$1" pin="VOUT"/>
 <wire x1="116.84" y1="396.24" x2="124.46" y2="396.24" width="0.1524" layer="91"/>
 <wire x1="124.46" y1="396.24" x2="124.46" y2="393.7" width="0.1524" layer="91"/>
 <junction x="124.46" y="396.24"/>
@@ -12496,7 +12496,7 @@ Here.. need to make part</text>
 <label x="86.36" y="124.46" size="1.778" layer="95" rot="R90"/>
 </segment>
 <segment>
-<pinref part="SAMPLE_CAP_G5" gate="G$1" pin="1"/>
+<pinref part="C25" gate="G$1" pin="1"/>
 <wire x1="330.2" y1="86.36" x2="297.18" y2="86.36" width="0.1524" layer="91"/>
 <label x="294.64" y="86.36" size="1.778" layer="95" rot="MR0"/>
 </segment>
@@ -12555,7 +12555,7 @@ Here.. need to make part</text>
 </net>
 <net name="N$22" class="0">
 <segment>
-<pinref part="U$11" gate="G$1" pin="PROG"/>
+<pinref part="U2" gate="G$1" pin="PROG"/>
 <pinref part="R22" gate="G$1" pin="2"/>
 <wire x1="119.38" y1="294.64" x2="121.92" y2="294.64" width="0.1524" layer="91"/>
 </segment>
@@ -12570,13 +12570,13 @@ Here.. need to make part</text>
 <segment>
 <pinref part="LED11" gate="G$1" pin="C"/>
 <wire x1="86.36" y1="287.02" x2="86.36" y2="284.48" width="0.1524" layer="91"/>
-<pinref part="U$11" gate="G$1" pin="STAT"/>
+<pinref part="U2" gate="G$1" pin="STAT"/>
 <wire x1="86.36" y1="284.48" x2="91.44" y2="284.48" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="VCC0" class="0">
 <segment>
-<pinref part="U$11" gate="G$1" pin="VDD"/>
+<pinref part="U2" gate="G$1" pin="VDD"/>
 <pinref part="R23" gate="G$1" pin="2"/>
 <wire x1="91.44" y1="304.8" x2="86.36" y2="304.8" width="0.1524" layer="91"/>
 <wire x1="86.36" y1="304.8" x2="76.2" y2="304.8" width="0.1524" layer="91"/>
@@ -12647,7 +12647,7 @@ Here.. need to make part</text>
 </net>
 <net name="VCC1" class="0">
 <segment>
-<pinref part="U$11" gate="G$1" pin="VBAT"/>
+<pinref part="U2" gate="G$1" pin="VBAT"/>
 <wire x1="119.38" y1="304.8" x2="129.54" y2="304.8" width="0.1524" layer="91"/>
 <pinref part="C17" gate="G$1" pin="2"/>
 <wire x1="129.54" y1="304.8" x2="142.24" y2="304.8" width="0.1524" layer="91"/>
@@ -12713,7 +12713,7 @@ Here.. need to make part</text>
 <label x="86.36" y="45.72" size="1.778" layer="95" rot="R270"/>
 </segment>
 <segment>
-<pinref part="SAMPLE_CAP_G2" gate="G$1" pin="1"/>
+<pinref part="C24" gate="G$1" pin="1"/>
 <wire x1="330.2" y1="114.3" x2="297.18" y2="114.3" width="0.1524" layer="91"/>
 <label x="294.64" y="114.3" size="1.778" layer="95" rot="MR0"/>
 </segment>
@@ -12800,9 +12800,9 @@ Here.. need to make part</text>
 <net name="N$30" class="0">
 <segment>
 <pinref part="F1" gate="G$1" pin="2"/>
-<pinref part="U$19" gate="G$1" pin="VIN"/>
+<pinref part="U1" gate="G$1" pin="VIN"/>
 <wire x1="81.28" y1="396.24" x2="83.82" y2="396.24" width="0.1524" layer="91"/>
-<pinref part="U$19" gate="G$1" pin="EN"/>
+<pinref part="U1" gate="G$1" pin="EN"/>
 <wire x1="83.82" y1="396.24" x2="86.36" y2="396.24" width="0.1524" layer="91"/>
 <wire x1="86.36" y1="386.08" x2="83.82" y2="386.08" width="0.1524" layer="91"/>
 <wire x1="83.82" y1="386.08" x2="83.82" y2="396.24" width="0.1524" layer="91"/>

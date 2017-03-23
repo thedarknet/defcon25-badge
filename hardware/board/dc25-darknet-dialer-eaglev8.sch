@@ -8,34 +8,34 @@
 </settings>
 <grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
-<layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
-<layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
-<layer number="3" name="Route3" color="4" fill="3" visible="no" active="no"/>
-<layer number="4" name="Route4" color="1" fill="4" visible="no" active="no"/>
-<layer number="5" name="Route5" color="4" fill="4" visible="no" active="no"/>
-<layer number="6" name="Route6" color="1" fill="8" visible="no" active="no"/>
-<layer number="7" name="Route7" color="4" fill="8" visible="no" active="no"/>
-<layer number="8" name="Route8" color="1" fill="2" visible="no" active="no"/>
-<layer number="9" name="Route9" color="4" fill="2" visible="no" active="no"/>
-<layer number="10" name="Route10" color="1" fill="7" visible="no" active="no"/>
-<layer number="11" name="Route11" color="4" fill="7" visible="no" active="no"/>
-<layer number="12" name="Route12" color="1" fill="5" visible="no" active="no"/>
-<layer number="13" name="Route13" color="4" fill="5" visible="no" active="no"/>
-<layer number="14" name="Route14" color="1" fill="6" visible="no" active="no"/>
-<layer number="15" name="Route15" color="4" fill="6" visible="no" active="no"/>
-<layer number="16" name="Bottom" color="1" fill="1" visible="no" active="no"/>
-<layer number="17" name="Pads" color="2" fill="1" visible="no" active="no"/>
-<layer number="18" name="Vias" color="2" fill="1" visible="no" active="no"/>
-<layer number="19" name="Unrouted" color="6" fill="1" visible="no" active="no"/>
-<layer number="20" name="Dimension" color="15" fill="1" visible="no" active="no"/>
-<layer number="21" name="tPlace" color="7" fill="1" visible="no" active="no"/>
-<layer number="22" name="bPlace" color="7" fill="1" visible="no" active="no"/>
-<layer number="23" name="tOrigins" color="15" fill="1" visible="no" active="no"/>
-<layer number="24" name="bOrigins" color="15" fill="1" visible="no" active="no"/>
-<layer number="25" name="tNames" color="7" fill="1" visible="no" active="no"/>
-<layer number="26" name="bNames" color="7" fill="1" visible="no" active="no"/>
-<layer number="27" name="tValues" color="7" fill="1" visible="no" active="no"/>
-<layer number="28" name="bValues" color="7" fill="1" visible="no" active="no"/>
+<layer number="1" name="Top" color="4" fill="1" visible="yes" active="no"/>
+<layer number="2" name="Route2" color="1" fill="3" visible="yes" active="no"/>
+<layer number="3" name="Route3" color="4" fill="3" visible="yes" active="no"/>
+<layer number="4" name="Route4" color="1" fill="4" visible="yes" active="no"/>
+<layer number="5" name="Route5" color="4" fill="4" visible="yes" active="no"/>
+<layer number="6" name="Route6" color="1" fill="8" visible="yes" active="no"/>
+<layer number="7" name="Route7" color="4" fill="8" visible="yes" active="no"/>
+<layer number="8" name="Route8" color="1" fill="2" visible="yes" active="no"/>
+<layer number="9" name="Route9" color="4" fill="2" visible="yes" active="no"/>
+<layer number="10" name="Route10" color="1" fill="7" visible="yes" active="no"/>
+<layer number="11" name="Route11" color="4" fill="7" visible="yes" active="no"/>
+<layer number="12" name="Route12" color="1" fill="5" visible="yes" active="no"/>
+<layer number="13" name="Route13" color="4" fill="5" visible="yes" active="no"/>
+<layer number="14" name="Route14" color="1" fill="6" visible="yes" active="no"/>
+<layer number="15" name="Route15" color="4" fill="6" visible="yes" active="no"/>
+<layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="no"/>
+<layer number="17" name="Pads" color="2" fill="1" visible="yes" active="no"/>
+<layer number="18" name="Vias" color="2" fill="1" visible="yes" active="no"/>
+<layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="no"/>
+<layer number="20" name="Dimension" color="15" fill="1" visible="yes" active="no"/>
+<layer number="21" name="tPlace" color="7" fill="1" visible="yes" active="no"/>
+<layer number="22" name="bPlace" color="7" fill="1" visible="yes" active="no"/>
+<layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="no"/>
+<layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="no"/>
+<layer number="25" name="tNames" color="7" fill="1" visible="yes" active="no"/>
+<layer number="26" name="bNames" color="7" fill="1" visible="yes" active="no"/>
+<layer number="27" name="tValues" color="7" fill="1" visible="yes" active="no"/>
+<layer number="28" name="bValues" color="7" fill="1" visible="yes" active="no"/>
 <layer number="29" name="tStop" color="7" fill="3" visible="no" active="no"/>
 <layer number="30" name="bStop" color="7" fill="6" visible="no" active="no"/>
 <layer number="31" name="tCream" color="7" fill="4" visible="no" active="no"/>
@@ -44,8 +44,8 @@
 <layer number="34" name="bFinish" color="6" fill="6" visible="no" active="no"/>
 <layer number="35" name="tGlue" color="7" fill="4" visible="no" active="no"/>
 <layer number="36" name="bGlue" color="7" fill="5" visible="no" active="no"/>
-<layer number="37" name="tTest" color="7" fill="1" visible="no" active="no"/>
-<layer number="38" name="bTest" color="7" fill="1" visible="no" active="no"/>
+<layer number="37" name="tTest" color="7" fill="1" visible="yes" active="no"/>
+<layer number="38" name="bTest" color="7" fill="1" visible="yes" active="no"/>
 <layer number="39" name="tKeepout" color="4" fill="11" visible="no" active="no"/>
 <layer number="40" name="bKeepout" color="1" fill="11" visible="no" active="no"/>
 <layer number="41" name="tRestrict" color="4" fill="10" visible="no" active="no"/>
@@ -53,19 +53,19 @@
 <layer number="43" name="vRestrict" color="2" fill="10" visible="no" active="no"/>
 <layer number="44" name="Drills" color="7" fill="1" visible="no" active="no"/>
 <layer number="45" name="Holes" color="7" fill="1" visible="no" active="no"/>
-<layer number="46" name="Milling" color="3" fill="1" visible="no" active="no"/>
-<layer number="47" name="Measures" color="7" fill="1" visible="no" active="no"/>
-<layer number="48" name="Document" color="7" fill="1" visible="no" active="no"/>
-<layer number="49" name="Reference" color="7" fill="1" visible="no" active="no"/>
-<layer number="50" name="dxf" color="7" fill="1" visible="no" active="no"/>
-<layer number="51" name="tDocu" color="7" fill="1" visible="no" active="no"/>
-<layer number="52" name="bDocu" color="7" fill="1" visible="no" active="no"/>
-<layer number="53" name="tGND_GNDA" color="7" fill="9" visible="no" active="no"/>
-<layer number="54" name="bGND_GNDA" color="1" fill="9" visible="no" active="no"/>
-<layer number="56" name="wert" color="7" fill="1" visible="no" active="no"/>
-<layer number="57" name="tCAD" color="7" fill="1" visible="no" active="no"/>
-<layer number="59" name="tCarbon" color="7" fill="1" visible="no" active="no"/>
-<layer number="60" name="bCarbon" color="7" fill="1" visible="no" active="no"/>
+<layer number="46" name="Milling" color="3" fill="1" visible="yes" active="no"/>
+<layer number="47" name="Measures" color="7" fill="1" visible="yes" active="no"/>
+<layer number="48" name="Document" color="7" fill="1" visible="yes" active="no"/>
+<layer number="49" name="Reference" color="7" fill="1" visible="yes" active="no"/>
+<layer number="50" name="dxf" color="7" fill="1" visible="yes" active="no"/>
+<layer number="51" name="tDocu" color="7" fill="1" visible="yes" active="no"/>
+<layer number="52" name="bDocu" color="7" fill="1" visible="yes" active="no"/>
+<layer number="53" name="tGND_GNDA" color="7" fill="9" visible="yes" active="no"/>
+<layer number="54" name="bGND_GNDA" color="1" fill="9" visible="yes" active="no"/>
+<layer number="56" name="wert" color="7" fill="1" visible="yes" active="no"/>
+<layer number="57" name="tCAD" color="7" fill="1" visible="yes" active="no"/>
+<layer number="59" name="tCarbon" color="7" fill="1" visible="yes" active="no"/>
+<layer number="60" name="bCarbon" color="7" fill="1" visible="yes" active="no"/>
 <layer number="90" name="Modules" color="5" fill="1" visible="yes" active="yes"/>
 <layer number="91" name="Nets" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="92" name="Busses" color="1" fill="1" visible="yes" active="yes"/>
@@ -860,10 +860,14 @@
 <smd name="D-" x="-0.65" y="2.65" dx="1.4" dy="0.35" layer="1" rot="R90"/>
 <smd name="D+" x="0" y="2.65" dx="1.4" dy="0.35" layer="1" rot="R90"/>
 <smd name="ID" x="0.65" y="2.65" dx="1.4" dy="0.35" layer="1" rot="R90"/>
-<smd name="MT1" x="-4" y="0" dx="1.8" dy="1.9" layer="1"/>
-<smd name="MT2" x="4" y="0" dx="1.8" dy="1.9" layer="1"/>
+<smd name="MT1" x="-3.8" y="0" dx="1.8" dy="1.9" layer="1"/>
+<smd name="MT2" x="3.8" y="0" dx="1.8" dy="1.9" layer="1"/>
 <text x="-1.6" y="-0.35" size="0.762" layer="25">&gt;NAME</text>
 <text x="-1.905" y="-3.175" size="0.762" layer="27">&gt;VALUE</text>
+<smd name="P$1" x="-3.1" y="2.6" dx="1.6" dy="2.1" layer="1" rot="R270"/>
+<smd name="P$2" x="3.1" y="2.6" dx="1.6" dy="2.1" layer="1" rot="R270"/>
+<smd name="MT3" x="1.15" y="0" dx="1.8" dy="1.9" layer="1"/>
+<smd name="MT4" x="-1.15" y="0" dx="1.8" dy="1.9" layer="1"/>
 </package>
 <package name="TACTILE-2PIN">
 <wire x1="3.048" y1="1.016" x2="3.048" y2="2.54" width="0.2032" layer="21"/>
@@ -4055,19 +4059,17 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <smd name="4" x="0.95" y="1.1" dx="0.75" dy="0.9" layer="1"/>
 </package>
 <package name="1X04">
-<wire x1="-6.35" y1="3.048" x2="-6.35" y2="-2.54" width="0.127" layer="21"/>
-<wire x1="3.81" y1="3.048" x2="3.81" y2="-2.54" width="0.127" layer="21"/>
-<wire x1="3.81" y1="3.048" x2="-6.35" y2="3.048" width="0.127" layer="21"/>
-<wire x1="3.81" y1="-2.54" x2="2.54" y2="-2.54" width="0.127" layer="21"/>
-<wire x1="2.54" y1="-2.54" x2="-5.08" y2="-2.54" width="0.127" layer="21"/>
-<wire x1="-5.08" y1="-2.54" x2="-6.35" y2="-2.54" width="0.127" layer="21"/>
-<wire x1="-5.08" y1="-2.54" x2="-5.08" y2="-1.27" width="0.127" layer="21"/>
-<wire x1="-5.08" y1="-1.27" x2="2.54" y2="-1.27" width="0.127" layer="21"/>
-<wire x1="2.54" y1="-1.27" x2="2.54" y2="-2.54" width="0.127" layer="21"/>
+<wire x1="-6.35" y1="1.27" x2="-6.35" y2="-1.27" width="0.127" layer="21"/>
+<wire x1="3.81" y1="1.27" x2="3.81" y2="-1.27" width="0.127" layer="21"/>
+<wire x1="3.81" y1="-1.27" x2="-3.81" y2="-1.27" width="0.127" layer="21"/>
 <pad name="VCC" x="-5.08" y="0" drill="1.016" diameter="1.8796" shape="square"/>
 <pad name="SWDIO" x="-2.54" y="0" drill="1.016" diameter="1.8796"/>
 <pad name="SWDCLK" x="0" y="0" drill="1.016" diameter="1.8796"/>
 <pad name="GND" x="2.54" y="0" drill="1.016" diameter="1.8796"/>
+<wire x1="-3.81" y1="-1.27" x2="-6.35" y2="-1.27" width="0.127" layer="21"/>
+<wire x1="-6.35" y1="1.27" x2="-3.81" y2="1.27" width="0.127" layer="21"/>
+<wire x1="-3.81" y1="1.27" x2="3.81" y2="1.27" width="0.127" layer="21"/>
+<wire x1="-3.81" y1="1.27" x2="-3.81" y2="-1.27" width="0.127" layer="21"/>
 </package>
 <package name="C0603">
 <description>&lt;b&gt;CAPACITOR&lt;/b&gt;&lt;p&gt;
@@ -8223,7 +8225,7 @@ chip</description>
 <wire x1="-10.16" y1="-7.62" x2="10.16" y2="-7.62" width="0.254" layer="94"/>
 <wire x1="10.16" y1="-7.62" x2="10.16" y2="7.62" width="0.254" layer="94"/>
 <wire x1="10.16" y1="7.62" x2="-10.16" y2="7.62" width="0.254" layer="94"/>
-<text x="-5.08" y="0" size="1.778" layer="94">TLV702xx</text>
+<text x="-5.08" y="0" size="1.778" layer="94">LDO VREG</text>
 <pin name="VIN" x="-15.24" y="5.08" length="middle"/>
 <pin name="EN" x="-15.24" y="-5.08" length="middle"/>
 <pin name="VOUT" x="15.24" y="5.08" length="middle" rot="R180"/>
@@ -11379,18 +11381,18 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <part name="LED6" library="SYNShop" deviceset="LED" device="REVERSEMOUNT"/>
 <part name="LED7" library="SYNShop" deviceset="LED" device="REVERSEMOUNT"/>
 <part name="LED8" library="SYNShop" deviceset="LED" device="REVERSEMOUNT"/>
-<part name="R1" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="47"/>
-<part name="R2" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="47"/>
-<part name="R3" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="47"/>
-<part name="R4" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="47"/>
-<part name="R5" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="47"/>
-<part name="R6" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="47"/>
-<part name="R7" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="47"/>
-<part name="R8" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="47"/>
+<part name="R1" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="CRCW120647R0JNEA"/>
+<part name="R2" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="CRCW120647R0JNEA"/>
+<part name="R3" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="CRCW120647R0JNEA"/>
+<part name="R4" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="CRCW120647R0JNEA"/>
+<part name="R5" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="CRCW120647R0JNEA"/>
+<part name="R6" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="CRCW120647R0JNEA"/>
+<part name="R7" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="CRCW120647R0JNEA"/>
+<part name="R8" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="CRCW120647R0JNEA"/>
 <part name="LED9" library="SYNShop" deviceset="LED" device="REVERSEMOUNT"/>
 <part name="LED10" library="SYNShop" deviceset="LED" device="REVERSEMOUNT"/>
-<part name="R9" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="47"/>
-<part name="R10" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="47"/>
+<part name="R9" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="CRCW120647R0JNEA"/>
+<part name="R10" library="darknet_parts_library" deviceset="RESISTOR" device="1206" value="CRCW120647R0JNEA"/>
 <part name="TOUCHHOOK" library="darknet_parts_library" deviceset="CAP_TOUCH" device="HOOK"/>
 <part name="U$15" library="SYNShop" deviceset="RFM69HCW" device="RFN69HCWSMD"/>
 <part name="R11" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="1K"/>
@@ -11413,7 +11415,7 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <part name="GND8" library="SYNShop" deviceset="GND" device=""/>
 <part name="GND9" library="SYNShop" deviceset="GND" device=""/>
 <part name="GND10" library="SYNShop" deviceset="GND" device=""/>
-<part name="U$2" library="darknet_parts_library" deviceset="STM32F302XC" device=""/>
+<part name="U$2" library="darknet_parts_library" deviceset="STM32F302XC" device="" value="STM32F302RBT6"/>
 <part name="U$3" library="SYNShop" deviceset="VCC" device=""/>
 <part name="U$4" library="SYNShop" deviceset="VCC" device=""/>
 <part name="U$5" library="SYNShop" deviceset="VCC" device=""/>
@@ -11427,63 +11429,63 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <part name="C15" library="darknet_parts_library" deviceset="C-US" device="C0603" value="0.01uF"/>
 <part name="GND21" library="SYNShop" deviceset="GND" device=""/>
 <part name="U$10" library="SYNShop" deviceset="VCC" device=""/>
-<part name="C16" library="darknet_parts_library" deviceset="C-US" device="C0603" value="4.7uF"/>
-<part name="U2" library="darknet_parts_library" deviceset="DS21984E" device=""/>
-<part name="R22" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES"/>
+<part name="C16" library="darknet_parts_library" deviceset="C-US" device="C0603" value="GRM188R61A475ME15D"/>
+<part name="U2" library="darknet_parts_library" deviceset="DS21984E" device="" value="MCP73831T-5ACI/OT"/>
+<part name="R22" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="2K"/>
 <part name="GND22" library="SYNShop" deviceset="GND" device=""/>
 <part name="GND23" library="SYNShop" deviceset="GND" device=""/>
-<part name="R23" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES"/>
-<part name="LED11" library="SYNShop" deviceset="LED" device="0603"/>
-<part name="C17" library="darknet_parts_library" deviceset="C-US" device="C0603" value="1uF"/>
+<part name="R23" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="470"/>
+<part name="LED12" library="SYNShop" deviceset="LED" device="0603" value="MF-LED-0603-GREEN"/>
+<part name="C17" library="darknet_parts_library" deviceset="C-US" device="C0603" value="GRM188R61A475ME15D"/>
 <part name="GND24" library="SYNShop" deviceset="GND" device=""/>
 <part name="5V" library="SYNShop" deviceset="VCC0" device="" value="5V"/>
-<part name="C18" library="darknet_parts_library" deviceset="C-US" device="C0603"/>
+<part name="C18" library="darknet_parts_library" deviceset="C-US" device="C0603" value="GRM188R61A475ME15D"/>
 <part name="GND25" library="SYNShop" deviceset="GND" device=""/>
 <part name="X1" library="SYNShop" deviceset="USB" device="-MICROB" value="10118193-0001LF"/>
 <part name="U$16" library="SYNShop" deviceset="VCC0" device="" value="5V"/>
-<part name="U$17" library="darknet_parts_library" deviceset="SOP22" device="FLAT"/>
-<part name="LED12" library="SYNShop" deviceset="LED" device="5MM"/>
-<part name="R24" library="darknet_parts_library" deviceset="R-US_" device="0207/7" value="56"/>
+<part name="U3" library="darknet_parts_library" deviceset="SOP22" device="FLAT"/>
+<part name="LED11" library="SYNShop" deviceset="LED" device="5MM"/>
+<part name="R24" library="darknet_parts_library" deviceset="R-US_" device="0207/7" value="47"/>
 <part name="GND27" library="SYNShop" deviceset="GND" device=""/>
 <part name="U$18" library="SYNShop" deviceset="VCC" device=""/>
 <part name="CN1" library="adafruit" deviceset="JST_2PIN" device="-THM-RA"/>
 <part name="SW1" library="SYNShop" deviceset="SWITCH_TACTILE" device="TACTILE-2PIN-NARROW" value="RESET"/>
-<part name="R25" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES"/>
+<part name="R25" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="10K"/>
 <part name="GND28" library="SYNShop" deviceset="GND" device=""/>
 <part name="U$20" library="SYNShop" deviceset="VCC" device=""/>
 <part name="R26" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="27"/>
 <part name="R27" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="27"/>
-<part name="C19" library="darknet_parts_library" deviceset="C-US" device="C0603" value="47pF"/>
-<part name="C20" library="darknet_parts_library" deviceset="C-US" device="C0603" value="47pF"/>
-<part name="L1" library="dp_devices" deviceset="FERRITE" device="-0603"/>
+<part name="C19" library="darknet_parts_library" deviceset="C-US" device="C0603" value="C0603C470J3GACTU"/>
+<part name="C20" library="darknet_parts_library" deviceset="C-US" device="C0603" value="C0603C470J3GACTU"/>
+<part name="L1" library="dp_devices" deviceset="FERRITE" device="-0603" value="BLM21PG221SN1D"/>
 <part name="GND26" library="SYNShop" deviceset="GND" device=""/>
-<part name="Y1" library="SparkFun" deviceset="RESONATOR" device="SMD"/>
+<part name="Y1" library="SparkFun" deviceset="RESONATOR" device="SMD" value="CSTCE8M00G52-R0"/>
 <part name="GND29" library="SYNShop" deviceset="GND" device=""/>
 <part name="3.7V" library="SYNShop" deviceset="VCC1" device="" value="3.7V"/>
-<part name="F1" library="SparkFun" deviceset="PTC" device="SMD" value="500uA"/>
+<part name="F1" library="SparkFun" deviceset="PTC" device="SMD" value="0ZCA0050FF2G"/>
 <part name="3.7V1" library="SYNShop" deviceset="VCC1" device="" value="3.7V"/>
 <part name="C21" library="darknet_parts_library" deviceset="C-US" device="C0603" value="1uF"/>
 <part name="U$13" library="SYNShop" deviceset="VCC" device=""/>
-<part name="LED13" library="SYNShop" deviceset="LED" device="0603"/>
-<part name="R28" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="56"/>
+<part name="LED13" library="SYNShop" deviceset="LED" device="0603" value="MF-LED-0603-GREEN"/>
+<part name="R28" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="68"/>
 <part name="STLINK" library="darknet_parts_library" deviceset="STLINK-V2-CONNECTOR" device=""/>
-<part name="C22" library="darknet_parts_library" deviceset="C-US" device="C0603" value="0.047uF"/>
-<part name="C23" library="darknet_parts_library" deviceset="C-US" device="C0603" value="0.047uF"/>
-<part name="C24" library="darknet_parts_library" deviceset="C-US" device="C0603" value="0.047uF"/>
-<part name="C25" library="darknet_parts_library" deviceset="C-US" device="C0603" value="0.047uF"/>
+<part name="C22" library="darknet_parts_library" deviceset="C-US" device="C0603" value="C0603C473J3RACAUTO"/>
+<part name="C23" library="darknet_parts_library" deviceset="C-US" device="C0603" value="C0603C473J3RACAUTO"/>
+<part name="C24" library="darknet_parts_library" deviceset="C-US" device="C0603" value="C0603C473J3RACAUTO"/>
+<part name="C25" library="darknet_parts_library" deviceset="C-US" device="C0603" value="C0603C473J3RACAUTO"/>
 <part name="GND1" library="SYNShop" deviceset="GND" device=""/>
 <part name="GND11" library="SYNShop" deviceset="GND" device=""/>
 <part name="GND12" library="SYNShop" deviceset="GND" device=""/>
 <part name="GND13" library="SYNShop" deviceset="GND" device=""/>
 <part name="U$14" library="SYNShop" deviceset="VCC" device=""/>
 <part name="GND14" library="SYNShop" deviceset="GND" device=""/>
-<part name="U1" library="darknet_parts_library" deviceset="TLV702" device=""/>
+<part name="U1" library="darknet_parts_library" deviceset="TLV702" device="" value="BU33SD5WG-TR"/>
 <part name="GND15" library="SYNShop" deviceset="GND" device=""/>
-<part name="U$21" library="darknet_parts_library" deviceset="CHIP_ANTENNA" device=""/>
-<part name="C1" library="darknet_parts_library" deviceset="C-US" device="C0603" value="0.5pF"/>
+<part name="U$21" library="darknet_parts_library" deviceset="CHIP_ANTENNA" device="" value="0915AT43A0026E"/>
+<part name="C1" library="darknet_parts_library" deviceset="C-US" device="C0603" value="251R14S0R5BV4T"/>
 <part name="GND16" library="SYNShop" deviceset="GND" device=""/>
-<part name="L2" library="darknet_parts_library" deviceset="INDUCTOR" device="0603" value="10nH"/>
-<part name="L3" library="darknet_parts_library" deviceset="INDUCTOR" device="0603" value="4.7nH"/>
+<part name="L2" library="darknet_parts_library" deviceset="INDUCTOR" device="0603" value="CI160808-10NJ"/>
+<part name="L3" library="darknet_parts_library" deviceset="INDUCTOR" device="0603" value="CI160808-4N7D"/>
 <part name="U$22" library="darknet_parts_library" deviceset="ST7735S_LCD_MODULE" device=""/>
 <part name="U$12" library="darknet_parts_library" deviceset="KRUX_LOGO" device=""/>
 <part name="U$23" library="darknet_parts_library" deviceset="CMD_C0DE_LOGO" device=""/>
@@ -11491,10 +11493,22 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <sheets>
 <sheet>
 <plain>
-<text x="83.82" y="406.4" size="1.778" layer="91">3.3V LDO Voltage regulator
-Here.. need to make part</text>
 <text x="152.4" y="76.2" size="1.778" layer="91">If we move to the 1.8 then we can free up PC7</text>
 <text x="20.32" y="50.8" size="1.778" layer="91">Bypass Capacitors for STM32</text>
+<text x="154.94" y="160.02" size="1.778" layer="96">0.5pF</text>
+<text x="7.62" y="40.64" size="1.778" layer="96">4.7uF</text>
+<text x="91.44" y="342.9" size="1.778" layer="96">47pF</text>
+<text x="101.6" y="342.9" size="1.778" layer="96">47pF</text>
+<text x="337.82" y="147.32" size="1.778" layer="96" rot="R90">0.047uF</text>
+<text x="337.82" y="190.5" size="1.778" layer="96" rot="R90">0.047uF</text>
+<text x="337.82" y="116.84" size="1.778" layer="96" rot="R90">0.047uF</text>
+<text x="337.82" y="88.9" size="1.778" layer="96" rot="R90">0.047uF</text>
+<text x="53.34" y="388.62" size="1.778" layer="96">PTC 0.5A Resettable Fuse</text>
+<text x="86.36" y="327.66" size="1.778" layer="96" rot="R180">Ferrite Bead</text>
+<text x="144.78" y="167.64" size="1.778" layer="96">10nH</text>
+<text x="127" y="157.48" size="1.778" layer="96">4.7nH</text>
+<text x="68.58" y="302.26" size="1.778" layer="96">4.7uF</text>
+<text x="121.92" y="302.26" size="1.778" layer="96">4.7uF</text>
 </plain>
 <instances>
 <instance part="U$1" gate="G$1" x="12.7" y="2.54"/>
@@ -11570,16 +11584,22 @@ Here.. need to make part</text>
 <instance part="GND22" gate="1" x="121.92" y="279.4"/>
 <instance part="GND23" gate="1" x="129.54" y="292.1"/>
 <instance part="R23" gate="G$1" x="86.36" y="299.72" rot="R90"/>
-<instance part="LED11" gate="G$1" x="86.36" y="292.1"/>
-<instance part="C17" gate="G$1" x="129.54" y="299.72" rot="R180"/>
+<instance part="LED12" gate="G$1" x="86.36" y="292.1" smashed="yes">
+<attribute name="NAME" x="89.916" y="287.528" size="1.778" layer="95" rot="R90"/>
+</instance>
+<instance part="C17" gate="G$1" x="129.54" y="299.72" smashed="yes" rot="R180">
+<attribute name="NAME" x="128.524" y="299.085" size="1.778" layer="95" rot="R180"/>
+</instance>
 <instance part="GND24" gate="1" x="142.24" y="292.1"/>
 <instance part="5V" gate="VCC0" x="60.96" y="309.88"/>
-<instance part="C18" gate="G$1" x="76.2" y="299.72" rot="R180"/>
+<instance part="C18" gate="G$1" x="76.2" y="299.72" smashed="yes" rot="R180">
+<attribute name="NAME" x="75.184" y="299.085" size="1.778" layer="95" rot="R180"/>
+</instance>
 <instance part="GND25" gate="1" x="76.2" y="292.1"/>
 <instance part="X1" gate="G$1" x="129.54" y="332.74"/>
 <instance part="U$16" gate="VCC0" x="73.66" y="337.82"/>
-<instance part="U$17" gate="G$1" x="248.92" y="231.14"/>
-<instance part="LED12" gate="G$1" x="254" y="195.58" rot="R90"/>
+<instance part="U3" gate="G$1" x="248.92" y="231.14"/>
+<instance part="LED11" gate="G$1" x="254" y="195.58" rot="R90"/>
 <instance part="R24" gate="G$1" x="246.38" y="195.58"/>
 <instance part="GND27" gate="1" x="264.16" y="220.98"/>
 <instance part="U$18" gate="G$1" x="264.16" y="241.3"/>
@@ -11590,24 +11610,42 @@ Here.. need to make part</text>
 <instance part="U$20" gate="G$1" x="236.22" y="370.84"/>
 <instance part="R26" gate="G$1" x="91.44" y="350.52" rot="R180"/>
 <instance part="R27" gate="G$1" x="91.44" y="358.14" rot="R180"/>
-<instance part="C19" gate="G$1" x="109.22" y="340.36" rot="R180"/>
-<instance part="C20" gate="G$1" x="99.06" y="340.36" rot="R180"/>
-<instance part="L1" gate="L" x="86.36" y="335.28" rot="R90"/>
+<instance part="C19" gate="G$1" x="109.22" y="340.36" smashed="yes" rot="R180">
+<attribute name="NAME" x="108.204" y="339.725" size="1.778" layer="95" rot="R180"/>
+</instance>
+<instance part="C20" gate="G$1" x="99.06" y="340.36" smashed="yes" rot="R180">
+<attribute name="NAME" x="98.044" y="339.725" size="1.778" layer="95" rot="R180"/>
+</instance>
+<instance part="L1" gate="L" x="86.36" y="335.28" smashed="yes" rot="R90">
+<attribute name="NAME" x="80.01" y="337.82" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="86.36" y="331.47" size="1.778" layer="96" rot="R180"/>
+</instance>
 <instance part="GND26" gate="1" x="109.22" y="327.66"/>
 <instance part="Y1" gate="G$1" x="20.32" y="91.44" rot="R270"/>
 <instance part="GND29" gate="1" x="10.16" y="88.9"/>
 <instance part="3.7V" gate="G$1" x="142.24" y="309.88"/>
-<instance part="F1" gate="G$1" x="73.66" y="396.24"/>
+<instance part="F1" gate="G$1" x="73.66" y="396.24" smashed="yes">
+<attribute name="NAME" x="71.12" y="399.288" size="1.778" layer="95"/>
+<attribute name="VALUE" x="65.278" y="391.16" size="1.778" layer="96"/>
+</instance>
 <instance part="3.7V1" gate="G$1" x="63.5" y="401.32"/>
 <instance part="C21" gate="G$1" x="124.46" y="388.62" rot="R180"/>
 <instance part="U$13" gate="G$1" x="134.62" y="401.32"/>
 <instance part="LED13" gate="G$1" x="254" y="76.2" rot="R90"/>
 <instance part="R28" gate="G$1" x="246.38" y="76.2"/>
 <instance part="STLINK" gate="G$1" x="238.76" y="274.32"/>
-<instance part="C22" gate="G$1" x="332.74" y="187.96" rot="R90"/>
-<instance part="C23" gate="G$1" x="332.74" y="144.78" rot="R90"/>
-<instance part="C24" gate="G$1" x="332.74" y="114.3" rot="R90"/>
-<instance part="C25" gate="G$1" x="332.74" y="86.36" rot="R90"/>
+<instance part="C22" gate="G$1" x="332.74" y="187.96" smashed="yes" rot="R90">
+<attribute name="NAME" x="332.105" y="188.976" size="1.778" layer="95" rot="R90"/>
+</instance>
+<instance part="C23" gate="G$1" x="332.74" y="144.78" smashed="yes" rot="R90">
+<attribute name="NAME" x="332.105" y="145.796" size="1.778" layer="95" rot="R90"/>
+</instance>
+<instance part="C24" gate="G$1" x="332.74" y="114.3" smashed="yes" rot="R90">
+<attribute name="NAME" x="332.105" y="115.316" size="1.778" layer="95" rot="R90"/>
+</instance>
+<instance part="C25" gate="G$1" x="332.74" y="86.36" smashed="yes" rot="R90">
+<attribute name="NAME" x="332.105" y="87.376" size="1.778" layer="95" rot="R90"/>
+</instance>
 <instance part="GND1" gate="1" x="340.36" y="81.28"/>
 <instance part="GND11" gate="1" x="340.36" y="109.22"/>
 <instance part="GND12" gate="1" x="340.36" y="139.7"/>
@@ -11617,10 +11655,16 @@ Here.. need to make part</text>
 <instance part="U1" gate="G$1" x="101.6" y="391.16"/>
 <instance part="GND15" gate="1" x="101.6" y="373.38"/>
 <instance part="U$21" gate="G$1" x="177.8" y="170.18"/>
-<instance part="C1" gate="G$1" x="162.56" y="157.48" rot="R180"/>
+<instance part="C1" gate="G$1" x="162.56" y="157.48" smashed="yes" rot="R180">
+<attribute name="NAME" x="161.544" y="156.845" size="1.778" layer="95" rot="R180"/>
+</instance>
 <instance part="GND16" gate="1" x="162.56" y="144.78"/>
-<instance part="L2" gate="G$1" x="147.32" y="165.1" rot="R90"/>
-<instance part="L3" gate="G$1" x="137.16" y="157.48" rot="R180"/>
+<instance part="L2" gate="G$1" x="147.32" y="165.1" smashed="yes" rot="R90">
+<attribute name="NAME" x="142.24" y="167.64" size="1.778" layer="95" rot="R90"/>
+</instance>
+<instance part="L3" gate="G$1" x="137.16" y="157.48" smashed="yes" rot="R180">
+<attribute name="NAME" x="134.62" y="152.4" size="1.778" layer="95" rot="R180"/>
+</instance>
 <instance part="U$22" gate="G$1" x="116.84" y="241.3"/>
 <instance part="U$12" gate="G$1" x="22.86" y="5.08"/>
 <instance part="U$23" gate="G$1" x="33.02" y="5.08"/>
@@ -11816,7 +11860,7 @@ Here.. need to make part</text>
 <wire x1="76.2" y1="294.64" x2="76.2" y2="297.18" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="U$17" gate="G$1" pin="GND"/>
+<pinref part="U3" gate="G$1" pin="GND"/>
 <pinref part="GND27" gate="1" pin="GND"/>
 <wire x1="261.62" y1="223.52" x2="264.16" y2="223.52" width="0.1524" layer="91"/>
 </segment>
@@ -12408,7 +12452,7 @@ Here.. need to make part</text>
 <junction x="27.94" y="45.72"/>
 </segment>
 <segment>
-<pinref part="U$17" gate="G$1" pin="VS"/>
+<pinref part="U3" gate="G$1" pin="VS"/>
 <pinref part="U$18" gate="G$1" pin="VCC"/>
 <wire x1="261.62" y1="238.76" x2="264.16" y2="238.76" width="0.1524" layer="91"/>
 <wire x1="264.16" y1="238.76" x2="264.16" y2="241.3" width="0.1524" layer="91"/>
@@ -12503,7 +12547,7 @@ Here.. need to make part</text>
 </net>
 <net name="TIM_IR_CARRIER_FREQ" class="0">
 <segment>
-<pinref part="LED12" gate="G$1" pin="C"/>
+<pinref part="LED11" gate="G$1" pin="C"/>
 <wire x1="259.08" y1="195.58" x2="264.16" y2="195.58" width="0.1524" layer="91"/>
 <label x="266.7" y="195.58" size="1.778" layer="95"/>
 </segment>
@@ -12536,7 +12580,7 @@ Here.. need to make part</text>
 </net>
 <net name="IR_RCV" class="0">
 <segment>
-<pinref part="U$17" gate="G$1" pin="OUT"/>
+<pinref part="U3" gate="G$1" pin="OUT"/>
 <wire x1="261.62" y1="231.14" x2="264.16" y2="231.14" width="0.1524" layer="91"/>
 <label x="266.7" y="231.14" size="1.778" layer="95"/>
 </segment>
@@ -12563,12 +12607,12 @@ Here.. need to make part</text>
 <net name="N$24" class="0">
 <segment>
 <pinref part="R23" gate="G$1" pin="1"/>
-<pinref part="LED11" gate="G$1" pin="A"/>
+<pinref part="LED12" gate="G$1" pin="A"/>
 </segment>
 </net>
 <net name="N$25" class="0">
 <segment>
-<pinref part="LED11" gate="G$1" pin="C"/>
+<pinref part="LED12" gate="G$1" pin="C"/>
 <wire x1="86.36" y1="287.02" x2="86.36" y2="284.48" width="0.1524" layer="91"/>
 <pinref part="U2" gate="G$1" pin="STAT"/>
 <wire x1="86.36" y1="284.48" x2="91.44" y2="284.48" width="0.1524" layer="91"/>
@@ -12597,7 +12641,7 @@ Here.. need to make part</text>
 <net name="N$23" class="0">
 <segment>
 <pinref part="R24" gate="G$1" pin="2"/>
-<pinref part="LED12" gate="G$1" pin="A"/>
+<pinref part="LED11" gate="G$1" pin="A"/>
 </segment>
 </net>
 <net name="N$26" class="0">
@@ -12656,6 +12700,7 @@ Here.. need to make part</text>
 <pinref part="3.7V" gate="G$1" pin="VCC1"/>
 <wire x1="142.24" y1="304.8" x2="162.56" y2="304.8" width="0.1524" layer="91"/>
 <pinref part="CN1" gate="G$1" pin="2"/>
+<junction x="142.24" y="304.8"/>
 </segment>
 <segment>
 <pinref part="F1" gate="G$1" pin="1"/>
@@ -12836,10 +12881,4 @@ Here.. need to make part</text>
 </sheets>
 </schematic>
 </drawing>
-<compatibility>
-<note version="6.3" minversion="6.2.2" severity="warning">
-Since Version 6.2.2 text objects can contain more than one line,
-which will not be processed correctly with this version.
-</note>
-</compatibility>
 </eagle>

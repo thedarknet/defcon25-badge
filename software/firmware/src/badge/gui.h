@@ -77,7 +77,7 @@ public:
 	GUI(DisplayST7735 *display);
 	bool init();
 	void drawTicker(GUI_TickerData *dt);
-	uint8_t drawList(GUI_ListData* list);
+	uint8_t drawList(GUI_ListData* list) const;
 
 private:
 	DisplayST7735 *Display;

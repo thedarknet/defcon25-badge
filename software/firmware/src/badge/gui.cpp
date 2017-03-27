@@ -70,11 +70,12 @@ const char *GUI_ListItemData::getScrollOffset() {
 	return text + offSet;
 }
 
-uint8_t GUI::drawList(GUI_ListData* gui_CurList) {
+uint8_t GUI::drawList(GUI_ListData* gui_CurList) const {
 	if (gui_CurList == 0)
 		return 0;
-	//SSD1306_DrawFilledRectangle(gui_CurList->x, gui_CurList->y, gui_CurList->w, gui_CurList->h, 0);
-	//SSD1306_DrawRectangle(gui_CurList->x, gui_CurList->y, gui_CurList->w, gui_CurList->h, 1);
+
+	Display->fillRec(gui_CurList->x, gui_CurList->y, gui_CurList->w, gui_CurList->h, RGBColor::BLACK);
+	Display->drawRec(gui_CurList->x+1, gui_CurList->y+1, gui_CurList->w-1, gui_CurList->h-1, RGBColor::BLUE);
 
 	uint8_t ry = gui_CurList->y + 2;
 	if (gui_CurList->header != 0) {

@@ -3,13 +3,15 @@
 
 #include "error_type.h"
 
+class StateBase;
+
 class DCDarkNetApp {
 public:
 	DCDarkNetApp();
 	ErrorType init();
 	void run();
 private:
-
+	StateBase *CurrentState;
 };
 
 #endif

@@ -12,7 +12,11 @@ public:
 public:
 	ErrorType();
 	ErrorType(ErrorNum en);
+	ErrorType(const ErrorType &r);
 	bool ok();
+	ErrorType &operator=(const ErrorType &r);
+	uint8_t getError() {return ErrorNumber;}
+	const char *getMessage();
 private:
 	ErrorNum ErrorNumber;
 };

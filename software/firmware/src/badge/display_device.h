@@ -18,6 +18,7 @@ public:
 	static const RGBColor BLUE;
 	static const RGBColor WHITE;
 public:
+	RGBColor() : R(0), G(0), B(0) {}
 	RGBColor(uint8_t r, uint8_t g, uint8_t b) : R(r), G(g), B(b) {}
 	uint16_t getR() const {return R;}
 	uint16_t getG() const {return G;}

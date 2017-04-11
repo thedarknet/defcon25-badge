@@ -54,21 +54,17 @@ ErrorType DCDarkNetApp::init() {
 	delay(TIME_BETWEEN_INITS);
 	gui_draw();
 	delay(1000);
-
-	gui_set_curList(0);
-
-	gui_lable_multiline("#dcdn16", 0, 10, 128, 64, 0, 0);
-	gui_lable_multiline("><>", 0, 40, 128, 64, 0, 0);
-	gui_lable_multiline("   Cyberez Inc", 0, 50, 128, 64, 0, 0);
-	gui_draw();
-	delay(3000);
-
 	StateFactory::getIRPairingState()->BeTheBob();
 	CurrentState = StateFactory::getMenuState();
 	KB.resetLastPinTick();
-	return true;
 #endif
-	CurrentState = StateFactory::getMenuState();
+	//GUI gui(&Display);
+	Display.drawString(0,10,(const char *)"#dcdn17",RGBColor::BLUE,RGBColor::BLACK,2,false);
+	Display.drawString(20,80,(const char *)"Cyberez Inc",RGBColor::BLUE,RGBColor::BLACK,1,false);
+	HAL_Delay(1000);
+
+	//CurrentState = StateFactory::getMenuState();
+	CurrentState = StateFactory::getMenu3D();
 	return et;
 }
 
@@ -76,24 +72,6 @@ void DCDarkNetApp::run() {
 	static uint32_t time = HAL_GetTick();
 	static bool bStart = true;
 
-#if 0
-	//temp
-	if (HAL_GetTick() - time > 6000) {
-		Display.fillScreen(RGBColor::BLACK);
-		Display.fillScreen(RGBColor(255, 0, 0));
-		Display.drawString(0, 0, "goodbye", RGBColor::WHITE, RGBColor::BLACK, 3, false);
-		time = HAL_GetTick();
-	} else if (HAL_GetTick() - time > 3000) {
-		Display.fillScreen(RGBColor::BLACK);
-		Display.fillScreen(RGBColor(255, 0, 0));
-		Display.drawString(0, 0, "Hello", RGBColor::WHITE, RGBColor::BLACK, 2, false);
-	} else if (bStart == true) {
-		bStart = false;
-		Display.fillScreen(RGBColor(0, 0, 255));
-		Display.drawString(0, 0, "Hello", RGBColor::WHITE, RGBColor::BLACK, 1, false);
-	}
-	///
-#else
 	//check to see if keyboard should be ignored
 	//uint32_t tick = HAL_GetTick();
 	//KB.scan();
@@ -141,6 +119,5 @@ void DCDarkNetApp::run() {
 #endif
 		}
 	}
-#endif
 #endif
 }

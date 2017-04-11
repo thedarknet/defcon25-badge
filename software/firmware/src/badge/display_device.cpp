@@ -120,7 +120,7 @@ struct sCmdBuf {
 };
 
 static const struct sCmdBuf initializers[] = {
-// SWRESET Software reset
+		// SWRESET Software reset
 		{ DisplayST7735::SWRESET, 150, 0, 0 },
 		// SLPOUT Leave sleep mode
 		{ DisplayST7735::SLEEP_OUT, 150, 0, 0 },
@@ -367,7 +367,11 @@ void DisplayST7735::fillRec(int16_t x, int16_t y, int16_t w, int16_t h,
 
 void DisplayST7735::drawRec(int16_t x, int16_t y, int16_t w, int16_t h,
 		const RGBColor &color) {
-	//TODO
+	drawHorizontalLine(x, y, w, color);
+	drawVerticalLine(x, y, h, color);
+	drawHorizontalLine(x, y + h >= getHeight() ? getHeight() - 1 : y + h, w, color);
+	drawVerticalLine(x + w, y, h, color);
+
 }
 
 const uint8_t *DisplayST7735::getFontData() {
@@ -392,7 +396,7 @@ void DisplayST7735::drawCharAtPosition(int16_t x, int16_t y, char c,
 		return;
 
 	for (i = 0; i < CurrentFont->FontWidth; i++) {
-		if (i == CurrentFont->FontWidth-1)
+		if (i == CurrentFont->FontWidth - 1)
 			line = 0x0;
 		else
 			line = getFontData()[(c * CurrentFont->CharBytes) + i];
@@ -438,13 +442,12 @@ uint32_t DisplayST7735::drawString(uint16_t x, uint16_t y, const char *pt) {
 
 uint32_t DisplayST7735::drawString(uint16_t x, uint16_t y, const char *pt,
 		const RGBColor &textColor) {
-	return drawString(x, y, pt, textColor, CurrentBGColor, 1,false);
+	return drawString(x, y, pt, textColor, CurrentBGColor, 1, false);
 }
 
 uint32_t DisplayST7735::drawString(uint16_t xPos, uint16_t yPos, const char *pt,
 		const RGBColor &textColor, const RGBColor &backGroundColor,
 		uint8_t size, bool lineWrap) {
-#if 1
 	uint16_t currentX = xPos;
 	uint16_t currentY = yPos;
 	const char *orig = pt;
@@ -452,42 +455,23 @@ uint32_t DisplayST7735::drawString(uint16_t xPos, uint16_t yPos, const char *pt,
 	while (*pt) {
 		if ((currentX > getWidth() && !lineWrap) || currentY > getHeight()) {
 			return pt - orig;
-		} else if (currentX>getWidth() && lineWrap) {
+		} else if (currentX > getWidth() && lineWrap) {
 			currentX = 0;
-			currentY+=CurrentFont->FontHeight*size;
+			currentY += CurrentFont->FontHeight * size;
 			drawCharAtPosition(currentX, currentY, *pt, textColor,
-									backGroundColor, size);
-			currentX+=CurrentFont->FontWidth;
+					backGroundColor, size);
+			currentX += CurrentFont->FontWidth;
 		} else if (*pt == '\n' || *pt == '\r') {
-				currentY+=CurrentFont->FontHeight*size;
-				currentX = 0;
+			currentY += CurrentFont->FontHeight * size;
+			currentX = 0;
 		} else {
 			drawCharAtPosition(currentX, currentY, *pt, textColor,
 					backGroundColor, size);
-			currentX+=CurrentFont->FontWidth*size;
+			currentX += CurrentFont->FontWidth * size;
 		}
 		pt++;
 	}
 	return (pt - orig);  // number of characters printed
-#else
-	uint32_t count = 0;
-	//TODO clean this up
-	if (yPos > 15) //15*10 = 150
-		return 0;
-
-	uint16_t w = 6 * size;
-	uint16_t h = 10 * size;
-
-	while (*pt) {
-		drawCharAtPosition(xPos * w, yPos * h, *pt, textColor, backGroundColor, size);
-		pt++;
-		xPos = xPos + 1;
-		if (xPos > 20)
-			return count;
-		count++;
-	}
-	return count;  // number of characters printed
-#endif
 }
 
 void DisplayST7735::drawVerticalLine(int16_t x, int16_t y, int16_t h) {

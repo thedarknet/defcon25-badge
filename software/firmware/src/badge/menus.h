@@ -6,6 +6,7 @@
 
 class StateBase;
 class DisplayST7735;
+class Menu3D;
 
 struct ReturnStateContext {
 	ReturnStateContext(StateBase *next, const ErrorType &er) :
@@ -141,6 +142,7 @@ public:
 	static StateBase *getMenuState();
 	static StateBase *getSettingState();
 	static StateBase *getGameOfLifeState();
+	static StateBase *getMenu3D();
 	//static StateBase* getBadgeInfoState();
 
 };

@@ -2,6 +2,7 @@
 #include "menus.h"
 #include "display_device.h"
 #include "GameOfLife.h"
+#include "3d/menu3d.h"
 //#include <tim.h>
 //#include <uECC.h>
 //#include <sha256.h>
@@ -22,7 +23,7 @@ DisplayST7735 &RunContext::getDisplay() {
 ///////////////////////////
 
 StateBase::StateBase() :
-		StateData(0), StateStartTime(0), TimesRunCalledAllTime(0), TimesRunCalledSinceLastReset(0) {
+		StateData(0), TimesRunCalledAllTime(0), TimesRunCalledSinceLastReset(0), StateStartTime(0) {
 }
 
 ReturnStateContext StateBase::run(RunContext &rc) {
@@ -96,7 +97,7 @@ ErrorType DisplayMessageState::onShutdown() {
 }
 
 MenuState::MenuState() :
-		StateBase(), MenuList("Main Menu", Items, 0, 0, 128, 160, 0, (sizeof(Items) / sizeof(Items[0]))) {
+		StateBase(), MenuList("Main Menu", Items, 0, 0, 127, 159, 0, (sizeof(Items) / sizeof(Items[0]))) {
 }
 
 MenuState::~MenuState() {
@@ -517,6 +518,7 @@ SettingState TheSettingState;
 //BadgeInfoState TheBadgeInfoState;
 GameOfLife TheGameOfLifeState;
 //EventState TheEventState;
+Menu3D The3DMenu;
 
 StateBase *StateFactory::getDisplayMessageState(StateBase *bm, const char *message, uint16_t timeToDisplay) {
 	Display_Message_State.setMessage(message);
@@ -539,5 +541,9 @@ StateBase *StateFactory::getSettingState() {
 
 StateBase *StateFactory::getGameOfLifeState() {
 	return &TheGameOfLifeState;
+}
+
+StateBase *StateFactory::getMenu3D() {
+	return &The3DMenu;
 }
 

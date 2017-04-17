@@ -7565,6 +7565,20 @@ chip</description>
 <vertex x="-1.984375" y="-2.54"/>
 </polygon>
 </package>
+<package name="SPDT_SSAJ120100">
+<smd name="MNT1" x="-3.05" y="0" dx="1.05" dy="0.9" layer="1" rot="R180"/>
+<smd name="MNT2" x="3.05" y="0" dx="1.05" dy="0.9" layer="1" rot="R180"/>
+<smd name="1" x="-1" y="1.45" dx="0.7" dy="0.635" layer="1" rot="R90"/>
+<smd name="C" x="0" y="1.45" dx="0.7" dy="0.635" layer="1" rot="R90"/>
+<smd name="2" x="1" y="1.45" dx="0.7" dy="0.635" layer="1" rot="R90"/>
+<wire x1="1.5" y1="1.25" x2="2.75" y2="1.25" width="0.127" layer="21"/>
+<wire x1="2.75" y1="-1.25" x2="-2.75" y2="-1.25" width="0.127" layer="21"/>
+<wire x1="-1.5" y1="1.25" x2="-2.75" y2="1.25" width="0.127" layer="21"/>
+<wire x1="-2.75" y1="1.25" x2="-2.75" y2="0.7" width="0.127" layer="21"/>
+<wire x1="2.75" y1="1.25" x2="2.75" y2="0.7" width="0.127" layer="21"/>
+<wire x1="2.75" y1="-1.25" x2="2.75" y2="-0.7" width="0.127" layer="21"/>
+<wire x1="-2.75" y1="-1.25" x2="-2.75" y2="-0.7" width="0.127" layer="21"/>
+</package>
 </packages>
 <symbols>
 <symbol name="CAP_TOUCH_PAD">
@@ -8392,6 +8406,15 @@ chip</description>
 <vertex x="1.984375" y="-2.54"/>
 <vertex x="-1.984375" y="-2.54"/>
 </polygon>
+</symbol>
+<symbol name="SWITCH_SPDT">
+<pin name="2" x="-10.16" y="2.54" length="middle"/>
+<pin name="1" x="-10.16" y="-2.54" length="middle"/>
+<pin name="C" x="10.16" y="0" length="middle" rot="R180"/>
+<wire x1="5.08" y1="0" x2="-5.08" y2="2.54" width="0.254" layer="94"/>
+<circle x="5.08" y="0" radius="0.635" width="0.254" layer="94"/>
+<circle x="-5.08" y="2.54" radius="0.635" width="0.254" layer="94"/>
+<circle x="-5.08" y="-2.54" radius="0.635" width="0.254" layer="94"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -10333,6 +10356,23 @@ Basic Inductor/Choke - 0603 and 1206. Footprints are not proven and vary greatly
 </device>
 </devices>
 </deviceset>
+<deviceset name="SWITCH_SPDT">
+<gates>
+<gate name="G$1" symbol="SWITCH_SPDT" x="5.08" y="0"/>
+</gates>
+<devices>
+<device name="" package="SPDT_SSAJ120100">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+<connect gate="G$1" pin="C" pad="C"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
 </devicesets>
 </library>
 <library name="adafruit">
@@ -11110,6 +11150,7 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <part name="U$12" library="darknet_parts_library" deviceset="KRUX_LOGO" device=""/>
 <part name="U$23" library="darknet_parts_library" deviceset="CMD_C0DE_LOGO" device=""/>
 <part name="J1" library="MF_Connectors" deviceset="USB" device="_MICRO_RIGHT" value="MF-CON-MICROUSB-RIGHT"/>
+<part name="U$11" library="darknet_parts_library" deviceset="SWITCH_SPDT" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -11249,8 +11290,8 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <attribute name="VALUE" x="65.278" y="391.16" size="1.778" layer="96"/>
 </instance>
 <instance part="3.7V1" gate="G$1" x="63.5" y="401.32"/>
-<instance part="C21" gate="G$1" x="124.46" y="388.62" rot="R180"/>
-<instance part="U$13" gate="G$1" x="134.62" y="401.32"/>
+<instance part="C21" gate="G$1" x="144.78" y="388.62" rot="R180"/>
+<instance part="U$13" gate="G$1" x="154.94" y="401.32"/>
 <instance part="LED13" gate="G$1" x="254" y="76.2" rot="R90"/>
 <instance part="R28" gate="G$1" x="246.38" y="76.2"/>
 <instance part="STLINK" gate="G$1" x="238.76" y="274.32"/>
@@ -11272,8 +11313,8 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <instance part="GND13" gate="1" x="340.36" y="182.88"/>
 <instance part="U$14" gate="G$1" x="264.16" y="274.32"/>
 <instance part="GND14" gate="1" x="264.16" y="256.54"/>
-<instance part="U1" gate="G$1" x="101.6" y="391.16"/>
-<instance part="GND15" gate="1" x="101.6" y="373.38"/>
+<instance part="U1" gate="G$1" x="121.92" y="391.16"/>
+<instance part="GND15" gate="1" x="121.92" y="373.38"/>
 <instance part="U$21" gate="G$1" x="177.8" y="170.18"/>
 <instance part="C1" gate="G$1" x="162.56" y="157.48" smashed="yes" rot="R180">
 <attribute name="NAME" x="161.544" y="156.845" size="1.778" layer="95" rot="R180"/>
@@ -11289,6 +11330,7 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <instance part="U$12" gate="G$1" x="22.86" y="5.08"/>
 <instance part="U$23" gate="G$1" x="33.02" y="5.08"/>
 <instance part="J1" gate="G$1" x="134.62" y="340.36" rot="R180"/>
+<instance part="U$11" gate="G$1" x="93.98" y="386.08"/>
 </instances>
 <busses>
 </busses>
@@ -11552,11 +11594,11 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <segment>
 <pinref part="GND15" gate="1" pin="GND"/>
 <pinref part="U1" gate="G$1" pin="GND"/>
-<wire x1="101.6" y1="375.92" x2="101.6" y2="378.46" width="0.1524" layer="91"/>
+<wire x1="121.92" y1="375.92" x2="121.92" y2="378.46" width="0.1524" layer="91"/>
 <pinref part="C21" gate="G$1" pin="1"/>
-<wire x1="101.6" y1="378.46" x2="124.46" y2="378.46" width="0.1524" layer="91"/>
-<wire x1="124.46" y1="378.46" x2="124.46" y2="386.08" width="0.1524" layer="91"/>
-<junction x="101.6" y="378.46"/>
+<wire x1="121.92" y1="378.46" x2="144.78" y2="378.46" width="0.1524" layer="91"/>
+<wire x1="144.78" y1="378.46" x2="144.78" y2="386.08" width="0.1524" layer="91"/>
+<junction x="121.92" y="378.46"/>
 </segment>
 <segment>
 <pinref part="C1" gate="G$1" pin="1"/>
@@ -12091,13 +12133,13 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 </segment>
 <segment>
 <pinref part="C21" gate="G$1" pin="2"/>
-<wire x1="124.46" y1="396.24" x2="134.62" y2="396.24" width="0.1524" layer="91"/>
-<wire x1="134.62" y1="396.24" x2="134.62" y2="401.32" width="0.1524" layer="91"/>
+<wire x1="144.78" y1="396.24" x2="154.94" y2="396.24" width="0.1524" layer="91"/>
+<wire x1="154.94" y1="396.24" x2="154.94" y2="401.32" width="0.1524" layer="91"/>
 <pinref part="U$13" gate="G$1" pin="VCC"/>
 <pinref part="U1" gate="G$1" pin="VOUT"/>
-<wire x1="116.84" y1="396.24" x2="124.46" y2="396.24" width="0.1524" layer="91"/>
-<wire x1="124.46" y1="396.24" x2="124.46" y2="393.7" width="0.1524" layer="91"/>
-<junction x="124.46" y="396.24"/>
+<wire x1="137.16" y1="396.24" x2="144.78" y2="396.24" width="0.1524" layer="91"/>
+<wire x1="144.78" y1="396.24" x2="144.78" y2="393.7" width="0.1524" layer="91"/>
+<junction x="144.78" y="396.24"/>
 </segment>
 <segment>
 <pinref part="STLINK" gate="G$1" pin="VCC"/>
@@ -12474,10 +12516,9 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <pinref part="F1" gate="G$1" pin="2"/>
 <pinref part="U1" gate="G$1" pin="VIN"/>
 <wire x1="81.28" y1="396.24" x2="83.82" y2="396.24" width="0.1524" layer="91"/>
-<pinref part="U1" gate="G$1" pin="EN"/>
-<wire x1="83.82" y1="396.24" x2="86.36" y2="396.24" width="0.1524" layer="91"/>
-<wire x1="86.36" y1="386.08" x2="83.82" y2="386.08" width="0.1524" layer="91"/>
-<wire x1="83.82" y1="386.08" x2="83.82" y2="396.24" width="0.1524" layer="91"/>
+<pinref part="U$11" gate="G$1" pin="2"/>
+<wire x1="83.82" y1="396.24" x2="106.68" y2="396.24" width="0.1524" layer="91"/>
+<wire x1="83.82" y1="388.62" x2="83.82" y2="396.24" width="0.1524" layer="91"/>
 <junction x="83.82" y="396.24"/>
 </segment>
 </net>
@@ -12501,6 +12542,13 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <pinref part="U$21" gate="G$1" pin="P$1"/>
 <wire x1="162.56" y1="165.1" x2="177.8" y2="165.1" width="0.1524" layer="91"/>
 <junction x="162.56" y="165.1"/>
+</segment>
+</net>
+<net name="N$32" class="0">
+<segment>
+<pinref part="U1" gate="G$1" pin="EN"/>
+<pinref part="U$11" gate="G$1" pin="C"/>
+<wire x1="106.68" y1="386.08" x2="104.14" y2="386.08" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>

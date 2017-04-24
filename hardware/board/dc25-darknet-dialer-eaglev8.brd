@@ -158,6 +158,7 @@
 <wire x1="50.8" y1="101.6" x2="50.8" y2="0" width="0" layer="20" curve="-180"/>
 <wire x1="50.8" y1="0" x2="50.8" y2="101.6" width="0" layer="20" curve="-180"/>
 <text x="93.583125" y="65.0875" size="0.6096" layer="122" font="vector">RESET</text>
+<text x="52.54625" y="82.39125" size="1.27" layer="122" font="vector" rot="MR180">On</text>
 </plain>
 <libraries>
 <library name="SYNShop">

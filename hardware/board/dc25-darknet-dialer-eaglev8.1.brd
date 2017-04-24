@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.003125" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
+<grid distance="0.0125" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
@@ -3688,6 +3688,11 @@ JST PH 2-pin thru-home side entry</description>
 <text x="0.486" y="-2.096" size="1.4224" layer="21" ratio="12">+</text>
 <text x="-1.429" y="-1.896" size="1.4224" layer="21" ratio="12">-</text>
 </package>
+<package name="1X01-CLEANBIG">
+<pad name="1" x="0" y="0" drill="1.016" diameter="1.778"/>
+<text x="-1.3462" y="1.8288" size="1.27" layer="25" ratio="10">&gt;NAME</text>
+<text x="-1.27" y="-3.175" size="1.27" layer="27">&gt;VALUE</text>
+</package>
 </packages>
 </library>
 <library name="dp_devices">
@@ -3980,7 +3985,7 @@ We've spent an enormous amount of time creating and checking these footprints an
 <attribute name="NAME" x="82.55" y="70.532625" size="0.6096" layer="26" font="vector" rot="MR180"/>
 </element>
 <element name="R2" library="darknet_parts_library" package="1206" value="CRCW120647R0JNEA" x="69.215" y="82.07375" smashed="yes" rot="MR90">
-<attribute name="NAME" x="70.6755" y="81.5975" size="0.6096" layer="26" font="vector" rot="MR90"/>
+<attribute name="NAME" x="67.183" y="81.5975" size="0.6096" layer="26" font="vector" rot="MR90"/>
 </element>
 <element name="R3" library="darknet_parts_library" package="1206" value="CRCW120647R0JNEA" x="47.069375" y="80.16875" smashed="yes" rot="MR0">
 <attribute name="NAME" x="47.386875" y="81.549875" size="0.6096" layer="26" font="vector" rot="MR0"/>
@@ -4014,7 +4019,7 @@ We've spent an enormous amount of time creating and checking these footprints an
 <attribute name="NAME" x="73.251625" y="70.833" size="0.6096" layer="26" font="vector" rot="MR180"/>
 </element>
 <element name="R12" library="darknet_parts_library" package="0603-RES" value="1K" x="59.3725" y="79.53375" smashed="yes" rot="MR180">
-<attribute name="NAME" x="56.642" y="78.724125" size="0.6096" layer="26" font="vector" rot="MR90"/>
+<attribute name="NAME" x="57.165875" y="79.1845" size="0.6096" layer="26" font="vector" rot="MR0"/>
 </element>
 <element name="R13" library="darknet_parts_library" package="0603-RES" value="1K" x="41.75125" y="79.53375" smashed="yes" rot="MR0">
 <attribute name="NAME" x="40.116125" y="78.359" size="0.6096" layer="26" font="vector" rot="MR270"/>
@@ -4035,7 +4040,7 @@ We've spent an enormous amount of time creating and checking these footprints an
 <attribute name="NAME" x="42.878375" y="22.987" size="0.6096" layer="26" font="vector" rot="MR0"/>
 </element>
 <element name="R19" library="darknet_parts_library" package="0603-RES" value="1K" x="59.293125" y="23.97125" smashed="yes" rot="MR180">
-<attribute name="NAME" x="58.404125" y="25.669875" size="0.6096" layer="26" font="vector" rot="MR180"/>
+<attribute name="NAME" x="58.404125" y="23.129875" size="0.6096" layer="26" font="vector" rot="MR180"/>
 </element>
 <element name="R20" library="darknet_parts_library" package="0603-RES" value="1K" x="75.803125" y="32.86125" smashed="yes" rot="MR180">
 <attribute name="NAME" x="74.914125" y="31.78175" size="0.6096" layer="26" font="vector" rot="MR180"/>
@@ -4166,26 +4171,32 @@ We've spent an enormous amount of time creating and checking these footprints an
 <attribute name="NAME" x="89.70356875" y="74.424221875" size="1.016" layer="26" font="vector" ratio="16" rot="MR245"/>
 </element>
 <element name="U$11" library="darknet_parts_library" package="SPDT_SSAJ120100" value="SWITCH_SPDT" x="50.879375" y="84.93125" rot="MR270"/>
-<element name="R29" library="darknet_parts_library" package="0603-RES" value="2K DNP" x="48.10125" y="35.71875" smashed="yes" rot="MR0">
+<element name="R33" library="darknet_parts_library" package="0603-RES" value="2K DNP" x="48.10125" y="35.71875" smashed="yes" rot="MR0">
 <attribute name="NAME" x="49.990375" y="36.068" size="0.6096" layer="26" font="vector" rot="MR180"/>
 </element>
-<element name="R30" library="darknet_parts_library" package="0603-RES" value="1K DNP" x="44.846875" y="35.71875" smashed="yes" rot="MR180">
+<element name="R31" library="darknet_parts_library" package="0603-RES" value="1K DNP" x="44.846875" y="35.71875" smashed="yes" rot="MR180">
 <attribute name="NAME" x="43.037125" y="35.448875" size="0.6096" layer="26" font="vector" rot="MR0"/>
 </element>
-<element name="R31" library="darknet_parts_library" package="0603-RES" value="2K DNP" x="48.10125" y="33.575625" smashed="yes" rot="MR0">
+<element name="R34" library="darknet_parts_library" package="0603-RES" value="2K DNP" x="48.10125" y="33.575625" smashed="yes" rot="MR0">
 <attribute name="NAME" x="49.990375" y="33.8455" size="0.6096" layer="26" font="vector" rot="MR180"/>
 </element>
 <element name="R32" library="darknet_parts_library" package="0603-RES" value="1K DNP" x="44.846875" y="33.575625" smashed="yes" rot="MR0">
 <attribute name="NAME" x="43.037125" y="33.226375" size="0.6096" layer="26" font="vector" rot="MR0"/>
 </element>
-<element name="R33" library="darknet_parts_library" package="0603-RES" value="2K DNP" x="48.10125" y="31.4325" smashed="yes" rot="MR0">
+<element name="R35" library="darknet_parts_library" package="0603-RES" value="2K DNP" x="48.10125" y="31.4325" smashed="yes" rot="MR0">
 <attribute name="NAME" x="49.990375" y="32.5755" size="0.6096" layer="26" font="vector" rot="MR180"/>
 </element>
 <element name="C2" library="darknet_parts_library" package="C0603" value="10uF DNP" x="44.846875" y="31.4325" smashed="yes" rot="MR0">
 <attribute name="NAME" x="42.95775" y="31.162625" size="0.6096" layer="26" rot="MR0"/>
 </element>
-<element name="R34" library="darknet_parts_library" package="0603-RES" value="2K DNP" x="44.846875" y="37.861875" smashed="yes" rot="MR0">
+<element name="R30" library="darknet_parts_library" package="0603-RES" value="2K DNP" x="44.846875" y="37.861875" smashed="yes" rot="MR0">
 <attribute name="NAME" x="43.037125" y="37.592" size="0.6096" layer="26" font="vector" rot="MR0"/>
+</element>
+<element name="JP1" library="adafruit" package="1X01-CLEANBIG" value="" x="44.45" y="29.21" smashed="yes">
+<attribute name="VALUE" x="43.18" y="26.035" size="1.27" layer="27"/>
+</element>
+<element name="JP2" library="adafruit" package="1X01-CLEANBIG" value="" x="46.99" y="29.21" smashed="yes">
+<attribute name="VALUE" x="45.72" y="26.035" size="1.27" layer="27"/>
 </element>
 </elements>
 <signals>
@@ -4347,7 +4358,7 @@ We've spent an enormous amount of time creating and checking these footprints an
 <contactref element="J1" pad="S2"/>
 <contactref element="J1" pad="S4"/>
 <contactref element="J1" pad="S6"/>
-<contactref element="R34" pad="2"/>
+<contactref element="R30" pad="2"/>
 <wire x1="56.9125" y1="47.705" x2="56.27625" y2="47.705" width="0.3048" layer="16"/>
 <wire x1="56.27625" y1="47.705" x2="55.88" y2="48.10125" width="0.3048" layer="16"/>
 <wire x1="55.88" y1="48.10125" x2="54.85875" y2="48.10125" width="0.3048" layer="16"/>
@@ -4355,6 +4366,7 @@ We've spent an enormous amount of time creating and checking these footprints an
 <wire x1="53.419375" y1="48.815625" x2="53.419375" y2="56.515" width="0.3048" layer="16"/>
 <wire x1="54.13375" y1="48.10125" x2="54.85875" y2="48.10125" width="0.3048" layer="16"/>
 <wire x1="54.85875" y1="48.10125" x2="54.8625" y2="48.105" width="0.3048" layer="16"/>
+<contactref element="JP2" pad="1"/>
 <wire x1="95.063721875" y1="72.642596875" x2="94.17169375" y2="74.54373125" width="0" layer="19" extent="16-16"/>
 <wire x1="96.960971875" y1="68.562096875" x2="96.07800625" y2="70.46745625" width="0" layer="19" extent="16-16"/>
 </signal>
@@ -5212,7 +5224,7 @@ We've spent an enormous amount of time creating and checking these footprints an
 </signal>
 <signal name="AUDIO_1">
 <contactref element="U$2" pad="P41"/>
-<contactref element="R33" pad="1"/>
+<contactref element="R35" pad="1"/>
 <wire x1="54.8625" y1="51.105" x2="54.066875" y2="51.105" width="0.3048" layer="16"/>
 <wire x1="54.066875" y1="51.105" x2="53.895625" y2="51.27625" width="0.3048" layer="16"/>
 <wire x1="53.895625" y1="51.27625" x2="53.895625" y2="55.483125" width="0.3048" layer="16"/>
@@ -5240,7 +5252,7 @@ We've spent an enormous amount of time creating and checking these footprints an
 </signal>
 <signal name="AUDIO_3">
 <contactref element="U$2" pad="P4"/>
-<contactref element="R29" pad="1"/>
+<contactref element="R33" pad="1"/>
 <wire x1="43.5625" y1="49.105" x2="44.319375" y2="49.105" width="0.3048" layer="16"/>
 <wire x1="44.319375" y1="49.105" x2="44.45" y2="48.974375" width="0.3048" layer="16"/>
 <wire x1="44.45" y1="48.974375" x2="44.45" y2="47.069375" width="0.3048" layer="16"/>
@@ -5437,7 +5449,7 @@ We've spent an enormous amount of time creating and checking these footprints an
 </signal>
 <signal name="AUDIO_2">
 <contactref element="U$2" pad="P23"/>
-<contactref element="R31" pad="1"/>
+<contactref element="R34" pad="1"/>
 <wire x1="48.4625" y1="57.005" x2="48.4625" y2="51.70875" width="0.3048" layer="16"/>
 <wire x1="48.4625" y1="51.70875" x2="48.815625" y2="51.355625" width="0.3048" layer="16"/>
 <wire x1="48.815625" y1="51.355625" x2="48.815625" y2="49.926875" width="0.3048" layer="16"/>
@@ -5606,7 +5618,7 @@ We've spent an enormous amount of time creating and checking these footprints an
 <wire x1="49.926875" y1="84.93125" x2="49.429375" y2="84.93125" width="0.3048" layer="16"/>
 </signal>
 <signal name="N$33">
-<contactref element="R33" pad="2"/>
+<contactref element="R35" pad="2"/>
 <contactref element="C2" pad="1"/>
 <contactref element="R32" pad="1"/>
 <wire x1="45.696875" y1="33.575625" x2="45.696875" y2="31.4325" width="0.3048" layer="16"/>
@@ -5614,8 +5626,8 @@ We've spent an enormous amount of time creating and checking these footprints an
 </signal>
 <signal name="N$34">
 <contactref element="R32" pad="2"/>
-<contactref element="R30" pad="1"/>
-<contactref element="R31" pad="2"/>
+<contactref element="R31" pad="1"/>
+<contactref element="R34" pad="2"/>
 <wire x1="43.996875" y1="35.71875" x2="43.996875" y2="33.995625" width="0.3048" layer="16"/>
 <wire x1="43.996875" y1="33.575625" x2="43.996875" y2="33.995625" width="0.3048" layer="16"/>
 <wire x1="43.996875" y1="33.995625" x2="44.370625" y2="34.369375" width="0.3048" layer="16"/>
@@ -5625,21 +5637,20 @@ We've spent an enormous amount of time creating and checking these footprints an
 <wire x1="47.228125" y1="33.59875" x2="47.25125" y2="33.575625" width="0.3048" layer="16"/>
 </signal>
 <signal name="N$35">
-<contactref element="R30" pad="2"/>
-<contactref element="R29" pad="2"/>
-<contactref element="R34" pad="1"/>
+<contactref element="R31" pad="2"/>
+<contactref element="R33" pad="2"/>
+<contactref element="R30" pad="1"/>
 <wire x1="47.25125" y1="35.71875" x2="45.696875" y2="35.71875" width="0.3048" layer="16"/>
 <wire x1="45.696875" y1="35.71875" x2="45.696875" y2="37.861875" width="0.3048" layer="16"/>
 </signal>
 <signal name="AUDIO_OUT">
 <contactref element="C2" pad="2"/>
+<contactref element="JP1" pad="1"/>
+<wire x1="43.996875" y1="31.4325" x2="43.996875" y2="29.663125" width="0.3048" layer="16"/>
+<wire x1="43.996875" y1="29.663125" x2="44.45" y2="29.21" width="0.3048" layer="16"/>
 </signal>
 </signals>
 <errors>
-<approved hash="18,30,7fe05eea88e0a9ea"/>
-<approved hash="18,30,acbc8e8a4c806eb6"/>
-<approved hash="18,30,dff689e55fd809cb"/>
-<approved hash="18,30,0caa59859bb8ce97"/>
 <approved hash="3,1,34bf4cfa01d6861f"/>
 <approved hash="3,1,71b7cda1ffec9eee"/>
 <approved hash="3,1,c13fd1e16399d527"/>
@@ -5679,24 +5690,22 @@ We've spent an enormous amount of time creating and checking these footprints an
 <approved hash="18,30,5da05eab5ebe5c7c"/>
 <approved hash="18,30,9dda76840390e257"/>
 <approved hash="18,30,4e604eab4eb64e74"/>
-<approved hash="18,30,1e183901530b7412"/>
-<approved hash="18,30,be0eee0e8433d433"/>
-<approved hash="18,30,52b73c5d3c5d52b7"/>
+<approved hash="18,30,4b1a35e035e04b1a"/>
+<approved hash="18,30,a9eddb33db33a9ed"/>
+<approved hash="18,30,a4cfd655d655a4cf"/>
+<approved hash="18,30,ab5cd5a2d5a2ab5c"/>
+<approved hash="18,30,ac7ade80de80ac7a"/>
+<approved hash="18,30,58f32a192a1958f3"/>
+<approved hash="18,30,5e82286828685e82"/>
 <approved hash="18,30,514623ac23ac5146"/>
 <approved hash="18,30,5a64248a248a5a64"/>
-<approved hash="18,30,4c383ece3ece4c38"/>
-<approved hash="18,30,58f32a192a1958f3"/>
 <approved hash="18,30,57d5213b213b57d5"/>
-<approved hash="18,30,ab5cd5a2d5a2ab5c"/>
-<approved hash="18,30,a3a02d762d77a3a1"/>
-<approved hash="18,30,a4cfd655d655a4cf"/>
+<approved hash="18,30,52b73c5d3c5d52b7"/>
+<approved hash="18,30,4c383ece3ece4c38"/>
 <approved hash="18,30,a63ed0c4d0c4a63e"/>
 <approved hash="18,30,5d112fe72fe75d11"/>
-<approved hash="18,30,ac7ade80de80ac7a"/>
-<approved hash="18,30,a9eddb33db33a9ed"/>
+<approved hash="18,30,a3a02d762d77a3a1"/>
 <approved hash="18,30,49a93b7f3b7f49a9"/>
-<approved hash="18,30,5e82286828685e82"/>
-<approved hash="18,30,4b1a35e035e04b1a"/>
 <approved hash="18,30,d5a523f583f675a6"/>
 <approved hash="18,30,4aa750f7f0c9ea99"/>
 <approved hash="18,30,fb99c1c961cb5b9b"/>
@@ -5733,24 +5742,24 @@ We've spent an enormous amount of time creating and checking these footprints an
 <approved hash="18,30,6e4f0c64e1c7916c"/>
 <approved hash="18,30,449b93853a0568c2"/>
 <approved hash="18,30,5d1f772c524950ea"/>
-<approved hash="18,30,2c43721b6033ff29"/>
 <approved hash="18,30,e1d67e48227c6c4a"/>
-<approved hash="18,30,b8fd0f570f56b8fc"/>
-<approved hash="18,30,42b0f16af16b42b1"/>
-<approved hash="18,30,4d23f29df29c4d22"/>
+<approved hash="18,30,2c43721b6033ff29"/>
 <approved hash="18,30,afd61c401c41afd7"/>
-<approved hash="18,30,4041f7fbf7fa4040"/>
 <approved hash="18,30,ad6512df12dead64"/>
-<approved hash="18,30,4a05f9bff9be4a04"/>
-<approved hash="18,30,45df0a490a4945df"/>
-<approved hash="18,30,4f92fc0cfc0d4f93"/>
-<approved hash="18,30,be8c0d260d27be8d"/>
-<approved hash="18,30,b4c81b621b63b4c9"/>
-<approved hash="18,30,b73904930492b738"/>
+<approved hash="18,30,b8fd0f570f56b8fc"/>
 <approved hash="18,30,b1aa06040605b1ab"/>
-<approved hash="18,30,bc1b03b503b4bc1a"/>
-<approved hash="18,30,bb6e08d808d9bb6f"/>
+<approved hash="18,30,be8c0d260d27be8d"/>
 <approved hash="18,30,aa4719f119f0aa46"/>
+<approved hash="18,30,bc1b03b503b4bc1a"/>
+<approved hash="18,30,b73904930492b738"/>
+<approved hash="18,30,42b0f16af16b42b1"/>
+<approved hash="18,30,4f92fc0cfc0d4f93"/>
+<approved hash="18,30,4041f7fbf7fa4040"/>
+<approved hash="18,30,bb6e08d808d9bb6f"/>
+<approved hash="18,30,45df0a490a4945df"/>
+<approved hash="18,30,4d23f29df29c4d22"/>
+<approved hash="18,30,b4c81b621b63b4c9"/>
+<approved hash="18,30,4a05f9bff9be4a04"/>
 <approved hash="18,30,9adf8f815f7073aa"/>
 <approved hash="18,30,c882de613935985a"/>
 <approved hash="4,1,f12c297a24c2c859"/>

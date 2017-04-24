@@ -10463,6 +10463,32 @@ JST PH 2-pin thru-home side entry</description>
 <text x="-2.914" y="-6.096" size="1.4224" layer="21" ratio="12">+</text>
 <text x="2.271" y="-6.096" size="1.4224" layer="21" ratio="12">-</text>
 </package>
+<package name="1X01">
+<description>&lt;b&gt;PIN HEADER&lt;/b&gt;</description>
+<wire x1="-0.635" y1="1.27" x2="0.635" y2="1.27" width="0.1524" layer="21"/>
+<wire x1="0.635" y1="1.27" x2="1.27" y2="0.635" width="0.1524" layer="21"/>
+<wire x1="1.27" y1="0.635" x2="1.27" y2="-0.635" width="0.1524" layer="21"/>
+<wire x1="1.27" y1="-0.635" x2="0.635" y2="-1.27" width="0.1524" layer="21"/>
+<wire x1="-1.27" y1="0.635" x2="-1.27" y2="-0.635" width="0.1524" layer="21"/>
+<wire x1="-0.635" y1="1.27" x2="-1.27" y2="0.635" width="0.1524" layer="21"/>
+<wire x1="-1.27" y1="-0.635" x2="-0.635" y2="-1.27" width="0.1524" layer="21"/>
+<wire x1="0.635" y1="-1.27" x2="-0.635" y2="-1.27" width="0.1524" layer="21"/>
+<pad name="1" x="0" y="0" drill="1.016" diameter="1.9304" shape="octagon"/>
+<text x="-1.3462" y="1.8288" size="1.27" layer="25" ratio="10">&gt;NAME</text>
+<text x="-1.27" y="-3.175" size="1.27" layer="27">&gt;VALUE</text>
+<rectangle x1="-0.254" y1="-0.254" x2="0.254" y2="0.254" layer="51"/>
+</package>
+<package name="1X01-CLEANBIG">
+<pad name="1" x="0" y="0" drill="1.016" diameter="1.778"/>
+<text x="-1.3462" y="1.8288" size="1.27" layer="25" ratio="10">&gt;NAME</text>
+<text x="-1.27" y="-3.175" size="1.27" layer="27">&gt;VALUE</text>
+</package>
+<package name="1X1-SMALL">
+<pad name="P$1" x="0" y="0" drill="1.016" diameter="1.8796"/>
+</package>
+<package name="1X1-SMALL_CUT">
+<pad name="P$1" x="0" y="0" drill="1.016" diameter="1.6764" shape="square"/>
+</package>
 </packages>
 <symbols>
 <symbol name="PINHD2">
@@ -10474,6 +10500,15 @@ JST PH 2-pin thru-home side entry</description>
 <text x="-6.35" y="-5.08" size="1.778" layer="96">&gt;VALUE</text>
 <pin name="1" x="-2.54" y="2.54" visible="pad" length="short" direction="pas" function="dot"/>
 <pin name="2" x="-2.54" y="0" visible="pad" length="short" direction="pas" function="dot"/>
+</symbol>
+<symbol name="PINHD1">
+<wire x1="-6.35" y1="-2.54" x2="1.27" y2="-2.54" width="0.4064" layer="94"/>
+<wire x1="1.27" y1="-2.54" x2="1.27" y2="2.54" width="0.4064" layer="94"/>
+<wire x1="1.27" y1="2.54" x2="-6.35" y2="2.54" width="0.4064" layer="94"/>
+<wire x1="-6.35" y1="2.54" x2="-6.35" y2="-2.54" width="0.4064" layer="94"/>
+<text x="-6.35" y="3.175" size="1.778" layer="95">&gt;NAME</text>
+<text x="-6.35" y="-5.08" size="1.778" layer="96">&gt;VALUE</text>
+<pin name="1" x="-2.54" y="0" visible="pad" length="short" direction="pas" function="dot"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -10521,6 +10556,48 @@ JST PH 2-pin thru-home side entry</description>
 <connects>
 <connect gate="G$1" pin="1" pad="2"/>
 <connect gate="G$1" pin="2" pad="1"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="PINHD-1X1" prefix="JP" uservalue="yes">
+<description>&lt;b&gt;Pin header 1x1 for 0.1" spacing&lt;/b&gt;
+&lt;p&gt;
+With round pins</description>
+<gates>
+<gate name="G$1" symbol="PINHD1" x="0" y="0"/>
+</gates>
+<devices>
+<device name="1X1" package="1X01">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="CB" package="1X01-CLEANBIG">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="1X1-SMALL" package="1X1-SMALL">
+<connects>
+<connect gate="G$1" pin="1" pad="P$1"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="1X1_SQUARE" package="1X1-SMALL_CUT">
+<connects>
+<connect gate="G$1" pin="1" pad="P$1"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -11151,14 +11228,17 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <part name="U$23" library="darknet_parts_library" deviceset="CMD_C0DE_LOGO" device=""/>
 <part name="J1" library="MF_Connectors" deviceset="USB" device="_MICRO_RIGHT" value="MF-CON-MICROUSB-RIGHT"/>
 <part name="U$11" library="darknet_parts_library" deviceset="SWITCH_SPDT" device=""/>
-<part name="R29" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="2K DNP"/>
-<part name="R30" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="1K DNP"/>
-<part name="R31" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="2K DNP"/>
-<part name="R32" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="1K DNP"/>
 <part name="R33" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="2K DNP"/>
-<part name="C2" library="darknet_parts_library" deviceset="C-US" device="C0603" value="10uF DNP"/>
+<part name="R31" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="1K DNP"/>
 <part name="R34" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="2K DNP"/>
+<part name="R32" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="1K DNP"/>
+<part name="R35" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="2K DNP"/>
+<part name="C2" library="darknet_parts_library" deviceset="C-US" device="C0603" value="10uF DNP"/>
+<part name="R30" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="2K DNP"/>
 <part name="GND17" library="SYNShop" deviceset="GND" device=""/>
+<part name="GND18" library="SYNShop" deviceset="GND" device=""/>
+<part name="JP1" library="adafruit" deviceset="PINHD-1X1" device="CB"/>
+<part name="JP2" library="adafruit" deviceset="PINHD-1X1" device="CB"/>
 </parts>
 <sheets>
 <sheet>
@@ -11339,16 +11419,21 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <instance part="U$23" gate="G$1" x="33.02" y="5.08"/>
 <instance part="J1" gate="G$1" x="134.62" y="340.36" rot="R180"/>
 <instance part="U$11" gate="G$1" x="93.98" y="386.08"/>
-<instance part="R29" gate="G$1" x="256.54" y="7.62"/>
-<instance part="R30" gate="G$1" x="264.16" y="15.24" rot="R270"/>
-<instance part="R31" gate="G$1" x="256.54" y="22.86"/>
+<instance part="R33" gate="G$1" x="256.54" y="7.62"/>
+<instance part="R31" gate="G$1" x="264.16" y="15.24" rot="R270"/>
+<instance part="R34" gate="G$1" x="256.54" y="22.86"/>
 <instance part="R32" gate="G$1" x="264.16" y="30.48" rot="R270"/>
-<instance part="R33" gate="G$1" x="256.54" y="38.1"/>
+<instance part="R35" gate="G$1" x="256.54" y="38.1"/>
 <instance part="C2" gate="G$1" x="274.32" y="38.1" smashed="yes" rot="R90">
 <attribute name="NAME" x="273.685" y="39.116" size="1.778" layer="95" rot="R90"/>
 </instance>
-<instance part="R34" gate="G$1" x="264.16" y="0" rot="R270"/>
+<instance part="R30" gate="G$1" x="264.16" y="0" rot="R270"/>
 <instance part="GND17" gate="1" x="264.16" y="-10.16"/>
+<instance part="GND18" gate="1" x="287.02" y="22.86"/>
+<instance part="JP1" gate="G$1" x="297.18" y="38.1"/>
+<instance part="JP2" gate="G$1" x="297.18" y="30.48" smashed="yes">
+<attribute name="VALUE" x="290.83" y="25.4" size="1.778" layer="96"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -11628,9 +11713,15 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <junction x="162.56" y="149.86"/>
 </segment>
 <segment>
-<pinref part="R34" gate="G$1" pin="2"/>
+<pinref part="R30" gate="G$1" pin="2"/>
 <wire x1="264.16" y1="-5.08" x2="264.16" y2="-7.62" width="0.1524" layer="91"/>
 <pinref part="GND17" gate="1" pin="GND"/>
+</segment>
+<segment>
+<wire x1="294.64" y1="30.48" x2="287.02" y2="30.48" width="0.1524" layer="91"/>
+<wire x1="287.02" y1="30.48" x2="287.02" y2="25.4" width="0.1524" layer="91"/>
+<pinref part="GND18" gate="1" pin="GND"/>
+<pinref part="JP2" gate="G$1" pin="1"/>
 </segment>
 </net>
 <net name="N$12" class="0">
@@ -12256,7 +12347,7 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <label x="132.08" y="86.36" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="R33" gate="G$1" pin="1"/>
+<pinref part="R35" gate="G$1" pin="1"/>
 <wire x1="251.46" y1="38.1" x2="246.38" y2="38.1" width="0.1524" layer="91"/>
 <label x="243.84" y="38.1" size="1.778" layer="95" rot="R180"/>
 </segment>
@@ -12268,7 +12359,7 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <label x="53.34" y="96.52" size="1.778" layer="95" rot="R180"/>
 </segment>
 <segment>
-<pinref part="R29" gate="G$1" pin="1"/>
+<pinref part="R33" gate="G$1" pin="1"/>
 <wire x1="251.46" y1="7.62" x2="246.38" y2="7.62" width="0.1524" layer="91"/>
 <label x="243.84" y="7.62" size="1.778" layer="95" rot="R180"/>
 </segment>
@@ -12472,7 +12563,7 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <label x="88.9" y="45.72" size="1.778" layer="95" rot="R270"/>
 </segment>
 <segment>
-<pinref part="R31" gate="G$1" pin="1"/>
+<pinref part="R34" gate="G$1" pin="1"/>
 <wire x1="251.46" y1="22.86" x2="246.38" y2="22.86" width="0.1524" layer="91"/>
 <label x="243.84" y="22.86" size="1.778" layer="95" rot="R180"/>
 </segment>
@@ -12591,7 +12682,7 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 </net>
 <net name="N$33" class="0">
 <segment>
-<pinref part="R33" gate="G$1" pin="2"/>
+<pinref part="R35" gate="G$1" pin="2"/>
 <pinref part="C2" gate="G$1" pin="1"/>
 <wire x1="261.62" y1="38.1" x2="264.16" y2="38.1" width="0.1524" layer="91"/>
 <pinref part="R32" gate="G$1" pin="1"/>
@@ -12602,20 +12693,20 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <net name="N$34" class="0">
 <segment>
 <pinref part="R32" gate="G$1" pin="2"/>
-<pinref part="R30" gate="G$1" pin="1"/>
+<pinref part="R31" gate="G$1" pin="1"/>
 <wire x1="264.16" y1="25.4" x2="264.16" y2="22.86" width="0.1524" layer="91"/>
-<pinref part="R31" gate="G$1" pin="2"/>
+<pinref part="R34" gate="G$1" pin="2"/>
 <wire x1="264.16" y1="22.86" x2="264.16" y2="20.32" width="0.1524" layer="91"/>
 <wire x1="261.62" y1="22.86" x2="264.16" y2="22.86" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$35" class="0">
 <segment>
-<pinref part="R30" gate="G$1" pin="2"/>
+<pinref part="R31" gate="G$1" pin="2"/>
 <wire x1="264.16" y1="10.16" x2="264.16" y2="7.62" width="0.1524" layer="91"/>
-<pinref part="R29" gate="G$1" pin="2"/>
+<pinref part="R33" gate="G$1" pin="2"/>
 <wire x1="264.16" y1="7.62" x2="261.62" y2="7.62" width="0.1524" layer="91"/>
-<pinref part="R34" gate="G$1" pin="1"/>
+<pinref part="R30" gate="G$1" pin="1"/>
 <wire x1="264.16" y1="5.08" x2="264.16" y2="7.62" width="0.1524" layer="91"/>
 <junction x="264.16" y="7.62"/>
 </segment>
@@ -12623,8 +12714,9 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <net name="AUDIO_OUT" class="0">
 <segment>
 <pinref part="C2" gate="G$1" pin="2"/>
-<wire x1="279.4" y1="38.1" x2="287.02" y2="38.1" width="0.1524" layer="91"/>
-<label x="289.56" y="38.1" size="1.778" layer="95"/>
+<wire x1="279.4" y1="38.1" x2="294.64" y2="38.1" width="0.1524" layer="91"/>
+<label x="284.48" y="45.72" size="1.778" layer="95"/>
+<pinref part="JP1" gate="G$1" pin="1"/>
 </segment>
 </net>
 </nets>

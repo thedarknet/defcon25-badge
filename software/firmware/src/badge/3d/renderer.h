@@ -22,11 +22,13 @@ public:
 	const Vec3f &normal(uint16_t face, uint8_t nVert) const;
 	const Vec3f &vert(uint16_t face, uint8_t nVert) const;
 	uint32_t nFaces() const;
+	Matrix &getModelTransform() const {return ModelTransform;}
 private:
 	VertexStruct *Verts;
 	uint16_t NumVerts;
 	uint16_t *Indexes;
 	uint8_t NumIndexes;
+	Matrix ModelTransform;
 };
 
 class ZBuff {

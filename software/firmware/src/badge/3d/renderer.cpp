@@ -6,7 +6,9 @@ Matrix ModelView;
 Matrix Viewport;
 Matrix Projection;
 
-Model::Model() : Verts(0), NumVerts(0), Indexes(0), NumIndexes(0) {}
+Model::Model() : Verts(0), NumVerts(0), Indexes(0), NumIndexes(0), ModelTransform(Matrix::identity()) {
+
+}
 
 void Model::set(VertexStruct *v, uint16_t nv, uint16_t *i, uint16_t ni) {
 	Verts = v;
@@ -136,6 +138,8 @@ ZBuff::~ZBuff() {
 }
 
 bool ZBuff::set(uint16_t x, uint16_t y, uint16_t z) {
+	return true;
+#if 0
 	uint32_t offSet = Width * y * BitsPerPixel + x * BitsPerPixel;
 	uint16_t currentValue = optimzedGet(offSet);
 	uint8_t Max = 1 << BitsPerPixel;
@@ -152,6 +156,7 @@ bool ZBuff::set(uint16_t x, uint16_t y, uint16_t z) {
 		return true;
 	}
 	return false;
+#endif
 }
 
 uint16_t ZBuff::optimzedGet(uint32_t bitOffSet) {
@@ -168,8 +173,12 @@ uint16_t ZBuff::optimzedGet(uint32_t bitOffSet) {
 }
 
 uint16_t ZBuff::get(uint16_t x, uint16_t y) {
+#if 0
 	uint32_t offSet = Width * y * BitsPerPixel + x * BitsPerPixel;
 	return optimzedGet(offSet);
+#else
+	return 0;
+#endif
 }
 
 void viewport(int x, int y, int w, int h) {
@@ -219,7 +228,7 @@ void triangle(Vec3i *pts, IShader &shader, ZBuff &zbuffer, DisplayST7735 *displa
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 2; j++) {
 			bboxmin[j] = bboxmin[j] < pts[i][j] ? bboxmin[j] : pts[i][j];
-			bboxmax[j] = bboxmax[j] > pts[i][j] ? bboxmin[j] : pts[i][j];
+			bboxmax[j] = bboxmax[j] > pts[i][j] ? bboxmax[j] : pts[i][j];
 		}
 	}
 	Vec3i P;
@@ -228,7 +237,9 @@ void triangle(Vec3i *pts, IShader &shader, ZBuff &zbuffer, DisplayST7735 *displa
 	for (P.x = bboxmin.x; P.x <= bboxmax.x; P.x++) {
 		for (P.y = bboxmin.y; P.y <= bboxmax.y; P.y++) {
 			Vec3f c = barycentric(pts[0], pts[1], pts[2], P);
-			P.z = std::max(0, std::min(255, int(pts[0].z * c.x + pts[1].z * c.y + pts[2].z * c.z + .5))); // clamping to 0-255 since it is stored in unsigned char
+			float tmp = pts[0].z * c.x + pts[1].z * c.y + pts[2].z * c.z + .5;
+			P.z = (int)tmp;
+			//P.z = std::max(0, std::min(255, int(pts[0].z * c.x + pts[1].z * c.y + pts[2].z * c.z + .5))); // clamping to 0-255 since it is stored in unsigned char
 			if (c.x < 0 || c.y < 0 || c.z < 0 || zbuffer.get(P.x, P.y) > P.z)
 				continue;
 			bool discard = shader.fragment(c, color);

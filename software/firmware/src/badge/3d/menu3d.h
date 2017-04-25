@@ -20,6 +20,12 @@ protected:
 	void render(RunContext &rc);
 private:
 	Model model;
+	Vec3f light_dir;
+	Vec3f eye;
+	Vec3f center;
+	Vec3f up;
+	uint8_t CanvasWidth;
+	uint8_t CanvasHeight;
 };
 
 #endif

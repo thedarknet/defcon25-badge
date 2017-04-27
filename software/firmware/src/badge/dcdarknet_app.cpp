@@ -14,6 +14,16 @@ ErrorType DCDarkNetApp::init() {
 	ErrorType et;
 	et = Display.init();
 
+	//blink status led a few times
+	for (int i = 0; i < 5; i++) {
+		HAL_GPIO_TogglePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin);
+		HAL_GPIO_TogglePin(LED7_GPIO_Port, LED7_Pin);
+		HAL_GPIO_TogglePin(LED8_GPIO_Port, LED8_Pin);
+		HAL_GPIO_TogglePin(LED9_GPIO_Port, LED9_Pin);
+		HAL_GPIO_TogglePin(LED10_GPIO_Port, LED10_Pin);
+		HAL_Delay(500);
+	}
+
 #if 0
 	uint32_t retVal = 0;
 	initFlash();
@@ -90,7 +100,7 @@ void DCDarkNetApp::run() {
 		//	CurrentState->shutdown();
 		//	CurrentState = StateFactory::getGameOfLifeState();
 		//} else {
-			CurrentState = rsc.NextMenuToRun;
+		CurrentState = rsc.NextMenuToRun;
 		//}
 	} else {
 		CurrentState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), "Run State Error....", 2000);

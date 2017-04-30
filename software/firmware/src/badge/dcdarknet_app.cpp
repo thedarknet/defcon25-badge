@@ -2,6 +2,7 @@
 #include "display_device.h"
 #include "stm32f3xx_hal.h"
 #include "menus.h"
+#include "Radio/RFM69.h"
 
 DCDarkNetApp::DCDarkNetApp() :
 		CurrentState(0) {
@@ -9,10 +10,13 @@ DCDarkNetApp::DCDarkNetApp() :
 }
 
 DisplayST7735 Display(128, 160, DisplayST7735::PORTAIT);
+RFM69 Radio(RADIO_SPI3_NSS_Pin, RADIO_INTERRUPT_DIO0_EXTI4_Pin, true);
 
 ErrorType DCDarkNetApp::init() {
 	ErrorType et;
 	et = Display.init();
+
+	Radio.initialize(RF69_915MHZ,1);
 
 	//blink status led a few times
 	for (int i = 0; i < 5; i++) {

@@ -36,7 +36,10 @@
 #include "stm32f3xx_it.h"
 
 /* USER CODE BEGIN 0 */
-
+static void (*IRQ_HANDLER)(void) = 0;
+extern void attachInterrupt(uint8_t pin, void (*handler)(void), int mode) {
+	IRQ_HANDLER = handler;
+}
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/

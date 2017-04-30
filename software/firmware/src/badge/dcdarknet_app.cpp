@@ -17,6 +17,12 @@ ErrorType DCDarkNetApp::init() {
 	//blink status led a few times
 	for (int i = 0; i < 5; i++) {
 		HAL_GPIO_TogglePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin);
+		HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
+		HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
+		HAL_GPIO_TogglePin(LED3_GPIO_Port, LED3_Pin);
+		HAL_GPIO_TogglePin(LED4_GPIO_Port, LED4_Pin);
+		HAL_GPIO_TogglePin(LED5_GPIO_Port, LED5_Pin);
+		HAL_GPIO_TogglePin(LED6_GPIO_Port, LED6_Pin);
 		HAL_GPIO_TogglePin(LED7_GPIO_Port, LED7_Pin);
 		HAL_GPIO_TogglePin(LED8_GPIO_Port, LED8_Pin);
 		HAL_GPIO_TogglePin(LED9_GPIO_Port, LED9_Pin);

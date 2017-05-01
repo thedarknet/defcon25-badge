@@ -84,7 +84,7 @@ int main(void) {
 
 	/* USER CODE BEGIN 1 */
 	darknet::LogManager::get().addLogger(darknet::DEBUG_LOGGER_ID, &stm32DLogger);
-	darknet::LogManager::get().addLogger(darknet::INFO_LOGGER_ID, &stm32ILogger);
+	darknet::LogManager::get().addLogger(darknet::INFO_LOGGER_ID,  &stm32ILogger);
 	darknet::LogManager::get().addLogger(darknet::ERROR_LOGGER_ID, &stm32ELogger);
 	/* USER CODE END 1 */
 

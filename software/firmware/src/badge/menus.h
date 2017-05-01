@@ -3,6 +3,7 @@
 
 #include "gui.h"
 #include "KeyStore.h"
+#include "Keyboard.h"
 
 class StateBase;
 class DisplayST7735;
@@ -20,12 +21,14 @@ struct ReturnStateContext {
 
 class RunContext {
 public:
-	RunContext(DisplayST7735 *display);
+	RunContext(DisplayST7735 *display, QKeyboard *kb);
 	DisplayST7735 &getDisplay();
 	const GUI &getGUI();
+	QKeyboard &getKB();
 private:
 	DisplayST7735 *dp; //should just be DisplayDevice rather than specific display //TODO
 	GUI GuiDisplay;
+	QKeyboard *KeyB;
 };
 
 class StateBase {
@@ -133,6 +136,18 @@ private:
 	char RegCode[18];
 };
 
+class KeyBoardTest : public StateBase {
+public:
+	KeyBoardTest();
+	virtual ~KeyBoardTest();
+protected:
+	virtual ErrorType onInit();
+	virtual ReturnStateContext onRun(RunContext &rc);
+	virtual ErrorType onShutdown();
+private:
+	uint8_t LastKey;
+};
+
 //=============================
 class StateFactory {
 public:
@@ -141,6 +156,7 @@ public:
 	static StateBase *getMenuState();
 	static StateBase *getSettingState();
 	static StateBase *getGameOfLifeState();
+	static StateBase *getKeyBoardTest();
 	//static StateBase* getBadgeInfoState();
 
 };

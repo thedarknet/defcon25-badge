@@ -3,6 +3,9 @@
 #include "stm32f3xx_hal.h"
 #include "menus.h"
 #include "Radio/RFM69.h"
+#include "logger.h"
+#include <tsc.h>
+#include "Keyboard.h"
 
 DCDarkNetApp::DCDarkNetApp() :
 		CurrentState(0) {
@@ -11,13 +14,29 @@ DCDarkNetApp::DCDarkNetApp() :
 
 DisplayST7735 Display(128, 160, DisplayST7735::PORTAIT);
 RFM69 Radio(RADIO_SPI3_NSS_Pin, RADIO_INTERRUPT_DIO0_EXTI4_Pin, true);
+static QKeyboard::PinConfig KBPins[] = {
+		 {TSC_GROUP3_IO3,TSC_GROUP3_IO4, TSC_GROUP3_IDX} //1
+		,{TSC_GROUP3_IO2,TSC_GROUP3_IO4, TSC_GROUP3_IDX} //2
+		,{TSC_GROUP3_IO1,TSC_GROUP3_IO4, TSC_GROUP3_IDX} //3
+		,{TSC_GROUP2_IO1,TSC_GROUP2_IO3, TSC_GROUP2_IDX} //4
+		,{TSC_GROUP2_IO2,TSC_GROUP2_IO3, TSC_GROUP2_IDX} //5
+		,{TSC_GROUP1_IO3,TSC_GROUP1_IO4, TSC_GROUP1_IDX} //6
+		,{TSC_GROUP1_IO2,TSC_GROUP1_IO4, TSC_GROUP1_IDX} //7
+		,{TSC_GROUP1_IO1,TSC_GROUP1_IO4, TSC_GROUP1_IDX} //8
+		,{TSC_GROUP5_IO3,TSC_GROUP5_IO4, TSC_GROUP5_IDX} //9
+		,{TSC_GROUP5_IO2,TSC_GROUP5_IO4, TSC_GROUP5_IDX} //0
+		//,{TSC_GROUP5_IO1,TSC_GROUP5_IO4, TSC_GROUP5_IDX} //hook
+};
+
+QKeyboard KB(&KBPins[0],sizeof(KBPins)/sizeof(KBPins[0]));
 
 ErrorType DCDarkNetApp::init() {
 	ErrorType et;
 	et = Display.init();
 
-	Radio.initialize(RF69_915MHZ,1);
+	Radio.initialize(RF69_915MHZ, 1);
 
+#if 0
 	//blink status led a few times
 	for (int i = 0; i < 5; i++) {
 		HAL_GPIO_TogglePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin);
@@ -33,6 +52,7 @@ ErrorType DCDarkNetApp::init() {
 		HAL_GPIO_TogglePin(LED10_GPIO_Port, LED10_Pin);
 		HAL_Delay(500);
 	}
+#endif
 
 #if 0
 	uint32_t retVal = 0;
@@ -88,7 +108,7 @@ ErrorType DCDarkNetApp::init() {
 	KB.resetLastPinTick();
 	return true;
 #endif
-	CurrentState = StateFactory::getMenuState();
+	CurrentState = StateFactory::getKeyBoardTest();
 	return et;
 }
 
@@ -96,28 +116,10 @@ void DCDarkNetApp::run() {
 	static uint32_t time = HAL_GetTick();
 	static bool bStart = true;
 
-#if 0
-	//temp
-	if (HAL_GetTick() - time > 6000) {
-		Display.fillScreen(RGBColor::BLACK);
-		Display.fillScreen(RGBColor(255, 0, 0));
-		Display.drawString(0, 0, "goodbye", RGBColor::WHITE, RGBColor::BLACK, 3, false);
-		time = HAL_GetTick();
-	} else if (HAL_GetTick() - time > 3000) {
-		Display.fillScreen(RGBColor::BLACK);
-		Display.fillScreen(RGBColor(255, 0, 0));
-		Display.drawString(0, 0, "Hello", RGBColor::WHITE, RGBColor::BLACK, 2, false);
-	} else if (bStart == true) {
-		bStart = false;
-		Display.fillScreen(RGBColor(0, 0, 255));
-		Display.drawString(0, 0, "Hello", RGBColor::WHITE, RGBColor::BLACK, 1, false);
-	}
-	///
-#else
 	//check to see if keyboard should be ignored
 	//uint32_t tick = HAL_GetTick();
-	//KB.scan();
-	RunContext rc(&Display);
+	KB.scan();
+	RunContext rc(&Display, &KB);
 
 	ReturnStateContext rsc = CurrentState->run(rc);
 
@@ -161,6 +163,5 @@ void DCDarkNetApp::run() {
 #endif
 		}
 	}
-#endif
 #endif
 }

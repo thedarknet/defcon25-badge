@@ -6,8 +6,8 @@
 //#include <uECC.h>
 //#include <sha256.h>
 
-RunContext::RunContext(DisplayST7735 *display) :
-		dp(display), GuiDisplay(display) {
+RunContext::RunContext(DisplayST7735 *display, QKeyboard *kb) :
+		dp(display), GuiDisplay(display), KeyB(kb) {
 
 }
 
@@ -17,6 +17,10 @@ const GUI &RunContext::getGUI() {
 
 DisplayST7735 &RunContext::getDisplay() {
 	return *dp;
+}
+
+QKeyboard &RunContext::getKB() {
+	return *KeyB;
 }
 
 ///////////////////////////
@@ -29,7 +33,7 @@ ReturnStateContext StateBase::run(RunContext &rc) {
 	++TimesRunCalledAllTime;
 	ReturnStateContext sr(this);
 	if (!hasBeenInitialized()) {
-		TimesRunCalledSinceLastReset=0;
+		TimesRunCalledSinceLastReset = 0;
 		ErrorType et = init();
 		if (!et.ok()) {
 			sr.NextMenuToRun = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), et.getMessage(),
@@ -132,17 +136,16 @@ ErrorType MenuState::onInit() {
 	Items[7].id = 7;
 	Items[7].text = (const char *) "Radio Info";
 	Items[8].id = 8;
-	Items[8].text = "";
-	//Items[7].text = (const char *) "Event Log";
+	Items[8].text = (const char *) "KeyBoard Test";
 	return ErrorType();
 }
 
 ReturnStateContext MenuState::onRun(RunContext &rc) {
 	StateBase *nextState = this;
-	if(getTimesRunCalledSinceLastReset()==1) {
+	if (getTimesRunCalledSinceLastReset() == 1) {
 		rc.getDisplay().fillScreen(RGBColor::BLACK);
 	} else {
-		uint8_t key = 0;	//kb.getLastKeyReleased();
+		uint8_t key = rc.getKB().getLastKeyReleased();	//kb.getLastKeyReleased();
 
 		switch (key) {
 		case 1: {
@@ -204,12 +207,48 @@ ReturnStateContext MenuState::onRun(RunContext &rc) {
 			break;
 		}
 	}
-	rc.getGUI().drawList(&this->MenuList);
+	if (rc.getKB().wasKeyReleased() || getTimesRunCalledSinceLastReset() == 2) {
+		rc.getGUI().drawList(&this->MenuList);
+	}
 	return ReturnStateContext(nextState);
 }
 
 ErrorType MenuState::onShutdown() {
 	MenuList.selectedItem = 0;
+	return ErrorType();
+}
+
+KeyBoardTest::KeyBoardTest() : LastKey(QKeyboard::NO_PIN_SELECTED-1) {
+
+}
+
+KeyBoardTest::~KeyBoardTest() {
+
+}
+
+ErrorType KeyBoardTest::onInit() {
+	LastKey = QKeyboard::NO_PIN_SELECTED-1;
+	return ErrorType();
+}
+
+ReturnStateContext KeyBoardTest::onRun(RunContext &rc) {
+	StateBase *nextState = this;
+	if (getTimesRunCalledSinceLastReset() == 1) {
+		rc.getDisplay().fillScreen(RGBColor::BLACK);
+	} else {
+		uint8_t key = rc.getKB().getLastPinPushed();
+		if(LastKey!=key) {
+			LastKey = key;
+			rc.getDisplay().fillRec(0,10,128,20,RGBColor::BLACK);
+			char buf[16];
+			sprintf(&buf[0], "pushed:  %d", (int) key);
+			rc.getDisplay().drawString(0, 10, &buf[0]);
+		}
+	}
+	return ReturnStateContext(nextState);
+}
+
+ErrorType KeyBoardTest::onShutdown() {
 	return ErrorType();
 }
 
@@ -242,8 +281,7 @@ ErrorType SettingState::onInit() {
 //static const char *NUMBERS = "123456789";
 
 ReturnStateContext SettingState::onRun(RunContext &rc) {
-	UNUSED(rc);
-	uint8_t key = 0;	//kb.getLastKeyReleased();
+	uint8_t key = rc.getKB().getLastKeyReleased();	//kb.getLastKeyReleased();
 	StateBase *nextState = this;
 	switch (SubState) {
 	case 0:
@@ -517,6 +555,7 @@ SettingState TheSettingState;
 //BadgeInfoState TheBadgeInfoState;
 GameOfLife TheGameOfLifeState;
 //EventState TheEventState;
+KeyBoardTest TheKeyBoardTest;
 
 StateBase *StateFactory::getDisplayMessageState(StateBase *bm, const char *message, uint16_t timeToDisplay) {
 	Display_Message_State.setMessage(message);
@@ -541,3 +580,6 @@ StateBase *StateFactory::getGameOfLifeState() {
 	return &TheGameOfLifeState;
 }
 
+StateBase *StateFactory::getKeyBoardTest() {
+	return &TheKeyBoardTest;
+}

@@ -52,8 +52,8 @@ namespace darknet {
 
 #define DBGMSG(a) if(LogManger::get().getLogger(DEBUG_LOGGER_ID)) \
 		LogManger::get().getLogger(DEBUG_LOGGER_ID)->printf(LogManger::get().getLogger(DEBUG_LOGGER_ID),a)
-#define INFOMSG(a) if(LogManger::get().getLogger(INFO_LOGGER_ID)) \
-		LogManger::get().getLogger(INFO_LOGGER_ID)->printf(LogManger::get().getLogger(INFO_LOGGER_ID),a)
+#define INFOMSG(a) if(darknet::LogManger::get().getLogger(INFO_LOGGER_ID)) \
+		LogManger::get().getLogger(INFO_LOGGER_ID)->printf(LogManger::get().getLogger(darknet::INFO_LOGGER_ID),a)
 #define ERRMSG(a) if(LogManger::get().getLogger(ERROR_LOGGER_ID)) \
 		LogManger::get().getLogger(ERROR_LOGGER_ID)->printf(LogManger::get().getLogger(ERROR_LOGGER_ID),a)
 

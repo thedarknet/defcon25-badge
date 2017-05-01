@@ -221,6 +221,14 @@ void DMA2_Channel2_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
+void EXTI4_IRQHandler(void) {
+	/* USER CODE BEGIN EXTI0_IRQn 0 */
 
+	/* USER CODE END EXTI0_IRQn 0 */
+	HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_4);
+	/* USER CODE BEGIN EXTI0_IRQn 1 */
+	(*IRQ_HANDLER)();
+	/* USER CODE END EXTI0_IRQn 1 */
+}
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -53,6 +53,7 @@
 /* USER CODE BEGIN Includes */
 #include "badge/dcdarknet_app.h"
 #include "badge/logger.h"
+#include "badge/ir.h"
 
 /* USER CODE END Includes */
 
@@ -103,8 +104,9 @@ int main(void) {
 	MX_TIM16_Init();
 	MX_TSC_Init();
 	MX_USB_DEVICE_Init();
-	//commit if working on dev board
+	//comment if working on dev board
 	MX_SPI3_Init();
+	IRInit();
 
 	/* USER CODE BEGIN 2 */
 	DCDarkNet.init();

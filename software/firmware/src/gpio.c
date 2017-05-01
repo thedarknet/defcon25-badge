@@ -122,6 +122,8 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(RADIO_INTERRUPT_DIO0_EXTI4_GPIO_Port, &GPIO_InitStruct);
 
+  HAL_NVIC_EnableIRQ(EXTI4_IRQn);
+
   /*Configure GPIO pins : PBPin PBPin PBPin PBPin */
   GPIO_InitStruct.Pin = LED3_Pin|LCD_CS_Pin|LCD_DATA_CMD_Pin|SD_CARD_CS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;

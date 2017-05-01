@@ -35,6 +35,8 @@ ErrorType DCDarkNetApp::init() {
 	et = Display.init();
 
 	Radio.initialize(RF69_915MHZ, 1);
+	const char *test="test";
+	Radio.send(1,test,4,false);
 
 #if 0
 	//blink status led a few times

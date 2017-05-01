@@ -30,6 +30,14 @@ static QKeyboard::PinConfig KBPins[] = {
 
 QKeyboard KB(&KBPins[0],sizeof(KBPins)/sizeof(KBPins[0]));
 
+static const uint16_t SETTING_SECTOR = 57; //0x800e400
+static const uint16_t FIRST_CONTACT_SECTOR = SETTING_SECTOR + 1; //0x800e800
+static const uint16_t NUM_CONTACT_SECTOR = 64 - FIRST_CONTACT_SECTOR;
+static const uint32_t MY_INFO_ADDRESS = 0x800FFD4;
+
+ContactStore MyContacts(SETTING_SECTOR, FIRST_CONTACT_SECTOR, NUM_CONTACT_SECTOR, MY_INFO_ADDRESS); //0x2710); //0x4E00);
+
+
 ErrorType DCDarkNetApp::init() {
 	ErrorType et;
 	et = Display.init();
@@ -121,7 +129,7 @@ void DCDarkNetApp::run() {
 	//check to see if keyboard should be ignored
 	//uint32_t tick = HAL_GetTick();
 	KB.scan();
-	RunContext rc(&Display, &KB);
+	RunContext rc(&Display, &KB,&MyContacts);
 
 	ReturnStateContext rsc = CurrentState->run(rc);
 

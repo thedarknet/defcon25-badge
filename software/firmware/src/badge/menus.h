@@ -7,6 +7,7 @@
 
 class StateBase;
 class DisplayST7735;
+class ContactStore;
 
 struct ReturnStateContext {
 	ReturnStateContext(StateBase *next, const ErrorType &er) :
@@ -21,14 +22,16 @@ struct ReturnStateContext {
 
 class RunContext {
 public:
-	RunContext(DisplayST7735 *display, QKeyboard *kb);
+	RunContext(DisplayST7735 *display, QKeyboard *kb, ContactStore *cs);
 	DisplayST7735 &getDisplay();
 	const GUI &getGUI();
 	QKeyboard &getKB();
+	ContactStore &getContactStore();
 private:
 	DisplayST7735 *dp; //should just be DisplayDevice rather than specific display //TODO
 	GUI GuiDisplay;
 	QKeyboard *KeyB;
+	ContactStore *CS;
 };
 
 class StateBase {
@@ -157,6 +160,7 @@ public:
 	static StateBase *getSettingState();
 	static StateBase *getGameOfLifeState();
 	static StateBase *getKeyBoardTest();
+	static StateBase *getMessageState();
 	//static StateBase* getBadgeInfoState();
 
 };

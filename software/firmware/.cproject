@@ -81,6 +81,7 @@
 									<listOptionValue builtIn="false" value="&quot;../Middlewares/ST/STM32_USB_Device_Library/Core/Inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/crypto/micro-ecc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/crypto}&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.1072106529" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="DEBUG"/>
@@ -105,6 +106,7 @@
 									<listOptionValue builtIn="false" value="&quot;../Middlewares/ST/STM32_USB_Device_Library/Core/Inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/crypto/micro-ecc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/crypto}&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.noexceptions.463492223" name="Do not use exceptions (-fno-exceptions)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.noexceptions" useByScannerDiscovery="true" value="true" valueType="boolean"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nortti.218387096" name="Do not use RTTI (-fno-rtti)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nortti" useByScannerDiscovery="true" value="true" valueType="boolean"/>

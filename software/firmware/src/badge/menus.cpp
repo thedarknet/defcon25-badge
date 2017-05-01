@@ -2,12 +2,14 @@
 #include "menus.h"
 #include "display_device.h"
 #include "GameOfLife.h"
+#include "KeyStore.h"
+#include "MessageState.h"
 //#include <tim.h>
 //#include <uECC.h>
 //#include <sha256.h>
 
-RunContext::RunContext(DisplayST7735 *display, QKeyboard *kb) :
-		dp(display), GuiDisplay(display), KeyB(kb) {
+RunContext::RunContext(DisplayST7735 *display, QKeyboard *kb, ContactStore *cs) :
+		dp(display), GuiDisplay(display), KeyB(kb), CS(cs) {
 
 }
 
@@ -23,10 +25,14 @@ QKeyboard &RunContext::getKB() {
 	return *KeyB;
 }
 
+ContactStore &RunContext::getContactStore() {
+	return *CS;
+}
+
 ///////////////////////////
 
 StateBase::StateBase() :
-		StateData(0), StateStartTime(0), TimesRunCalledAllTime(0), TimesRunCalledSinceLastReset(0) {
+		StateData(0), TimesRunCalledAllTime(0), TimesRunCalledSinceLastReset(0), StateStartTime(0) {
 }
 
 ReturnStateContext StateBase::run(RunContext &rc) {
@@ -556,6 +562,7 @@ SettingState TheSettingState;
 GameOfLife TheGameOfLifeState;
 //EventState TheEventState;
 KeyBoardTest TheKeyBoardTest;
+MessageState TheMessageState;
 
 StateBase *StateFactory::getDisplayMessageState(StateBase *bm, const char *message, uint16_t timeToDisplay) {
 	Display_Message_State.setMessage(message);
@@ -582,4 +589,8 @@ StateBase *StateFactory::getGameOfLifeState() {
 
 StateBase *StateFactory::getKeyBoardTest() {
 	return &TheKeyBoardTest;
+}
+
+StateBase *StateFactory::getMessageState() {
+	return &TheMessageState;
 }

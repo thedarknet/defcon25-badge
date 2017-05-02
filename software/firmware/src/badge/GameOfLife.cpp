@@ -66,12 +66,12 @@ ReturnStateContext GameOfLife::onRun(RunContext &rc) {
 		//	InternalState = SLEEP;
 		//}
 	}
-	//if (kb.getLastKeyReleased() == QKeyboard::NO_PIN_SELECTED) {
+	if (rc.getKB().getLastKeyReleased() == QKeyboard::NO_PIN_SELECTED) {
 		return ReturnStateContext(this);
-	//} else {
-	//	kb.setAllLightsOn(true);
-	//	return ReturnStateContext(StateFactory::getMenuState());
-	//}
+	} else {
+		rc.getKB().setAllLightsOn(true);
+		return ReturnStateContext(StateFactory::getMenuState());
+	}
 }
 
 ErrorType GameOfLife::onShutdown() {

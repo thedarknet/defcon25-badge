@@ -20,18 +20,22 @@ struct ReturnStateContext {
 	ErrorType Err;
 };
 
+class RFM69;
+
 class RunContext {
 public:
-	RunContext(DisplayST7735 *display, QKeyboard *kb, ContactStore *cs);
+	RunContext(DisplayST7735 *display, QKeyboard *kb, ContactStore *cs, RFM69 *r);
 	DisplayST7735 &getDisplay();
 	const GUI &getGUI();
 	QKeyboard &getKB();
 	ContactStore &getContactStore();
+	RFM69 &getRadio();
 private:
 	DisplayST7735 *dp; //should just be DisplayDevice rather than specific display //TODO
 	GUI GuiDisplay;
 	QKeyboard *KeyB;
 	ContactStore *CS;
+	RFM69 *Transciever;
 };
 
 class StateBase {
@@ -131,12 +135,26 @@ protected:
 	virtual ErrorType onInit();
 	virtual ReturnStateContext onRun(RunContext &rc);
 	virtual ErrorType onShutdown();
-	const char *getRegCode();
+	const char *getRegCode(ContactStore &cs);
 private:
 	GUI_ListData BadgeInfoList;
 	GUI_ListItemData Items[9];
 	char ListBuffer[9][64]; //height then width
 	char RegCode[18];
+};
+
+class RadioInfoState: public StateBase {
+public:
+	RadioInfoState();
+	virtual ~RadioInfoState();
+protected:
+	virtual ErrorType onInit();
+	virtual ReturnStateContext onRun(RunContext &rc);
+	virtual ErrorType onShutdown();
+private:
+	GUI_ListData RadioInfoList;
+	GUI_ListItemData Items[5];
+	char ListBuffer[5][20];
 };
 
 class KeyBoardTest : public StateBase {
@@ -161,8 +179,8 @@ public:
 	static StateBase *getGameOfLifeState();
 	static StateBase *getKeyBoardTest();
 	static StateBase *getMessageState();
-	//static StateBase* getBadgeInfoState();
-
+	static StateBase* getBadgeInfoState();
+	static StateBase *getRadioInfoState();
 };
 
 #endif

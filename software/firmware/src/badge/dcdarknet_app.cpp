@@ -25,7 +25,7 @@ static QKeyboard::PinConfig KBPins[] = {
 		,{TSC_GROUP1_IO1,TSC_GROUP1_IO4, TSC_GROUP1_IDX} //8
 		,{TSC_GROUP5_IO3,TSC_GROUP5_IO4, TSC_GROUP5_IDX} //9
 		,{TSC_GROUP5_IO2,TSC_GROUP5_IO4, TSC_GROUP5_IDX} //0
-		//,{TSC_GROUP5_IO1,TSC_GROUP5_IO4, TSC_GROUP5_IDX} //hook
+		,{TSC_GROUP5_IO1,TSC_GROUP5_IO4, TSC_GROUP5_IDX} //hook
 };
 
 QKeyboard KB(&KBPins[0],sizeof(KBPins)/sizeof(KBPins[0]));
@@ -118,7 +118,8 @@ ErrorType DCDarkNetApp::init() {
 	KB.resetLastPinTick();
 	return true;
 #endif
-	CurrentState = StateFactory::getKeyBoardTest();
+	//CurrentState = StateFactory::getKeyBoardTest();
+	CurrentState = StateFactory::getMenuState();
 	return et;
 }
 
@@ -129,7 +130,7 @@ void DCDarkNetApp::run() {
 	//check to see if keyboard should be ignored
 	//uint32_t tick = HAL_GetTick();
 	KB.scan();
-	RunContext rc(&Display, &KB,&MyContacts);
+	RunContext rc(&Display, &KB,&MyContacts, &Radio);
 
 	ReturnStateContext rsc = CurrentState->run(rc);
 

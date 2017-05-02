@@ -130,7 +130,7 @@ void QKeyboard::scan() {
 	uint8_t selectedPin = NO_PIN_SELECTED;
 	HAL_TSC_IODischarge(&htsc, ENABLE);
 	HAL_Delay(100);
-#if 1
+
 	for (int r = 0; r < Count && selectedPin == NO_PIN_SELECTED; ++r) {
 		TSC_IOConfigTypeDef conf;
 		conf.ChannelIOs = PC[r].Pin;
@@ -155,74 +155,6 @@ void QKeyboard::scan() {
 			}
 		}
 	}
-#else
-	TSC_IOConfigTypeDef conf;
-	conf.ChannelIOs = TSC_GROUP5_IO3; //TSC_GROUP3_IO2; //PC[r].Pin;
-	conf.SamplingIOs = TSC_GROUP5_IO4;//PC[r].SamplePin;
-	conf.ShieldIOs = 0;
-	if (HAL_OK == HAL_TSC_IOConfig(&htsc, &conf)) {
-		if (HAL_OK == HAL_TSC_Start(&htsc)) {
-			if (HAL_OK == HAL_TSC_PollForAcquisition(&htsc)) {
-				uint32_t value = HAL_TSC_GroupGetValue(&htsc, TSC_GROUP5_IDX); //PC[r].GroupIndex);
-				if (value < 250) {
-					selectedPin = 8; //r;
-					LastPinSelectedTick = HAL_GetTick();
-				}
-			} else {
-				//ERRMSG("Error during Poll");
-			}
-			if (HAL_OK != HAL_TSC_Stop(&htsc)) {
-				//ERRMSG("Error during stop");
-			}
-		} else {
-			//ERRMSG("Error during start");
-		}
-	}
-	conf.ChannelIOs = TSC_GROUP5_IO2; //PC[r].Pin;
-	conf.SamplingIOs = TSC_GROUP5_IO4;//PC[r].SamplePin;
-	conf.ShieldIOs = 0;
-	if (HAL_OK == HAL_TSC_IOConfig(&htsc, &conf)) {
-		if (HAL_OK == HAL_TSC_Start(&htsc)) {
-			if (HAL_OK == HAL_TSC_PollForAcquisition(&htsc)) {
-				uint32_t value = HAL_TSC_GroupGetValue(&htsc, TSC_GROUP5_IDX); //PC[r].GroupIndex);
-				if (value < 250) {
-					selectedPin = 9; //r;
-					LastPinSelectedTick = HAL_GetTick();
-				}
-			} else {
-				//ERRMSG("Error during Poll");
-			}
-			if (HAL_OK != HAL_TSC_Stop(&htsc)) {
-				//ERRMSG("Error during stop");
-			}
-		} else {
-			//ERRMSG("Error during start");
-		}
-	}
-	conf.ChannelIOs = TSC_GROUP5_IO1; //PC[r].Pin;
-	conf.SamplingIOs = TSC_GROUP5_IO4;//PC[r].SamplePin;
-	conf.ShieldIOs = 0;
-	if (HAL_OK == HAL_TSC_IOConfig(&htsc, &conf)) {
-		if (HAL_OK == HAL_TSC_Start(&htsc)) {
-			if (HAL_OK == HAL_TSC_PollForAcquisition(&htsc)) {
-				uint32_t value = HAL_TSC_GroupGetValue(&htsc, TSC_GROUP5_IDX); //PC[r].GroupIndex);
-				if (value < 250) {
-					selectedPin = 10; //r;
-					LastPinSelectedTick = HAL_GetTick();
-				}
-			} else {
-				//ERRMSG("Error during Poll");
-			}
-			if (HAL_OK != HAL_TSC_Stop(&htsc)) {
-				//ERRMSG("Error during stop");
-			}
-		} else {
-			//ERRMSG("Error during start");
-		}
-	}
-
-#endif
-//}
 	HAL_TSC_IODischarge(&htsc, DISABLE);
 
 	if (selectedPin == LastSelectedPin) {

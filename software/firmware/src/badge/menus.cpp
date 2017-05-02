@@ -4,12 +4,14 @@
 #include "GameOfLife.h"
 #include "KeyStore.h"
 #include "MessageState.h"
+#include "Radio/RFM69.h"
+#include <sha256.h>
 //#include <tim.h>
 //#include <uECC.h>
 //#include <sha256.h>
 
-RunContext::RunContext(DisplayST7735 *display, QKeyboard *kb, ContactStore *cs) :
-		dp(display), GuiDisplay(display), KeyB(kb), CS(cs) {
+RunContext::RunContext(DisplayST7735 *display, QKeyboard *kb, ContactStore *cs, RFM69 *r) :
+		dp(display), GuiDisplay(display), KeyB(kb), CS(cs), Transciever(r) {
 
 }
 
@@ -27,6 +29,10 @@ QKeyboard &RunContext::getKB() {
 
 ContactStore &RunContext::getContactStore() {
 	return *CS;
+}
+
+RFM69 &RunContext::getRadio() {
+	return *Transciever;
 }
 
 ///////////////////////////
@@ -170,11 +176,11 @@ ReturnStateContext MenuState::onRun(RunContext &rc) {
 			}
 			break;
 		}
-		case 9: {
+		case 8: {
 			MenuList.selectedItem = 0;
 		}
 			break;
-		case 11: {
+		case 9: {
 			switch (MenuList.selectedItem) {
 			case 0:
 				nextState = StateFactory::getSettingState();
@@ -191,7 +197,7 @@ ReturnStateContext MenuState::onRun(RunContext &rc) {
 				//nextState = StateFactory::getAddressBookState();
 				break;
 			case 3:
-				//nextState = StateFactory::getMessageState();
+				nextState = StateFactory::getMessageState();
 				break;
 			case 4:
 				//nextState = StateFactory::getEnigmaState();
@@ -200,14 +206,14 @@ ReturnStateContext MenuState::onRun(RunContext &rc) {
 				nextState = StateFactory::getGameOfLifeState();
 				break;
 			case 6:
-				//nextState = StateFactory::getBadgeInfoState();
+				nextState = StateFactory::getBadgeInfoState();
 				break;
 			case 7:
-				//nextState = StateFactory::getRadioInfoState();
+				nextState = StateFactory::getRadioInfoState();
 				break;
-				//case 8:
-				//	nextState = StateFactory::getEventState();
-				//	break;
+			case 8:
+				nextState = StateFactory::getKeyBoardTest();
+				break;
 			}
 		}
 			break;
@@ -224,7 +230,8 @@ ErrorType MenuState::onShutdown() {
 	return ErrorType();
 }
 
-KeyBoardTest::KeyBoardTest() : LastKey(QKeyboard::NO_PIN_SELECTED-1) {
+KeyBoardTest::KeyBoardTest() :
+		LastKey(QKeyboard::NO_PIN_SELECTED - 1) {
 
 }
 
@@ -233,7 +240,7 @@ KeyBoardTest::~KeyBoardTest() {
 }
 
 ErrorType KeyBoardTest::onInit() {
-	LastKey = QKeyboard::NO_PIN_SELECTED-1;
+	LastKey = QKeyboard::NO_PIN_SELECTED - 1;
 	return ErrorType();
 }
 
@@ -243,9 +250,9 @@ ReturnStateContext KeyBoardTest::onRun(RunContext &rc) {
 		rc.getDisplay().fillScreen(RGBColor::BLACK);
 	} else {
 		uint8_t key = rc.getKB().getLastPinPushed();
-		if(LastKey!=key) {
+		if (LastKey != key) {
 			LastKey = key;
-			rc.getDisplay().fillRec(0,10,128,20,RGBColor::BLACK);
+			rc.getDisplay().fillRec(0, 10, 128, 20, RGBColor::BLACK);
 			char buf[16];
 			sprintf(&buf[0], "pushed:  %d", (int) key);
 			rc.getDisplay().drawString(0, 10, &buf[0]);
@@ -428,9 +435,9 @@ ErrorType SettingState::onShutdown() {
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////
-#if 0
+
 BadgeInfoState::BadgeInfoState() :
-StateBase(), BadgeInfoList("Badge Info:", Items, 0, 0, 128, 64, 0, (sizeof(Items) / sizeof(Items[0]))), RegCode() {
+		StateBase(), BadgeInfoList("Badge Info:", Items, 0, 0, 128, 64, 0, (sizeof(Items) / sizeof(Items[0]))), RegCode() {
 
 	memset(&RegCode, 0, sizeof(RegCode));
 }
@@ -439,14 +446,12 @@ BadgeInfoState::~BadgeInfoState() {
 
 }
 
-const char *BadgeInfoState::getRegCode() {
+const char *BadgeInfoState::getRegCode(ContactStore &cs) {
 	if (RegCode[0] == 0) {
 		ShaOBJ hashObj;
 		sha256_init(&hashObj);
-		//const char *p = "this is my message";
-		//sha256_add(&hashObj,(const uint8_t*)p,strlen(p));
-		sha256_add(&hashObj, getContactStore().getMyInfo().getPrivateKey(), ContactStore::PRIVATE_KEY_LENGTH);
-		uint16_t id = getContactStore().getMyInfo().getUniqueID();
+		sha256_add(&hashObj, cs.getMyInfo().getPrivateKey(), ContactStore::PRIVATE_KEY_LENGTH);
+		uint16_t id = cs.getMyInfo().getUniqueID();
 		sha256_add(&hashObj, (uint8_t *) &id, sizeof(id));
 		uint8_t rH[SHA256_HASH_SIZE];
 		sha256_digest(&hashObj, &rH[0]);
@@ -459,21 +464,8 @@ const char *BadgeInfoState::getRegCode() {
 static const char *VERSION = "dc24.1.1";
 
 ErrorType BadgeInfoState::onInit() {
-	gui_set_curList(&BadgeInfoList);
 	memset(&ListBuffer[0], 0, sizeof(ListBuffer));
-	sprintf(&ListBuffer[0][0], "N: %s", getContactStore().getSettings().getAgentName());
-	sprintf(&ListBuffer[1][0], "Num contacts: %u", getContactStore().getSettings().getNumContacts());
-	sprintf(&ListBuffer[2][0], "REG: %s", getRegCode());
-	sprintf(&ListBuffer[3][0], "UID: %u", getContactStore().getMyInfo().getUniqueID());
-	uint8_t *pCP = getContactStore().getMyInfo().getCompressedPublicKey();
-	sprintf(&ListBuffer[4][0],
-			"PK: %02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
-			pCP[0], pCP[1], pCP[2], pCP[3], pCP[4], pCP[5], pCP[6], pCP[7], pCP[8], pCP[9], pCP[10], pCP[11], pCP[12],
-			pCP[13], pCP[14], pCP[15], pCP[16], pCP[17], pCP[18], pCP[19], pCP[20], pCP[21], pCP[22], pCP[23], pCP[24]);
-	sprintf(&ListBuffer[5][0], "DEVID: %lu", HAL_GetDEVID());
-	sprintf(&ListBuffer[6][0], "REVID: %lu", HAL_GetREVID());
-	sprintf(&ListBuffer[7][0], "HAL Version: %lu", HAL_GetHalVersion());
-	sprintf(&ListBuffer[8][0], "SVer: %s", VERSION);
+
 	for (uint32_t i = 0; i < (sizeof(Items) / sizeof(Items[0])); i++) {
 		Items[i].text = &ListBuffer[i][0];
 		Items[i].id = i;
@@ -482,10 +474,26 @@ ErrorType BadgeInfoState::onInit() {
 	return ErrorType();
 }
 
-ReturnStateContext BadgeInfoState::onRun(QKeyboard &kb) {
-	uint8_t key = kb.getLastKeyReleased();
+ReturnStateContext BadgeInfoState::onRun(RunContext &rc) {
 	StateBase *nextState = this;
-	switch (key) {
+	if (this->getTimesRunCalledSinceLastReset() == 1) {
+		sprintf(&ListBuffer[0][0], "N: %s", rc.getContactStore().getSettings().getAgentName());
+		sprintf(&ListBuffer[1][0], "Num contacts: %u", rc.getContactStore().getSettings().getNumContacts());
+		sprintf(&ListBuffer[2][0], "REG: %s", getRegCode(rc.getContactStore()));
+		sprintf(&ListBuffer[3][0], "UID: %u", rc.getContactStore().getMyInfo().getUniqueID());
+		uint8_t *pCP = rc.getContactStore().getMyInfo().getCompressedPublicKey();
+		sprintf(&ListBuffer[4][0],
+				"PK: %02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+				pCP[0], pCP[1], pCP[2], pCP[3], pCP[4], pCP[5], pCP[6], pCP[7], pCP[8], pCP[9], pCP[10], pCP[11],
+				pCP[12], pCP[13], pCP[14], pCP[15], pCP[16], pCP[17], pCP[18], pCP[19], pCP[20], pCP[21], pCP[22],
+				pCP[23], pCP[24]);
+		sprintf(&ListBuffer[5][0], "DEVID: %lu", HAL_GetDEVID());
+		sprintf(&ListBuffer[6][0], "REVID: %lu", HAL_GetREVID());
+		sprintf(&ListBuffer[7][0], "HAL Version: %lu", HAL_GetHalVersion());
+		sprintf(&ListBuffer[8][0], "SVer: %s", VERSION);
+	} else {
+		uint8_t key = rc.getKB().getLastKeyReleased();
+		switch (key) {
 		case 1: {
 			if (BadgeInfoList.selectedItem == 0) {
 				BadgeInfoList.selectedItem = sizeof(Items) / sizeof(Items[0]) - 1;
@@ -505,20 +513,23 @@ ReturnStateContext BadgeInfoState::onRun(QKeyboard &kb) {
 		case 9: {
 			nextState = StateFactory::getMenuState();
 		}
-		break;
+			break;
+		}
+	}
+	if (rc.getKB().wasKeyReleased() || this->getTimesRunCalledSinceLastReset() == 2) {
+		rc.getGUI().drawList(&BadgeInfoList);
 	}
 	return ReturnStateContext(nextState);
 }
 
 ErrorType BadgeInfoState::onShutdown() {
-	gui_set_curList(0);
 	return ErrorType();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 RadioInfoState::RadioInfoState() :
-StateBase(), RadioInfoList("Radio Info:", Items, 0, 0, 128, 64, 0, (sizeof(Items) / sizeof(Items[0]))), Items(), ListBuffer() {
+		StateBase(), RadioInfoList("Radio Info:", Items, 0, 0, 128, 64, 0, (sizeof(Items) / sizeof(Items[0]))), Items(), ListBuffer() {
 
 }
 
@@ -527,7 +538,6 @@ RadioInfoState::~RadioInfoState() {
 }
 
 ErrorType RadioInfoState::onInit() {
-	gui_set_curList (&RadioInfoList);
 	memset(&ListBuffer[0], 0, sizeof(ListBuffer));
 	for (uint32_t i = 0; i < (sizeof(Items) / sizeof(Items[0])); i++) {
 		Items[i].text = &ListBuffer[i][0];
@@ -535,14 +545,17 @@ ErrorType RadioInfoState::onInit() {
 	return ErrorType();
 }
 
-ReturnStateContext RadioInfoState::onRun(QKeyboard &kb) {
+ReturnStateContext RadioInfoState::onRun(RunContext &rc) {
+	if (this->getTimesRunCalledSinceLastReset() == 1) {
+		sprintf(&ListBuffer[0][0], "Frequency: %lu", rc.getRadio().getFrequency());
+		sprintf(&ListBuffer[1][0], "RSSI: %d", rc.getRadio().readRSSI());
+		sprintf(&ListBuffer[2][0], "RSSI Threshold: %u", rc.getRadio().getRSSIThreshHold());
+		sprintf(&ListBuffer[3][0], "Gain: %u", rc.getRadio().getCurrentGain());
+		sprintf(&ListBuffer[4][0], "Temp: %u", rc.getRadio().readTemperature());
+		rc.getGUI().drawList(&RadioInfoList);
+	}
 	StateBase *nextState = this;
-	sprintf(&ListBuffer[0][0], "Frequency: %lu", getRadio().getFrequency());
-	sprintf(&ListBuffer[1][0], "RSSI: %d", getRadio().readRSSI());
-	sprintf(&ListBuffer[2][0], "RSSI Threshold: %u", getRadio().getRSSIThreshHold());
-	sprintf(&ListBuffer[3][0], "Gain: %u", getRadio().getCurrentGain());
-	sprintf(&ListBuffer[4][0], "Temp: %u", getRadio().readTemperature());
-	uint8_t pin = kb.getLastKeyReleased();
+	uint8_t pin = rc.getKB().getLastKeyReleased();
 	if (pin == 9) {
 		nextState = StateFactory::getMenuState();
 	}
@@ -550,25 +563,29 @@ ReturnStateContext RadioInfoState::onRun(QKeyboard &kb) {
 }
 
 ErrorType RadioInfoState::onShutdown() {
-	gui_set_curList(0);
 	return ErrorType();
 }
-#endif
+
 //============================================================
 DisplayMessageState Display_Message_State(3000, 0);
 MenuState MenuState;
 SettingState TheSettingState;
-//BadgeInfoState TheBadgeInfoState;
+BadgeInfoState TheBadgeInfoState;
 GameOfLife TheGameOfLifeState;
 //EventState TheEventState;
 KeyBoardTest TheKeyBoardTest;
 MessageState TheMessageState;
+RadioInfoState TheRadioInfoState;
 
 StateBase *StateFactory::getDisplayMessageState(StateBase *bm, const char *message, uint16_t timeToDisplay) {
 	Display_Message_State.setMessage(message);
 	Display_Message_State.setNextState(bm);
 	Display_Message_State.setTimeInState(timeToDisplay);
 	return &Display_Message_State;
+}
+
+StateBase *StateFactory::getRadioInfoState() {
+	return &TheRadioInfoState;
 }
 
 StateBase * StateFactory::getMenuState() {
@@ -579,9 +596,9 @@ StateBase *StateFactory::getSettingState() {
 	return &TheSettingState;
 }
 
-//StateBase* StateFactory::getBadgeInfoState() {
-//	return &TheBadgeInfoState;
-//}
+StateBase* StateFactory::getBadgeInfoState() {
+	return &TheBadgeInfoState;
+}
 
 StateBase *StateFactory::getGameOfLifeState() {
 	return &TheGameOfLifeState;

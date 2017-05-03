@@ -46,7 +46,7 @@ ReturnStateContext StateBase::run(RunContext &rc) {
 	ReturnStateContext sr(this);
 	if (!hasBeenInitialized()) {
 		TimesRunCalledSinceLastReset = 0;
-		ErrorType et = init();
+		ErrorType et = init(rc);
 		if (!et.ok()) {
 			sr.NextMenuToRun = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), et.getMessage(),
 					10000);
@@ -64,8 +64,8 @@ ReturnStateContext StateBase::run(RunContext &rc) {
 StateBase::~StateBase() {
 }
 
-ErrorType StateBase::init() {
-	ErrorType et = onInit();
+ErrorType StateBase::init(RunContext &rc) {
+	ErrorType et = onInit(rc);
 	if (et.ok()) {
 		setState(INIT_BIT);
 		StateStartTime = HAL_GetTick();
@@ -91,7 +91,7 @@ DisplayMessageState::DisplayMessageState(uint16_t timeInState, StateBase *nextSt
 DisplayMessageState::~DisplayMessageState() {
 }
 
-ErrorType DisplayMessageState::onInit() {
+ErrorType DisplayMessageState::onInit(RunContext &rc) {
 	return ErrorType();
 }
 
@@ -122,7 +122,7 @@ MenuState::~MenuState() {
 const char *HasMessage = "DCDN Net Msgs *";
 const char *NoHasMessage = "DCDN Net Msgs";
 
-ErrorType MenuState::onInit() {
+ErrorType MenuState::onInit(RunContext &rc) {
 	Items[0].id = 0;
 	//if (getContactStore().getSettings().isNameSet()) {
 	//	Items[0].text = (const char *) "Settings";
@@ -140,7 +140,7 @@ ErrorType MenuState::onInit() {
 	Items[3].text = NoHasMessage;
 	//}
 	Items[4].id = 4;
-	Items[4].text = (const char *) "Enigma";
+	Items[4].text = (const char *) "UNKNOWN";
 	Items[5].id = 5;
 	Items[5].text = (const char *) "Screen Saver";
 	Items[6].id = 6;
@@ -149,77 +149,75 @@ ErrorType MenuState::onInit() {
 	Items[7].text = (const char *) "Radio Info";
 	Items[8].id = 8;
 	Items[8].text = (const char *) "KeyBoard Test";
+	rc.getDisplay().fillScreen(RGBColor::BLACK);
+	rc.getGUI().drawList(&this->MenuList);
 	return ErrorType();
 }
 
 ReturnStateContext MenuState::onRun(RunContext &rc) {
 	StateBase *nextState = this;
-	if (getTimesRunCalledSinceLastReset() == 1) {
-		rc.getDisplay().fillScreen(RGBColor::BLACK);
-	} else {
-		uint8_t key = rc.getKB().getLastKeyReleased();	//kb.getLastKeyReleased();
+	uint8_t key = rc.getKB().getLastKeyReleased();	//kb.getLastKeyReleased();
 
-		switch (key) {
-		case 1: {
-			if (MenuList.selectedItem == 0) {
-				MenuList.selectedItem = sizeof(Items) / sizeof(Items[0]) - 1;
-			} else {
-				MenuList.selectedItem--;
-			}
-			break;
+	switch (key) {
+	case 1: {
+		if (MenuList.selectedItem == 0) {
+			MenuList.selectedItem = sizeof(Items) / sizeof(Items[0]) - 1;
+		} else {
+			MenuList.selectedItem--;
 		}
-		case 7: {
-			if (MenuList.selectedItem == (sizeof(Items) / sizeof(Items[0]) - 1)) {
-				MenuList.selectedItem = 0;
-			} else {
-				MenuList.selectedItem++;
-			}
-			break;
-		}
-		case 8: {
+		break;
+	}
+	case 7: {
+		if (MenuList.selectedItem == (sizeof(Items) / sizeof(Items[0]) - 1)) {
 			MenuList.selectedItem = 0;
+		} else {
+			MenuList.selectedItem++;
 		}
+		break;
+	}
+	case 8: {
+		MenuList.selectedItem = 0;
+	}
+		break;
+	case 9: {
+		switch (MenuList.selectedItem) {
+		case 0:
+			nextState = StateFactory::getSettingState();
 			break;
-		case 9: {
-			switch (MenuList.selectedItem) {
-			case 0:
-				nextState = StateFactory::getSettingState();
-				break;
-			case 1:
-				//if (getContactStore().getSettings().getAgentName()[0] != '\0') {
-				//	nextState = StateFactory::getIRPairingState();
-				//} else {
-				nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(),
-						(const char *) "You must set your agent name first", 3000);
-				//}
-				break;
-			case 2:
-				//nextState = StateFactory::getAddressBookState();
-				break;
-			case 3:
-				nextState = StateFactory::getMessageState();
-				break;
-			case 4:
-				//nextState = StateFactory::getEnigmaState();
-				break;
-			case 5:
-				nextState = StateFactory::getGameOfLifeState();
-				break;
-			case 6:
-				nextState = StateFactory::getBadgeInfoState();
-				break;
-			case 7:
-				nextState = StateFactory::getRadioInfoState();
-				break;
-			case 8:
-				nextState = StateFactory::getKeyBoardTest();
-				break;
-			}
-		}
+		case 1:
+			//if (getContactStore().getSettings().getAgentName()[0] != '\0') {
+			//	nextState = StateFactory::getIRPairingState();
+			//} else {
+			nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(),
+					(const char *) "You must set your agent name first", 3000);
+			//}
+			break;
+		case 2:
+			//nextState = StateFactory::getAddressBookState();
+			break;
+		case 3:
+			nextState = StateFactory::getMessageState();
+			break;
+		case 4:
+			//nextState =
+			break;
+		case 5:
+			nextState = StateFactory::getGameOfLifeState();
+			break;
+		case 6:
+			nextState = StateFactory::getBadgeInfoState();
+			break;
+		case 7:
+			nextState = StateFactory::getRadioInfoState();
+			break;
+		case 8:
+			nextState = StateFactory::getKeyBoardTest();
 			break;
 		}
 	}
-	if (rc.getKB().wasKeyReleased() || getTimesRunCalledSinceLastReset() == 2) {
+		break;
+	}
+	if (rc.getKB().wasKeyReleased()) {
 		rc.getGUI().drawList(&this->MenuList);
 	}
 	return ReturnStateContext(nextState);
@@ -239,24 +237,25 @@ KeyBoardTest::~KeyBoardTest() {
 
 }
 
-ErrorType KeyBoardTest::onInit() {
+ErrorType KeyBoardTest::onInit(RunContext &rc) {
 	LastKey = QKeyboard::NO_PIN_SELECTED - 1;
+	rc.getDisplay().fillScreen(RGBColor::BLACK);
+	rc.getDisplay().drawString(0, 10, (const char*) "Hook then 1 to exit");
 	return ErrorType();
 }
 
 ReturnStateContext KeyBoardTest::onRun(RunContext &rc) {
 	StateBase *nextState = this;
-	if (getTimesRunCalledSinceLastReset() == 1) {
-		rc.getDisplay().fillScreen(RGBColor::BLACK);
-	} else {
-		uint8_t key = rc.getKB().getLastPinPushed();
-		if (LastKey != key) {
-			LastKey = key;
-			rc.getDisplay().fillRec(0, 10, 128, 20, RGBColor::BLACK);
-			char buf[16];
-			sprintf(&buf[0], "pushed:  %d", (int) key);
-			rc.getDisplay().drawString(0, 10, &buf[0]);
-		}
+	uint8_t key = rc.getKB().getLastPinPushed();
+	if (LastKey == 10 && key == 0) {
+		nextState = StateFactory::getMenuState();
+	}
+	if (LastKey != key) {
+		LastKey = key;
+		rc.getDisplay().fillRec(0, 20, 128, 20, RGBColor::BLACK);
+		char buf[16];
+		sprintf(&buf[0], "pushed:  %d", (int) key);
+		rc.getDisplay().drawString(0, 10, &buf[0]);
 	}
 	return ReturnStateContext(nextState);
 }
@@ -266,7 +265,7 @@ ErrorType KeyBoardTest::onShutdown() {
 }
 
 SettingState::SettingState() :
-		StateBase(), SettingList((const char *) "MENU", Items, 0, 0, 128, 64, 0, sizeof(Items) / sizeof(Items[0])), InputPos(
+		StateBase(), SettingList((const char *) "MENU", Items, 0, 0, 128, 160, 0, sizeof(Items) / sizeof(Items[0])), InputPos(
 				0), SubState(0) {
 
 	memset(&AgentName[0], 0, sizeof(AgentName));
@@ -286,7 +285,7 @@ SettingState::~SettingState() {
 
 }
 
-ErrorType SettingState::onInit() {
+ErrorType SettingState::onInit(RunContext &rc) {
 	SubState = 0;
 	return ErrorType();
 }
@@ -437,7 +436,7 @@ ErrorType SettingState::onShutdown() {
 //////////////////////////////////////////////////////////////
 
 BadgeInfoState::BadgeInfoState() :
-		StateBase(), BadgeInfoList("Badge Info:", Items, 0, 0, 128, 64, 0, (sizeof(Items) / sizeof(Items[0]))), RegCode() {
+		StateBase(), BadgeInfoList("Badge Info:", Items, 0, 0, 128, 160, 0, (sizeof(Items) / sizeof(Items[0]))), RegCode() {
 
 	memset(&RegCode, 0, sizeof(RegCode));
 }
@@ -461,62 +460,61 @@ const char *BadgeInfoState::getRegCode(ContactStore &cs) {
 	return &RegCode[0];
 }
 
-static const char *VERSION = "dc24.1.1";
+static const char *VERSION = "dc25.1.1";
 
-ErrorType BadgeInfoState::onInit() {
+ErrorType BadgeInfoState::onInit(RunContext &rc) {
 	memset(&ListBuffer[0], 0, sizeof(ListBuffer));
+	sprintf(&ListBuffer[0][0], "N: %s", rc.getContactStore().getSettings().getAgentName());
+	sprintf(&ListBuffer[1][0], "Num contacts: %u", rc.getContactStore().getSettings().getNumContacts());
+	sprintf(&ListBuffer[2][0], "REG: %s", getRegCode(rc.getContactStore()));
+	sprintf(&ListBuffer[3][0], "UID: %u", rc.getContactStore().getMyInfo().getUniqueID());
+	uint8_t *pCP = rc.getContactStore().getMyInfo().getCompressedPublicKey();
+	sprintf(&ListBuffer[4][0],
+			"PK: %02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+			pCP[0], pCP[1], pCP[2], pCP[3], pCP[4], pCP[5], pCP[6], pCP[7], pCP[8], pCP[9], pCP[10], pCP[11],
+			pCP[12], pCP[13], pCP[14], pCP[15], pCP[16], pCP[17], pCP[18], pCP[19], pCP[20], pCP[21], pCP[22],
+			pCP[23], pCP[24]);
+	sprintf(&ListBuffer[5][0], "DEVID: %lu", HAL_GetDEVID());
+	sprintf(&ListBuffer[6][0], "REVID: %lu", HAL_GetREVID());
+	sprintf(&ListBuffer[7][0], "HAL Version: %lu", HAL_GetHalVersion());
+	sprintf(&ListBuffer[8][0], "SVer: %s", VERSION);
 
 	for (uint32_t i = 0; i < (sizeof(Items) / sizeof(Items[0])); i++) {
 		Items[i].text = &ListBuffer[i][0];
 		Items[i].id = i;
 		Items[i].setShouldScroll();
 	}
+	rc.getDisplay().fillScreen(RGBColor::BLACK);
+	rc.getGUI().drawList(&BadgeInfoList);
 	return ErrorType();
 }
 
 ReturnStateContext BadgeInfoState::onRun(RunContext &rc) {
 	StateBase *nextState = this;
-	if (this->getTimesRunCalledSinceLastReset() == 1) {
-		sprintf(&ListBuffer[0][0], "N: %s", rc.getContactStore().getSettings().getAgentName());
-		sprintf(&ListBuffer[1][0], "Num contacts: %u", rc.getContactStore().getSettings().getNumContacts());
-		sprintf(&ListBuffer[2][0], "REG: %s", getRegCode(rc.getContactStore()));
-		sprintf(&ListBuffer[3][0], "UID: %u", rc.getContactStore().getMyInfo().getUniqueID());
-		uint8_t *pCP = rc.getContactStore().getMyInfo().getCompressedPublicKey();
-		sprintf(&ListBuffer[4][0],
-				"PK: %02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
-				pCP[0], pCP[1], pCP[2], pCP[3], pCP[4], pCP[5], pCP[6], pCP[7], pCP[8], pCP[9], pCP[10], pCP[11],
-				pCP[12], pCP[13], pCP[14], pCP[15], pCP[16], pCP[17], pCP[18], pCP[19], pCP[20], pCP[21], pCP[22],
-				pCP[23], pCP[24]);
-		sprintf(&ListBuffer[5][0], "DEVID: %lu", HAL_GetDEVID());
-		sprintf(&ListBuffer[6][0], "REVID: %lu", HAL_GetREVID());
-		sprintf(&ListBuffer[7][0], "HAL Version: %lu", HAL_GetHalVersion());
-		sprintf(&ListBuffer[8][0], "SVer: %s", VERSION);
-	} else {
-		uint8_t key = rc.getKB().getLastKeyReleased();
-		switch (key) {
-		case 1: {
-			if (BadgeInfoList.selectedItem == 0) {
-				BadgeInfoList.selectedItem = sizeof(Items) / sizeof(Items[0]) - 1;
-			} else {
-				BadgeInfoList.selectedItem--;
-			}
-			break;
+	uint8_t key = rc.getKB().getLastKeyReleased();
+	switch (key) {
+	case 1: {
+		if (BadgeInfoList.selectedItem == 0) {
+			BadgeInfoList.selectedItem = sizeof(Items) / sizeof(Items[0]) - 1;
+		} else {
+			BadgeInfoList.selectedItem--;
 		}
-		case 7: {
-			if (BadgeInfoList.selectedItem == (sizeof(Items) / sizeof(Items[0]) - 1)) {
-				BadgeInfoList.selectedItem = 0;
-			} else {
-				BadgeInfoList.selectedItem++;
-			}
-			break;
-		}
-		case 9: {
-			nextState = StateFactory::getMenuState();
-		}
-			break;
-		}
+		break;
 	}
-	if (rc.getKB().wasKeyReleased() || this->getTimesRunCalledSinceLastReset() == 2) {
+	case 7: {
+		if (BadgeInfoList.selectedItem == (sizeof(Items) / sizeof(Items[0]) - 1)) {
+			BadgeInfoList.selectedItem = 0;
+		} else {
+			BadgeInfoList.selectedItem++;
+		}
+		break;
+	}
+	case 9: {
+		nextState = StateFactory::getMenuState();
+	}
+		break;
+	}
+	if (rc.getKB().wasKeyReleased()) {
 		rc.getGUI().drawList(&BadgeInfoList);
 	}
 	return ReturnStateContext(nextState);
@@ -529,7 +527,7 @@ ErrorType BadgeInfoState::onShutdown() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 RadioInfoState::RadioInfoState() :
-		StateBase(), RadioInfoList("Radio Info:", Items, 0, 0, 128, 64, 0, (sizeof(Items) / sizeof(Items[0]))), Items(), ListBuffer() {
+		StateBase(), RadioInfoList("Radio Info:", Items, 0, 0, 128, 160, 0, (sizeof(Items) / sizeof(Items[0]))), Items(), ListBuffer() {
 
 }
 
@@ -537,23 +535,23 @@ RadioInfoState::~RadioInfoState() {
 
 }
 
-ErrorType RadioInfoState::onInit() {
+ErrorType RadioInfoState::onInit(RunContext &rc) {
 	memset(&ListBuffer[0], 0, sizeof(ListBuffer));
 	for (uint32_t i = 0; i < (sizeof(Items) / sizeof(Items[0])); i++) {
 		Items[i].text = &ListBuffer[i][0];
 	}
+	sprintf(&ListBuffer[0][0], "Frequency: %lu", (rc.getRadio().getFrequency()/(1000*1000)));
+	sprintf(&ListBuffer[1][0], "RSSI: %d", rc.getRadio().readRSSI());
+	sprintf(&ListBuffer[2][0], "RSSI Threshold: %u", rc.getRadio().getRSSIThreshHold());
+	sprintf(&ListBuffer[3][0], "Gain: %u", rc.getRadio().getCurrentGain());
+	sprintf(&ListBuffer[4][0], "Temp: %u", rc.getRadio().readTemperature());
+	sprintf(&ListBuffer[5][0], "Impedance: %u", rc.getRadio().getImpedenceLevel());
+	rc.getDisplay().fillScreen(RGBColor::BLACK);
+	rc.getGUI().drawList(&RadioInfoList);
 	return ErrorType();
 }
 
 ReturnStateContext RadioInfoState::onRun(RunContext &rc) {
-	if (this->getTimesRunCalledSinceLastReset() == 1) {
-		sprintf(&ListBuffer[0][0], "Frequency: %lu", rc.getRadio().getFrequency());
-		sprintf(&ListBuffer[1][0], "RSSI: %d", rc.getRadio().readRSSI());
-		sprintf(&ListBuffer[2][0], "RSSI Threshold: %u", rc.getRadio().getRSSIThreshHold());
-		sprintf(&ListBuffer[3][0], "Gain: %u", rc.getRadio().getCurrentGain());
-		sprintf(&ListBuffer[4][0], "Temp: %u", rc.getRadio().readTemperature());
-		rc.getGUI().drawList(&RadioInfoList);
-	}
 	StateBase *nextState = this;
 	uint8_t pin = rc.getKB().getLastKeyReleased();
 	if (pin == 9) {

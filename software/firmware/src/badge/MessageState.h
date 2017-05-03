@@ -22,7 +22,7 @@ public:
 	bool hasNewMessage() {return NewMessage;}
 	void blink();
 protected:
-	virtual ErrorType onInit();
+	virtual ErrorType onInit(RunContext &rc);
 	virtual ReturnStateContext onRun(RunContext &rc);
 	virtual ErrorType onShutdown();
 private:

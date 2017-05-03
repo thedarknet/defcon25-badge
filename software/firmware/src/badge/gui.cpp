@@ -84,8 +84,7 @@ uint8_t GUI::drawList(GUI_ListData* gui_CurList) const {
 		ry += Display->getFont()->FontHeight;
 	}
 
-	uint8_t maxC = ((gui_CurList->h - 3) / Display->getFont()->FontHeight)
-			- (gui_CurList->header != 0);
+	uint8_t maxC = ((gui_CurList->h - 3) / Display->getFont()->FontHeight) - (gui_CurList->header != 0);
 
 	uint16_t i;
 	if (maxC >= gui_CurList->ItemsCount) {
@@ -140,12 +139,8 @@ uint8_t GUI::drawList(GUI_ListData* gui_CurList) const {
 	uint8_t sli_h = gui_CurList->h / gui_CurList->ItemsCount;
 	if (sli_h < 10)
 		sli_h = 10;
-	uint8_t yy = ((gui_CurList->h) * gui_CurList->selectedItem)
-			/ gui_CurList->ItemsCount;
 	Display->drawHorizontalLine(gui_CurList->x, ry - 2,
 			gui_CurList->x + gui_CurList->w, RGBColor::WHITE);
-//SSD1306_DrawLine(gui_CurList->x + gui_CurList->w - 1, gui_CurList->y + yy, gui_CurList->x + gui_CurList->w - 1,
-//	gui_CurList->y + yy + sli_h, 1);
 	return 0;
 }
 

@@ -11,7 +11,7 @@ public:
 	static const int width = 64;
 	static const int height = 64;
 protected:
-	virtual ErrorType onInit();
+	virtual ErrorType onInit(RunContext &rc);
 	virtual ReturnStateContext onRun(RunContext &rc);
 	virtual ErrorType onShutdown();
 	void initGame(RunContext &rc);

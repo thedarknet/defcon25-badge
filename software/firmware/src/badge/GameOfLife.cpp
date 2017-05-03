@@ -19,7 +19,7 @@ static INTERNAL_STATE InternalState = GAME;
 static uint8_t TIMES_SCREEN_SAVER=3; //due to lack of code space to put in configurable sleep time
 
 
-ErrorType GameOfLife::onInit() {
+ErrorType GameOfLife::onInit(RunContext &rc) {
 	//initGame();
 	InternalState = INIT;
 	return ErrorType();
@@ -87,7 +87,7 @@ void GameOfLife::initGame(RunContext &rc) {
 	srand(start);
 	short chanceToBeAlive = rand() % 25;
 	memset(&gol[0], 0, sizeof(gol));
-	unsigned int tmp[height];
+	//unsigned int tmp[height];
 	for (int j = 1; j < height - 1; j++) {
 		for (int i = 1; i < width - 1; i++) {
 			if ((rand() % chanceToBeAlive) == 0) {

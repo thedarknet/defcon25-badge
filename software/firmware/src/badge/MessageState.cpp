@@ -48,7 +48,7 @@ void MessageState::addRadioMessage(const char *msg, uint16_t msgSize, uint16_t u
 	NewMessage = true;
 }
 
-ErrorType MessageState::onInit() {
+ErrorType MessageState::onInit(RunContext &rc) {
 
 	return ErrorType();
 }

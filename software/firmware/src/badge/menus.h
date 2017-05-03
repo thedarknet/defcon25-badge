@@ -48,7 +48,7 @@ public:
 protected:
 	static const uint32_t INIT_BIT = 0x01;
 	static const uint32_t DONT_RESET = 0x02;
-	virtual ErrorType onInit()=0;
+	virtual ErrorType onInit(RunContext &rc)=0;
 	virtual ReturnStateContext onRun(RunContext &rc)=0;
 	virtual ErrorType onShutdown()=0;
 	void setState(uint32_t n) {
@@ -66,7 +66,7 @@ protected:
 	uint32_t getTimesRunCalledAllTime() { return TimesRunCalledAllTime;}
 	uint32_t getTimesRunCalledSinceLastReset() {return TimesRunCalledSinceLastReset;}
 private:
-	ErrorType init();
+	ErrorType init(RunContext &rc);
 private:
 	uint32_t StateData : 8;
 	uint32_t TimesRunCalledAllTime : 24;
@@ -89,7 +89,7 @@ public:
 		return NextState;
 	}
 protected:
-	virtual ErrorType onInit();
+	virtual ErrorType onInit(RunContext &rc);
 	virtual ReturnStateContext onRun(RunContext &rc);
 	virtual ErrorType onShutdown();
 private:
@@ -103,7 +103,7 @@ public:
 	MenuState();
 	virtual ~MenuState();
 protected:
-	virtual ErrorType onInit();
+	virtual ErrorType onInit(RunContext &rc);
 	virtual ReturnStateContext onRun(RunContext &rc);
 	virtual ErrorType onShutdown();
 private:
@@ -116,7 +116,7 @@ public:
 	SettingState();
 	virtual ~SettingState();
 protected:
-	virtual ErrorType onInit();
+	virtual ErrorType onInit(RunContext &rc);
 	virtual ReturnStateContext onRun(RunContext &rc);
 	virtual ErrorType onShutdown();
 private:
@@ -132,7 +132,7 @@ public:
 	BadgeInfoState();
 	virtual ~BadgeInfoState();
 protected:
-	virtual ErrorType onInit();
+	virtual ErrorType onInit(RunContext &rc);
 	virtual ReturnStateContext onRun(RunContext &rc);
 	virtual ErrorType onShutdown();
 	const char *getRegCode(ContactStore &cs);
@@ -148,13 +148,13 @@ public:
 	RadioInfoState();
 	virtual ~RadioInfoState();
 protected:
-	virtual ErrorType onInit();
+	virtual ErrorType onInit(RunContext &rc);
 	virtual ReturnStateContext onRun(RunContext &rc);
 	virtual ErrorType onShutdown();
 private:
 	GUI_ListData RadioInfoList;
-	GUI_ListItemData Items[5];
-	char ListBuffer[5][20];
+	GUI_ListItemData Items[6];
+	char ListBuffer[6][20];
 };
 
 class KeyBoardTest : public StateBase {
@@ -162,7 +162,7 @@ public:
 	KeyBoardTest();
 	virtual ~KeyBoardTest();
 protected:
-	virtual ErrorType onInit();
+	virtual ErrorType onInit(RunContext &rc);
 	virtual ReturnStateContext onRun(RunContext &rc);
 	virtual ErrorType onShutdown();
 private:

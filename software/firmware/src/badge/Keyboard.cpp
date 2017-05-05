@@ -222,22 +222,22 @@ void QKeyboard::updateContext(KeyBoardLetterCtx &ctx) {
 			current = "MNO6";
 			break;
 		case 6:
-			current = "PQRS7";
+			current = "PRS7";
 			break;
 		case 7:
 			current = "TUV8";
 			break;
 		case 8:
-			current = "WXYZ9";
+			current = "WXY9";
 			break;
+		//case 9:
+		//	current = "##+";
+		//	break;
 		case 9:
-			current = "##+";
-			break;
-		case 10:
-			current = "0 \b";
+			current = "Z0 \b";
 			break;
 		}
-		if (getLastKeyReleased() < 11) {
+		if (getLastKeyReleased() < 10) {
 			ctx.processButtonPush(getLastKeyReleased(), current);
 		}
 	}

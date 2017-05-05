@@ -30,10 +30,10 @@ static QKeyboard::PinConfig KBPins[] = {
 
 QKeyboard KB(&KBPins[0],sizeof(KBPins)/sizeof(KBPins[0]));
 
-static const uint16_t SETTING_SECTOR = 57; //0x8001C800
+static const uint16_t SETTING_SECTOR = 57; //0x801C800
 static const uint16_t FIRST_CONTACT_SECTOR = SETTING_SECTOR + 1;
 static const uint16_t NUM_CONTACT_SECTOR = 64 - FIRST_CONTACT_SECTOR;
-static const uint32_t MY_INFO_ADDRESS = 0x8001FFD4; //0x800FFD4; 2c needed
+static const uint32_t MY_INFO_ADDRESS = 0x801FFD4; //0x800FFD4; 2c needed
 
 ContactStore MyContacts(SETTING_SECTOR, FIRST_CONTACT_SECTOR, NUM_CONTACT_SECTOR, MY_INFO_ADDRESS);
 
@@ -41,6 +41,8 @@ ContactStore MyContacts(SETTING_SECTOR, FIRST_CONTACT_SECTOR, NUM_CONTACT_SECTOR
 ErrorType DCDarkNetApp::init() {
 	ErrorType et;
 	et = Display.init();
+
+	MyContacts.init();
 
 	Radio.initialize(RF69_915MHZ, 1);
 	const char *test="test";

@@ -124,11 +124,11 @@ const char *NoHasMessage = "DCDN Net Msgs";
 
 ErrorType MenuState::onInit(RunContext &rc) {
 	Items[0].id = 0;
-	//if (getContactStore().getSettings().isNameSet()) {
-	//	Items[0].text = (const char *) "Settings";
-	//} else {
-	Items[0].text = (const char *) "Settings *";
-	//}
+	if (rc.getContactStore().getSettings().isNameSet()) {
+		Items[0].text = (const char *) "Settings";
+	} else {
+		Items[0].text = (const char *) "Settings *";
+	}
 	Items[1].id = 1;
 	Items[1].text = (const char *) "IR Pair";
 	Items[2].id = 2;
@@ -217,7 +217,7 @@ ReturnStateContext MenuState::onRun(RunContext &rc) {
 	}
 		break;
 	}
-	if (rc.getKB().wasKeyReleased() && key!=9) {
+	if (rc.getKB().wasKeyReleased() && key != 9) {
 		rc.getGUI().drawList(&this->MenuList);
 	}
 	return ReturnStateContext(nextState);
@@ -287,6 +287,8 @@ SettingState::~SettingState() {
 
 ErrorType SettingState::onInit(RunContext &rc) {
 	SubState = 0;
+	rc.getDisplay().fillScreen(RGBColor::BLACK);
+	rc.getGUI().drawList(&SettingList);
 	return ErrorType();
 }
 
@@ -314,113 +316,114 @@ ReturnStateContext SettingState::onRun(RunContext &rc) {
 			}
 			break;
 		}
-		case 9: {
+		case 0: {
 			nextState = StateFactory::getMenuState();
 		}
 			break;
-		case 11: {
-#if 0
+		case 9: {
 			SubState = SettingList.selectedItem + 100;
-			gui_set_curList(0);
-			gui_draw();
 			switch (SubState) {
-				case 100:
+			case 100:
+				rc.getDisplay().fillScreen(RGBColor::BLACK);
 				memset(&AgentName[0], 0, sizeof(AgentName));
 				getKeyboardContext().init(&AgentName[0], sizeof(AgentName));
 				break;
 				//case 101:
 				//	sprintf(&AgentName[0], "Current:  %d", getContactStore().getSettings().getScreenSaverType() + 1);
 				//	break;
-				case 101:
-				InputPos = getContactStore().getSettings().getScreenSaverTime();
-				break;
-				case 102:
-				kb.reset();
-				break;
-			}
-		}
-#endif
-			break;
-			default:
-			break;
-		}
-			break;
-#if 0
-			case 100: {
-				gui_lable_multiline((const char*) "Current agent name:", 0, 10, 128, 64, 0, 0);
-				if (*getContactStore().getSettings().getAgentName() == '\0') {
-					gui_lable_multiline((const char *) "NOT SET", 0, 20, 128, 64, 0, 0);
-				} else {
-					gui_lable_multiline(getContactStore().getSettings().getAgentName(), 0, 20, 128, 64, 0, 0);
-				}
-				gui_lable_multiline((const char*) "Set agent name:", 0, 30, 128, 64, 0, 0);
-				kb.updateContext(getKeyboardContext());
-				if (kb.getLastKeyReleased() == 11 && AgentName[0] != '\0' && AgentName[0] != ' ' && AgentName[0] != '_') {
-					AgentName[ContactStore::AGENT_NAME_LENGTH - 1] = '\0';
-					getKeyboardContext().finalize();
-					//done
-					if (getContactStore().getSettings().setAgentname(&AgentName[0])) {
-						nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), "Save Successful", 2000);
-					} else {
-						nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), "Save FAILED!", 4000);
-					}
-				} else {
-					gui_lable_multiline(&AgentName[0], 0, 40, 128, 64, 0, 0);
-				}
-				break;
-			}
-			/*
-			 case 101: {
-			 gui_lable_multiline((const char*) "Screen Saver:", 0, 10, 128, 64, 0, 0);
-			 gui_lable_multiline(&AgentName[0], 0, 20, 128, 64, 0, 0);
-			 gui_lable_multiline((const char*) "1: Game of Life", 0, 30, 128, 64, 0, 0);
-			 uint8_t ss = kb.getLastKeyReleased();
-			 switch (ss) {
-			 case 0:
-			 if (getContactStore().getSettings().setScreenSaverType(ss)) {
-			 nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), "Setting saved", 2000);
-			 } else {
-			 nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), "Save FAILED!", 4000);
-			 }
-			 break;
-			 }
-			 break;
-			 }
-			 */
 			case 101:
-			gui_lable_multiline((const char*) "Time until badge\ngoes to sleep:", 0, 10, 128, 64, 0, 0);
-			if (kb.getLastKeyReleased() == 9 || kb.getLastKeyReleased() == 10
-					|| kb.getLastKeyReleased() == QKeyboard::NO_PIN_SELECTED) {
-				//InputPos = 4;
-			} else if (kb.getLastKeyReleased() == 11) {
-				if (getContactStore().getSettings().setScreenSaverTime(InputPos)) {
-					nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), "Setting saved", 2000);
-				} else {
-					nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), "Save FAILED!", 4000);
-				}
-			} else {
-				InputPos = kb.getLastKeyReleased();
-				if (InputPos > 8) {
-					InputPos = 8;
-				}
-			}
-			sprintf(&AgentName[0], "%c Minutes", NUMBERS[InputPos]);
-			gui_lable_multiline(&AgentName[0], 0, 40, 128, 64, 0, 0);
-			break;
+				InputPos = rc.getContactStore().getSettings().getScreenSaverTime();
+				break;
 			case 102:
-			gui_lable_multiline((const char*) "ERASE ALL\nCONTACTS?", 0, 10, 128, 64, 0, 0);
-			gui_lable_multiline((const char*) "Press # to Cancel", 0, 30, 128, 64, 0, 0);
-			gui_lable_multiline((const char*) "Press enter to do it", 0, 40, 128, 64, 0, 0);
-			if (kb.getLastKeyReleased() == 9) {
-				nextState = StateFactory::getMenuState();
-			} else if (kb.getLastKeyReleased() == 11) {
-				getContactStore().resetToFactory();
-				StateFactory::getAddressBookState()->resetSelection();
-				nextState = StateFactory::getMenuState();
+				rc.getKB().reset();
+				break;
 			}
-			break;
-#endif
 		}
+			break;
+		default:
+			break;
+		}
+		break;
+
+	case 100: {
+		rc.getDisplay().drawString(0, 10, (const char*) "Current agent name:");
+		if (*rc.getContactStore().getSettings().getAgentName() == '\0') {
+			rc.getDisplay().drawString(0, 20, (const char *) "NOT SET");
+		} else {
+			rc.getDisplay().drawString(0, 20, rc.getContactStore().getSettings().getAgentName());
+		}
+		rc.getDisplay().drawString(0, 30, (const char*) "Set agent name:");
+		rc.getKB().updateContext(getKeyboardContext());
+		if (rc.getKB().getLastKeyReleased() == 10 && AgentName[0] != '\0' && AgentName[0] != ' '
+				&& AgentName[0] != '_') {
+			AgentName[ContactStore::AGENT_NAME_LENGTH - 1] = '\0';
+			getKeyboardContext().finalize();
+			//done
+			if (rc.getContactStore().getSettings().setAgentname(&AgentName[0])) {
+				nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), "Save Successful", 2000);
+			} else {
+				nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), "Save FAILED!", 4000);
+			}
+		} else {
+			rc.getDisplay().drawString(0, 40, &AgentName[0]);
+		}
+		break;
+	}
+#if 0
+		/*
+		 case 101: {
+		 gui_lable_multiline((const char*) "Screen Saver:", 0, 10, 128, 64, 0, 0);
+		 gui_lable_multiline(&AgentName[0], 0, 20, 128, 64, 0, 0);
+		 gui_lable_multiline((const char*) "1: Game of Life", 0, 30, 128, 64, 0, 0);
+		 uint8_t ss = kb.getLastKeyReleased();
+		 switch (ss) {
+		 case 0:
+		 if (getContactStore().getSettings().setScreenSaverType(ss)) {
+		 nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), "Setting saved", 2000);
+		 } else {
+		 nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), "Save FAILED!", 4000);
+		 }
+		 break;
+		 }
+		 break;
+		 }
+		 */
+		case 101:
+		gui_lable_multiline((const char*) "Time until badge\ngoes to sleep:", 0, 10, 128, 64, 0, 0);
+		if (kb.getLastKeyReleased() == 9 || kb.getLastKeyReleased() == 10
+				|| kb.getLastKeyReleased() == QKeyboard::NO_PIN_SELECTED) {
+			//InputPos = 4;
+		} else if (kb.getLastKeyReleased() == 11) {
+			if (getContactStore().getSettings().setScreenSaverTime(InputPos)) {
+				nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), "Setting saved", 2000);
+			} else {
+				nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), "Save FAILED!", 4000);
+			}
+		} else {
+			InputPos = kb.getLastKeyReleased();
+			if (InputPos > 8) {
+				InputPos = 8;
+			}
+		}
+		sprintf(&AgentName[0], "%c Minutes", NUMBERS[InputPos]);
+		gui_lable_multiline(&AgentName[0], 0, 40, 128, 64, 0, 0);
+		break;
+		case 102:
+		gui_lable_multiline((const char*) "ERASE ALL\nCONTACTS?", 0, 10, 128, 64, 0, 0);
+		gui_lable_multiline((const char*) "Press # to Cancel", 0, 30, 128, 64, 0, 0);
+		gui_lable_multiline((const char*) "Press enter to do it", 0, 40, 128, 64, 0, 0);
+		if (kb.getLastKeyReleased() == 9) {
+			nextState = StateFactory::getMenuState();
+		} else if (kb.getLastKeyReleased() == 11) {
+			getContactStore().resetToFactory();
+			StateFactory::getAddressBookState()->resetSelection();
+			nextState = StateFactory::getMenuState();
+		}
+		break;
+#endif
+	}
+	if(rc.getKB().wasKeyReleased() && SubState<100) {
+		rc.getGUI().drawList(&SettingList);
 	}
 	return ReturnStateContext(nextState);
 }
@@ -471,9 +474,8 @@ ErrorType BadgeInfoState::onInit(RunContext &rc) {
 	uint8_t *pCP = rc.getContactStore().getMyInfo().getCompressedPublicKey();
 	sprintf(&ListBuffer[4][0],
 			"PK: %02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
-			pCP[0], pCP[1], pCP[2], pCP[3], pCP[4], pCP[5], pCP[6], pCP[7], pCP[8], pCP[9], pCP[10], pCP[11],
-			pCP[12], pCP[13], pCP[14], pCP[15], pCP[16], pCP[17], pCP[18], pCP[19], pCP[20], pCP[21], pCP[22],
-			pCP[23], pCP[24]);
+			pCP[0], pCP[1], pCP[2], pCP[3], pCP[4], pCP[5], pCP[6], pCP[7], pCP[8], pCP[9], pCP[10], pCP[11], pCP[12],
+			pCP[13], pCP[14], pCP[15], pCP[16], pCP[17], pCP[18], pCP[19], pCP[20], pCP[21], pCP[22], pCP[23], pCP[24]);
 	sprintf(&ListBuffer[5][0], "DEVID: %lu", HAL_GetDEVID());
 	sprintf(&ListBuffer[6][0], "REVID: %lu", HAL_GetREVID());
 	sprintf(&ListBuffer[7][0], "HAL Version: %lu", HAL_GetHalVersion());
@@ -540,7 +542,7 @@ ErrorType RadioInfoState::onInit(RunContext &rc) {
 	for (uint32_t i = 0; i < (sizeof(Items) / sizeof(Items[0])); i++) {
 		Items[i].text = &ListBuffer[i][0];
 	}
-	sprintf(&ListBuffer[0][0], "Frequency: %lu", (rc.getRadio().getFrequency()/(1000*1000)));
+	sprintf(&ListBuffer[0][0], "Frequency: %lu", (rc.getRadio().getFrequency() / (1000 * 1000)));
 	sprintf(&ListBuffer[1][0], "RSSI: %d", rc.getRadio().readRSSI());
 	sprintf(&ListBuffer[2][0], "RSSI Threshold: %u", rc.getRadio().getRSSIThreshHold());
 	sprintf(&ListBuffer[3][0], "Gain: %u", rc.getRadio().getCurrentGain());

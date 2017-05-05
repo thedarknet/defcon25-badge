@@ -217,7 +217,7 @@ ReturnStateContext MenuState::onRun(RunContext &rc) {
 	}
 		break;
 	}
-	if (rc.getKB().wasKeyReleased()) {
+	if (rc.getKB().wasKeyReleased() && key!=9) {
 		rc.getGUI().drawList(&this->MenuList);
 	}
 	return ReturnStateContext(nextState);

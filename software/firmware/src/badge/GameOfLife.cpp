@@ -2,70 +2,88 @@
 #include <stdlib.h>
 
 GameOfLife::GameOfLife() :
-		Generations(0), CurrentGeneration(0), Neighborhood(0) {
+		Generations(0), CurrentGeneration(0), Neighborhood(0), InternalState(GameOfLife::GAME), DisplayMessageUntil(0) {
 }
 
 GameOfLife::~GameOfLife() {
 
 }
 
-static uint32_t displayMessageUntil = 0;
-static bool ReInitGame = false;
-static uint32_t RunCount = 0;
-enum INTERNAL_STATE {
-	INIT, GAME, SLEEP
-};
-static INTERNAL_STATE InternalState = GAME;
-static uint8_t TIMES_SCREEN_SAVER=3; //due to lack of code space to put in configurable sleep time
-
+//static uint8_t TIMES_SCREEN_SAVER=3; //due to lack of code space to put in configurable sleep time
 
 ErrorType GameOfLife::onInit(RunContext &rc) {
-	//initGame();
+	UNUSED(rc);
 	InternalState = INIT;
 	return ErrorType();
 }
 
+bool GameOfLife::shouldDisplayMessage() {
+	return HAL_GetTick() < DisplayMessageUntil;
+}
+
+static uint8_t noChange = 0;
+
 ReturnStateContext GameOfLife::onRun(RunContext &rc) {
-	if(InternalState==INIT) {
-		initGame(rc);
-	} else if(InternalState==GAME ) {
-		RunCount++;
-		uint32_t now = HAL_GetTick();
-		if (now < displayMessageUntil) {
-			rc.getDisplay().drawString(0,10,&UtilityBuf[0],RGBColor::BLACK,RGBColor::WHITE,1,true);
-		} else if (ReInitGame) {
-			InternalState=INIT;
+	switch (InternalState) {
+	case INIT: {
+		rc.getDisplay().fillScreen(RGBColor::BLACK);
+		DisplayMessageUntil = HAL_GetTick() + 3000;
+		initGame();
+		noChange = 0;
+	}
+		break;
+	case MESSAGE:
+		rc.getDisplay().drawString(0, 10, &UtilityBuf[0], RGBColor::BLACK, RGBColor::WHITE, 1, true);
+		InternalState = TIME_WAIT;
+		break;
+	case TIME_WAIT:
+		if (!shouldDisplayMessage()) {
+			InternalState = GAME;
+			rc.getDisplay().fillScreen(RGBColor::BLACK);
+		}
+		break;
+	case GAME: {
+		if (CurrentGeneration >= Generations) {
+			InternalState = INIT;
 		} else {
 			uint16_t count = 0;
-			uint8_t bitToCheck = CurrentGeneration % 32;
-			for (uint16_t j = 1; j < height - 1; j++) {
-				for (uint16_t k = 1; k < width - 1; k++) {
-					if ((gol[j] & (k << bitToCheck)) != 0) {
-						rc.getDisplay().drawPixel(k*2,j,RGBColor::WHITE);
+			//uint8_t bitToCheck = CurrentGeneration % 32;
+			for (uint16_t j = 0; j < height; j++) {
+				for (uint16_t k = 0; k < width; k++) {
+					if ((gol[j] & (1 << k)) != 0) {
+						rc.getDisplay().drawPixel(k * 4, j * 2 + 10, RGBColor::WHITE);
 						count++;
+					} else {
+						rc.getDisplay().drawPixel(k * 4, j * 2 + 10, RGBColor::BLACK);
 					}
 				}
 			}
 			if (0 == count) {
-				sprintf(&UtilityBuf[0], "ALL DEAD\nAfter %d\ngenerations", CurrentGeneration);
-				displayMessageUntil = now + 3000;
-				ReInitGame = true;
+				sprintf(&UtilityBuf[0], "   ALL DEAD\n   After %d\n   generations", CurrentGeneration);
+				CurrentGeneration = Generations + 1;
+				InternalState = MESSAGE;
+				DisplayMessageUntil = HAL_GetTick() + 3000;
+				rc.getDisplay().fillScreen(RGBColor::BLACK);
 			} else {
-				unsigned int tmp[sizeof(gol)];
-				life(&gol[0], Neighborhood, width, height, &tmp[0]);
-			}
-			if (RunCount % 3 == 0) {
-				CurrentGeneration++;
-				if (CurrentGeneration >= Generations) {
-					ReInitGame = true;
+				uint32_t tmp[sizeof(gol)];
+				if (!life(&gol[0], Neighborhood, width, height, &tmp[0])) {
+					noChange++;
+					if (noChange > 6) {
+						CurrentGeneration = Generations + 1;
+					}
 				}
 			}
+			CurrentGeneration++;
 		}
-		//if((now-kb.getLastPinSelectedTick())>(1000*60*TIMES_SCREEN_SAVER*getContactStore().getSettings().getScreenSaverTime())) {
-		//	kb.setAllLightsOn(false);
-		//	InternalState = SLEEP;
-		//}
 	}
+		break;
+	case SLEEP:
+		break;
+	}
+	//if((now-kb.getLastPinSelectedTick())>(1000*60*TIMES_SCREEN_SAVER*getContactStore().getSettings().getScreenSaverTime())) {
+	//	kb.setAllLightsOn(false);
+	//	InternalState = SLEEP;
+	//}
 	if (rc.getKB().getLastKeyReleased() == QKeyboard::NO_PIN_SELECTED) {
 		return ReturnStateContext(this);
 	} else {
@@ -78,38 +96,34 @@ ErrorType GameOfLife::onShutdown() {
 	return ErrorType();
 }
 
-void GameOfLife::initGame(RunContext &rc) {
-	ReInitGame = false;
+void GameOfLife::initGame() {
 	uint32_t start = HAL_GetTick();
-	displayMessageUntil = start + 3000;
 	CurrentGeneration = 0;
 	Neighborhood = (start & 1) == 0 ? 'm' : 'v';
 	srand(start);
-	short chanceToBeAlive = rand() % 25;
+	short chanceToBeAlive = rand() % 50;
 	memset(&gol[0], 0, sizeof(gol));
-	//unsigned int tmp[height];
-	for (int j = 1; j < height - 1; j++) {
-		for (int i = 1; i < width - 1; i++) {
-			if ((rand() % chanceToBeAlive) == 0) {
+	for (int j = 0; j < height ; j++) {
+		for (int i = 0; i < width; i++) {
+			if ((rand() % 100) < chanceToBeAlive) {
 				gol[j] |= (1 << i);
-			} else {
-				//gol[j] |= (1<<i);
 			}
 		}
 	}
-	Generations = 50 + (rand() % 75);
-	rc.getDisplay().drawString(0,10,(const char*) "Max Generations: ",RGBColor::WHITE,RGBColor::BLACK,2,false);
-	sprintf(&UtilityBuf[0], "Max\nGenerations:\n%d", Generations);
+	Generations = 100 + (rand() % 75);
+	InternalState = MESSAGE;
+	DisplayMessageUntil = start + 3000;
+	sprintf(&UtilityBuf[0], "  Max\n  Generations: %d", Generations);
 }
 //The life function is the most important function in the program.
 //It counts the number of cells surrounding the center cell, and
 //determines whether it lives, dies, or stays the same.
-void GameOfLife::life(unsigned int *array, char choice, short width, short height, unsigned int *temp) {
+bool GameOfLife::life(uint32_t *array, char choice, short width, short height, uint32_t *temp) {
 	//Copies the main array to a temp array so changes can be entered into a grid
 	//without effecting the other cells and the calculations being performed on them.
-	memcpy(&temp[0], &array[0], sizeof(temp));
-	for (int j = 1; j < height - 1; j++) {
-		for (int i = 1; i < width - 1; i++) {
+	memcpy(&temp[0], &array[0], sizeof(gol));
+	for (int j = 1; j < height - 1; ++j) {
+		for (int i = 0; i < width; ++i) {
 			if (choice == 'm') {
 				//The Moore neighborhood checks all 8 cells surrounding the current cell in the array.
 				int count = 0;
@@ -135,6 +149,11 @@ void GameOfLife::life(unsigned int *array, char choice, short width, short heigh
 			}
 		}
 	}
-	//Copies the completed temp array back to the main array.
-	memcpy(&array[0], &temp[0], sizeof(temp));
+	if (memcmp(&array[0], &temp[0], sizeof(gol)) == 0) {
+		return false;
+	} else {
+		//Copies the completed temp array back to the main array.
+		memcpy(&array[0], &temp[0], sizeof(gol));
+		return true;
+	}
 }

@@ -48,6 +48,7 @@ public:
 protected:
 	static const uint32_t INIT_BIT = 0x01;
 	static const uint32_t DONT_RESET = 0x02;
+	static const uint32_t SHIFT_FROM_BASE = 8;
 	virtual ErrorType onInit(RunContext &rc)=0;
 	virtual ReturnStateContext onRun(RunContext &rc)=0;
 	virtual ErrorType onShutdown()=0;
@@ -56,6 +57,9 @@ protected:
 	}
 	void clearState(uint32_t n) {
 		StateData = (StateData & ~n);
+	}
+	bool checkState(uint32_t n) {
+		return (StateData & n) !=0;
 	}
 	bool hasBeenInitialized() {
 		return (StateData & INIT_BIT) != 0;

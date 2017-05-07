@@ -48,7 +48,7 @@ IRState::~IRState() {
 
 }
 
-ErrorType IRState::onInit() {
+ErrorType IRState::onInit(RunContext &rc) {
 	//stop receiving
 	IRStopRX();
 	CurrentRetryCount = 0;
@@ -57,6 +57,7 @@ ErrorType IRState::onInit() {
 	memset(&ATBS, 0, sizeof(ATBS));
 	TransmitInternalState = ALICE_INIT_CONVERSATION;
 	ReceiveInternalState = I_AM_ALICE_DISABLE_LISTEN;
+	rc.getDisplay().fillScreen(RGBColor::BLACK);
 	return ErrorType();
 }
 

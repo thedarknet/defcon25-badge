@@ -30,7 +30,7 @@ public:
 	void ListenForAlice(RunContext &rc);
 	void BeTheBob();
 protected:
-	virtual ErrorType onInit();
+	virtual ErrorType onInit(RunContext &rc);
 	virtual ReturnStateContext onRun(RunContext &rc);
 	virtual ErrorType onShutdown();
 private:

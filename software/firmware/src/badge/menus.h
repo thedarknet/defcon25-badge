@@ -173,6 +173,8 @@ private:
 	uint8_t LastKey;
 };
 
+class SendMsgState;
+class AddressState;
 //=============================
 class StateFactory {
 public:
@@ -185,6 +187,9 @@ public:
 	static StateBase *getMessageState();
 	static StateBase* getBadgeInfoState();
 	static StateBase *getRadioInfoState();
+	static StateBase *getIRPairingState();
+	static SendMsgState* getSendMessageState();
+	static AddressState* getAddressBookState();
 };
 
 #endif

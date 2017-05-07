@@ -5,8 +5,8 @@
 
 class KeyBoardLetterCtx {
 private:
-	int16_t CursorPosition:10;
-	int16_t Started : 1;
+	int16_t CursorPosition :10;
+	int16_t Started :1;
 	int16_t UnderBar :1;
 	char *Buffer;
 	char CurrentLetter;
@@ -15,7 +15,7 @@ private:
 	uint8_t LetterSelection;
 	uint32_t LastBlinkTime;
 	uint8_t LastPin;
-public:
+	public:
 	void processButtonPush(uint8_t button, const char *buttonLetters);
 	bool isKeySelectionTimedOut();
 	void timerStart();
@@ -40,16 +40,33 @@ public:
 		uint32_t SamplePin;
 		uint32_t GroupIndex;
 		PinConfig() :
-			Pin(0), SamplePin(0), GroupIndex(0) {
+				Pin(0), SamplePin(0), GroupIndex(0) {
 		}
 		PinConfig(uint32_t pin, uint32_t sample, uint32_t gi) :
-			Pin(pin), SamplePin(sample), GroupIndex(gi) {
+				Pin(pin), SamplePin(sample), GroupIndex(gi) {
 		}
 	};
 	static const uint8_t NO_PIN_SELECTED = 0xFF;
 	static const uint8_t NOT_A_NUMBER = 0xFF;
 	static const uint8_t NO_LETTER_SELECTED = 0xFF;
 	static const uint8_t TIMES_BUTTON_MUST_BE_HELD = 5;
+	enum KEYS {
+		ONE = 0
+		, TWO = 1
+		, THREE = 2
+		, FOUR = 3
+		, FIVE = 4
+		, SIX = 5
+		, SEVEN = 6
+		, EIGHT = 7
+		, NINE = 8
+		, ZERO = 9
+		, HOOK = 10
+		, BACK = ONE
+		, ENTER = HOOK
+		, UP=TWO
+		, DOWN=EIGHT
+	};
 public:
 	QKeyboard(PinConfig *pinConfig, uint8_t count);
 	void scan();
@@ -62,8 +79,13 @@ public:
 	void updateContext(KeyBoardLetterCtx &ctx);
 	void reset();
 	void setAllLightsOn(bool b);
-	bool getAllLightsOn() {return LightAll;}
-	uint32_t getLastPinSelectedTick() {return LastPinSelectedTick;}
+	bool getAllLightsOn() {
+		return LightAll;
+	}
+	uint32_t getLastPinSelectedTick() {
+		return LastPinSelectedTick;
+	}
+	char getNumberAsCharacter();
 	void resetLastPinTick();
 protected:
 	void setLetter();

@@ -21,17 +21,11 @@ uint32_t min(uint32_t one, uint32_t two) {
 	return two;
 }
 
-uint32_t lastBlinkTime = 0;
-bool turnOnLED = false;
+static uint32_t lastBlinkTime = 0;
 void MessageState::blink() {
 	if (NewMessage) {
 		if (HAL_GetTick() - lastBlinkTime > 1000) {
-			if (turnOnLED) {
-				HAL_GPIO_WritePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin, GPIO_PIN_SET);
-			} else {
-				HAL_GPIO_WritePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin, GPIO_PIN_RESET);
-			}
-			turnOnLED = !turnOnLED;
+			HAL_GPIO_TogglePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin);
 		}
 	} else {
 		HAL_GPIO_WritePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin, GPIO_PIN_RESET);
@@ -82,7 +76,7 @@ ReturnStateContext MessageState::onRun(RunContext &rc) {
 		if (InternalState == MESSAGE_LIST) {
 			NewMessage = false;
 			switch (key) {
-			case 1: {
+			case QKeyboard::UP: {
 				if (RadioList.selectedItem == 0) {
 					RadioList.selectedItem = sizeof(Items) / sizeof(Items[0]) - 1;
 				} else {
@@ -90,7 +84,7 @@ ReturnStateContext MessageState::onRun(RunContext &rc) {
 				}
 				break;
 			}
-			case 7: {
+			case QKeyboard::DOWN: {
 				if (RadioList.selectedItem == (sizeof(Items) / sizeof(Items[0]) - 1)) {
 					RadioList.selectedItem = 0;
 				} else {
@@ -98,11 +92,11 @@ ReturnStateContext MessageState::onRun(RunContext &rc) {
 				}
 				break;
 			}
-			case 9: {
+			case QKeyboard::BACK: {
 				nextState = StateFactory::getMenuState();
 			}
 				break;
-			case 11: {
+			case QKeyboard::ENTER: {
 				if (Items[RadioList.selectedItem].id != 0) {
 					MsgDisplayBuffer[0] = '\0';
 					for (uint16_t i = 0; i < (sizeof(RMsgs) / sizeof(RMsgs[0])); i++) {

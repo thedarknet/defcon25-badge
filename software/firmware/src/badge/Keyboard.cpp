@@ -126,6 +126,33 @@ void QKeyboard::setAllLightsOn(bool b) {
 	LightAll = b;
 }
 
+char QKeyboard::getNumberAsCharacter() {
+	switch (getLastKeyReleased()) {
+	case ONE:
+		return '1';
+	case TWO:
+		return '2';
+	case THREE:
+		return '3';
+	case FOUR:
+		return '4';
+	case FIVE:
+		return '5';
+	case SIX:
+		return '6';
+	case SEVEN:
+		return '7';
+	case EIGHT:
+		return '8';
+	case NINE:
+		return '9';
+	case ZERO:
+		return '0';
+	default:
+		return '*';
+	}
+}
+
 void QKeyboard::scan() {
 	uint8_t selectedPin = NO_PIN_SELECTED;
 	HAL_TSC_IODischarge(&htsc, ENABLE);
@@ -230,9 +257,9 @@ void QKeyboard::updateContext(KeyBoardLetterCtx &ctx) {
 		case 8:
 			current = "WXY9";
 			break;
-		//case 9:
-		//	current = "##+";
-		//	break;
+			//case 9:
+			//	current = "##+";
+			//	break;
 		case 9:
 			current = "Z0 \b";
 			break;

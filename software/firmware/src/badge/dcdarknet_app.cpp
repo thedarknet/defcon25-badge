@@ -6,12 +6,15 @@
 #include "logger.h"
 #include <tsc.h>
 #include "Keyboard.h"
+#include "irmenu.h"
+#include "MessageState.h"
 
 DCDarkNetApp::DCDarkNetApp() :
 		CurrentState(0) {
 
 }
 
+static const uint32_t TIME_BETWEEN_INITS = 100;
 DisplayST7735 Display(128, 160, DisplayST7735::PORTAIT);
 RFM69 Radio(RADIO_SPI3_NSS_Pin, RADIO_INTERRUPT_DIO0_EXTI4_Pin, true);
 static QKeyboard::PinConfig KBPins[] = {
@@ -33,21 +36,48 @@ QKeyboard KB(&KBPins[0],sizeof(KBPins)/sizeof(KBPins[0]));
 static const uint16_t SETTING_SECTOR = 57; //0x801C800
 static const uint16_t FIRST_CONTACT_SECTOR = SETTING_SECTOR + 1;
 static const uint16_t NUM_CONTACT_SECTOR = 64 - FIRST_CONTACT_SECTOR;
-static const uint32_t MY_INFO_ADDRESS = 0x801FFD4; //0x800FFD4; 2c needed
+static const uint32_t MY_INFO_ADDRESS = 0x801FFD4; //2c needed
 
 ContactStore MyContacts(SETTING_SECTOR, FIRST_CONTACT_SECTOR, NUM_CONTACT_SECTOR, MY_INFO_ADDRESS);
 
+static void initFlash() {
+#if ONE_TIME==1
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstrict-aliasing"
 
-ErrorType DCDarkNetApp::init() {
-	ErrorType et;
-	et = Display.init();
+	HAL_StatusTypeDef s = HAL_FLASH_Unlock();
+	//assert(s==HAL_OK);
+	uint16_t loc = 0;
+	HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, START_STORAGE_LOCATION, 0xDCDC);
+	loc += 2;
+	static const unsigned int defaults1 = 0b00100001;//screen saver type = 1 sleep time = 2
+	static const unsigned int defaults2 = 0b00000001;//screen saver time = 1
+	unsigned char reserveFlags = 0;// makeUber == 1 ? 0x1 : 0x0;
+	uint16_t ReserveContacts = ((reserveFlags) << 8) | 0x0;
+	HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, START_STORAGE_LOCATION + loc, ReserveContacts);
+	uint16_t Settings = (defaults1 << 8) | defaults2;
+	loc += 2;
+	HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, START_STORAGE_LOCATION + loc, Settings);
+	loc += 2;
+	uint8_t RadioID[2] = {0x3, 0x4};
+	HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, START_STORAGE_LOCATION + loc, *((uint32_t*) &RadioID[0]));
+	loc += 2;
+	uint8_t privateKey[ContactStore::PRIVATE_KEY_LENGTH] = {0xab, 0x34, 0x4e, 0x58, 0x3f, 0x2a, 0x56, 0x39, 0x17, 0xef, 0x5c, 0xff, 0x8b,
+		0xf8, 0x72, 0xe8, 0x87, 0x65, 0xd5, 0x11, 0x26, 0x58, 0x14, 0xb4};
+	for (int i = 0; i < ContactStore::PRIVATE_KEY_LENGTH/2; i++, loc += 2) {
+		HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, START_STORAGE_LOCATION + loc, *((uint16_t*) &privateKey[i]));
+	}
+	uint8_t agentName[ContactStore::AGENT_NAME_LENGTH] = {0x0};
+	for (int i = 0; i < ContactStore::AGENT_NAME_LENGTH/2; i++, loc += 2) {
+		HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, START_STORAGE_LOCATION + loc, *((uint16_t*) &agentName[i]));
+	}
 
-	MyContacts.init();
+	HAL_FLASH_Lock();
+#pragma GCC diagnostic pop
+#endif
+}
 
-	Radio.initialize(RF69_915MHZ, 1);
-	const char *test="test";
-	Radio.send(1,test,4,false);
-
+uint32_t DCDarkNetApp::init() {
 #if 0
 	//blink status led a few times
 	for (int i = 0; i < 5; i++) {
@@ -66,23 +96,25 @@ ErrorType DCDarkNetApp::init() {
 	}
 #endif
 
-#if 0
 	uint32_t retVal = 0;
-	initFlash();
+	ErrorType et;
+
+	initFlash(); //only used for development
 
 	GUI_ListItemData items[4];
 	GUI_ListData DrawList((const char *) "Self Check", items, uint8_t(0), uint8_t(0), uint8_t(128), uint8_t(64),
 			uint8_t(0), uint8_t(0));
 	//DO SELF CHECK
-	if (gui_init()) {
-		delay(1000);
+	if ((et = Display.init()).ok()) {
+		HAL_Delay(1000);
 		items[0].set(0, "OLED_INIT");
 		DrawList.ItemsCount++;
-		retVal |= COMPONENTS_ITEMS::OLED;
-		gui_set_curList(&DrawList);
+		retVal |= COMPONENTS_ITEMS::LCD;
 	}
-	gui_draw();
-	delay(TIME_BETWEEN_INITS);
+	GUI gui(&Display);
+	gui.drawList(&DrawList);
+
+	HAL_Delay(TIME_BETWEEN_INITS);
 	if (MyContacts.init()) {
 		items[1].set(2, "FLASH MEM INIT");
 		retVal |= COMPONENTS_ITEMS::FLASH_MEM;
@@ -90,11 +122,12 @@ ErrorType DCDarkNetApp::init() {
 		items[1].set(2, "FLASH FAILED");
 	}
 	DrawList.ItemsCount++;
-	gui_draw();
-	delay(TIME_BETWEEN_INITS);
+	DrawList.selectedItem++;
+	gui.drawList(&DrawList);
+	HAL_Delay(TIME_BETWEEN_INITS);
 
 	//test for IR??
-	if (Radio.initialize(RF69_915MHZ, getContactStore().getMyInfo().getUniqueID())) {
+	if (Radio.initialize(RF69_915MHZ, MyContacts.getMyInfo().getUniqueID())) {
 		items[2].set(1, "RADIO INIT");
 		Radio.setPowerLevel(31);
 		retVal |= COMPONENTS_ITEMS::RADIO;
@@ -103,30 +136,24 @@ ErrorType DCDarkNetApp::init() {
 	}
 
 	DrawList.ItemsCount++;
-	delay(TIME_BETWEEN_INITS);
-	gui_draw();
-	delay(1000);
+	DrawList.selectedItem++;
+	gui.drawList(&DrawList);
+	HAL_Delay(TIME_BETWEEN_INITS);
 
-	gui_set_curList(0);
+	Display.fillScreen(RGBColor::BLACK);
+	Display.drawString(0,10,"#dcdn17");
+	Display.drawString(0,40,"><>");
+	Display.drawString(0,50,"   Cyberez Inc");
+	HAL_Delay(3000);
 
-	gui_lable_multiline("#dcdn16", 0, 10, 128, 64, 0, 0);
-	gui_lable_multiline("><>", 0, 40, 128, 64, 0, 0);
-	gui_lable_multiline("   Cyberez Inc", 0, 50, 128, 64, 0, 0);
-	gui_draw();
-	delay(3000);
-
-	StateFactory::getIRPairingState()->BeTheBob();
+	((IRState *)StateFactory::getIRPairingState())->BeTheBob();
 	CurrentState = StateFactory::getMenuState();
 	KB.resetLastPinTick();
-	return true;
-#endif
-	//CurrentState = StateFactory::getKeyBoardTest();
-	CurrentState = StateFactory::getMenuState();
-	return et;
+	return retVal;
 }
 
 void DCDarkNetApp::run() {
-	static uint32_t time = HAL_GetTick();
+	static uint32_t tick = HAL_GetTick();
 	static bool bStart = true;
 
 	//check to see if keyboard should be ignored
@@ -139,7 +166,7 @@ void DCDarkNetApp::run() {
 	if (rsc.Err.ok()) {
 		if (CurrentState != rsc.NextMenuToRun) {
 			//on state switches reset keyboard and give a 1 second pause on reading from keyboard.
-			//KB.reset();
+			KB.reset();
 		}
 		//if (CurrentState != StateFactory::getGameOfLifeState() && (tick > KB.getLastPinSelectedTick())
 		//		&& (tick - KB.getLastPinSelectedTick()
@@ -152,21 +179,20 @@ void DCDarkNetApp::run() {
 	} else {
 		CurrentState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), "Run State Error....", 2000);
 	}
-#if 0
-	if (getContactStore().getSettings().isNameSet()) {
-		StateFactory::getIRPairingState()->ListenForAlice();
+	if (MyContacts.getSettings().isNameSet()) {
+		((IRState *)StateFactory::getIRPairingState())->ListenForAlice(rc);
 	}
-	StateFactory::getMessageState()->blink();
+	((MessageState *)StateFactory::getMessageState())->blink();
 
 	static uint32_t lastSendTime = 0;
 	if (tick - lastSendTime > 10) {
 		lastSendTime = tick;
 		if (Radio.receiveDone()) {
 			if (Radio.TARGETID == RF69_BROADCAST_ADDR) {
-				StateFactory::getMessageState()->addRadioMessage((const char *) &Radio.DATA[0], Radio.DATALEN,
+				((MessageState *)StateFactory::getMessageState())->addRadioMessage((const char *) &Radio.DATA[0], Radio.DATALEN,
 						RF69_BROADCAST_ADDR, Radio.RSSI);
 			} else {
-				StateFactory::getMessageState()->addRadioMessage((const char *) &Radio.DATA[0], Radio.DATALEN,
+				((MessageState *)StateFactory::getMessageState())->addRadioMessage((const char *) &Radio.DATA[0], Radio.DATALEN,
 						Radio.SENDERID, Radio.RSSI);
 			}
 #ifndef DONT_USE_ACK
@@ -176,5 +202,4 @@ void DCDarkNetApp::run() {
 #endif
 		}
 	}
-#endif
 }

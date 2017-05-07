@@ -27,9 +27,6 @@ public:
 	void begin();
 	void end(void);
 	uint8_t transfer(uint8_t data);
-
-private:
-	uint32_t _spiPortNumber; // Not used yet.
 };
 extern HardwareSPI SPI;
 

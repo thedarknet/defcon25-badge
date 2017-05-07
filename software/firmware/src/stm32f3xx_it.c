@@ -38,6 +38,7 @@
 /* USER CODE BEGIN 0 */
 static void (*IRQ_HANDLER)(void) = 0;
 extern void attachInterrupt(uint8_t pin, void (*handler)(void), int mode) {
+	UNUSED(pin);UNUSED(mode);
 	IRQ_HANDLER = handler;
 }
 /* USER CODE END 0 */
@@ -47,6 +48,7 @@ extern PCD_HandleTypeDef hpcd_USB_FS;
 extern DMA_HandleTypeDef hdma_spi2_tx;
 extern DMA_HandleTypeDef hdma_spi3_rx;
 extern DMA_HandleTypeDef hdma_spi3_tx;
+extern TIM_HandleTypeDef htim3;
 
 /******************************************************************************/
 /*            Cortex-M4 Processor Interruption and Exception Handlers         */ 
@@ -230,5 +232,10 @@ void EXTI4_IRQHandler(void) {
 	(*IRQ_HANDLER)();
 	/* USER CODE END EXTI0_IRQn 1 */
 }
+
+void TIM3_IRQHandler(void) {
+	HAL_TIM_IRQHandler(&htim3);
+}
+
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

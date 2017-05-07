@@ -85,7 +85,7 @@ int main(void) {
 
 	/* USER CODE BEGIN 1 */
 	darknet::LogManager::get().addLogger(darknet::DEBUG_LOGGER_ID, &stm32DLogger);
-	darknet::LogManager::get().addLogger(darknet::INFO_LOGGER_ID,  &stm32ILogger);
+	darknet::LogManager::get().addLogger(darknet::INFO_LOGGER_ID, &stm32ILogger);
 	darknet::LogManager::get().addLogger(darknet::ERROR_LOGGER_ID, &stm32ELogger);
 	/* USER CODE END 1 */
 
@@ -109,7 +109,16 @@ int main(void) {
 	IRInit();
 
 	/* USER CODE BEGIN 2 */
-	DCDarkNet.init();
+	uint32_t initRet = DCDarkNet.init();
+	if ((initRet & DCDarkNetApp::COMPONENTS_ITEMS::LCD) == 0) {
+		// LCD did not initialize so we'll let the agent know via LED
+		while (1) {
+			HAL_GPIO_WritePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin, GPIO_PIN_SET);
+			HAL_Delay(200);
+			HAL_GPIO_WritePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin, GPIO_PIN_RESET);
+			HAL_Delay(400);
+		}
+	}
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
@@ -202,6 +211,9 @@ void Error_Handler(void) {
  */
 void assert_failed(uint8_t* file, uint32_t line) {
 	/* USER CODE BEGIN 6 */
+	UNUSED(file);
+	UNUSED(line);
+	INFOMSG("assertion %s:%d", file, line);
 	/* User can add his own implementation to report the file name and line number,
 	 ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 	/* USER CODE END 6 */

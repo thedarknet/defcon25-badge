@@ -75,6 +75,7 @@ static volatile IRMode_t IRMode;
 static volatile uint8_t irRxBuff[IR_RX_BUFF_SIZE];
 static volatile uint32_t irRxBits;
 static volatile crc_t crc;
+static const IRQn_Type IR_RECV_IRQ = EXTI2_TSC_IRQn;
 
 TIM_HandleTypeDef htim3;
 
@@ -156,13 +157,28 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 void IRInit(void) {
 	// IR Transmit GPIO configuration
 	GPIO_InitTypeDef GPIO_InitStruct;
-	GPIO_InitStruct.Pin = IR_TX_PIN;//IR_UART2_TX_Pin;
+	GPIO_InitStruct.Pin = IR_TX_PIN;// | TIM_IR_CARRIER_FREQ_Pin;//IR_UART2_TX_Pin;
 	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
 	HAL_GPIO_Init(IR_TX_GPIO_PORT, &GPIO_InitStruct);
 
+
+
 	// Turn off IR LED by default
 	HAL_GPIO_WritePin(IR_TX_GPIO_PORT, IR_TX_PIN, GPIO_PIN_RESET);
+#define TEST_LED 0
+#if TEST_LED
+	GPIO_InitStruct.Pin = TIM_IR_CARRIER_FREQ_Pin;// | TIM_IR_CARRIER_FREQ_Pin;//IR_UART2_TX_Pin;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+	HAL_GPIO_Init(IR_TX_GPIO_PORT, &GPIO_InitStruct);
+	//tranmission happens when tx pin is high and carrier is low
+	HAL_GPIO_WritePin(IR_TX_GPIO_PORT, IR_TX_PIN, GPIO_PIN_SET);
+	for(int i=0;i<100;i++) {
+		HAL_GPIO_TogglePin(TIM_IR_CARRIER_FREQ_GPIO_Port,TIM_IR_CARRIER_FREQ_Pin);
+		HAL_Delay(25);
+	}
+#endif
 
 	// IR Receive GPIO configuration
 	GPIO_InitStruct.Pin = IR_RCV_Pin;
@@ -171,13 +187,18 @@ void IRInit(void) {
 	HAL_GPIO_Init(IR_RCV_GPIO_Port, &GPIO_InitStruct);
 
 	// Receive interrupt
-	HAL_NVIC_SetPriority(EXTI3_IRQn, 0, 0);
-	HAL_NVIC_DisableIRQ(EXTI3_IRQn);
+	HAL_NVIC_SetPriority(IR_RECV_IRQ, 0, 0);
+	HAL_NVIC_DisableIRQ(IR_RECV_IRQ);
 
 	// Pulse measuring timer for receive
 	TIM3_Init();
 	//start 38KHz timer to flash transmitter
-	HAL_TIM_OC_Start(&htim16, TIM_CHANNEL_1);
+	if(HAL_OK!=HAL_TIM_PWM_Start(&htim16,TIM_CHANNEL_1)) {
+		Error_Handler();
+	}
+	//if(HAL_OK!=HAL_TIM_OC_Start(&htim16, TIM_CHANNEL_1)) {
+	//	Error_Handler();
+	//}
 
 }
 
@@ -185,7 +206,7 @@ void IRStop() {
 	stopIRPulseTimer();
 	HAL_TIM_OC_Stop(&htim16, TIM_CHANNEL_1);
 	HAL_TIM_Base_Stop_IT(&htim3);
-	HAL_NVIC_DisableIRQ(EXTI3_IRQn);
+	HAL_NVIC_DisableIRQ(IR_RECV_IRQ);
 }
 
 // Transmit start pulse
@@ -279,12 +300,12 @@ void IRStartRx() {
 	irRxBits = 0;
 	IRState = IR_RX_IDLE;
 	__HAL_GPIO_EXTI_CLEAR_IT(IR_RCV_Pin);
-	HAL_NVIC_EnableIRQ(EXTI3_IRQn);
+	HAL_NVIC_EnableIRQ(IR_RECV_IRQ);
 }
 
 void IRStopRX() {
 	IRState = IR_RX_IDLE;
-	HAL_NVIC_DisableIRQ(EXTI3_IRQn);
+	HAL_NVIC_DisableIRQ(IR_RECV_IRQ);
 }
 
 // Block until a packet is received OR the timeout expires
@@ -384,7 +405,7 @@ void IRStateMachine() {
 				IRState = IR_RX_ERR_CRC;
 			}
 
-			HAL_NVIC_DisableIRQ(EXTI3_IRQn);
+			HAL_NVIC_DisableIRQ(IR_RECV_IRQ);
 		} else if (count > MARK_TICKS) {
 			startIRPulseTimer(); // Start timing space
 			IRState = IR_RX_SPACE;
@@ -422,7 +443,7 @@ void IRStateMachine() {
 
 	// Disable interrupts if an error occurred (until user resets it)
 	if (IRState < 0) {
-		HAL_NVIC_DisableIRQ(EXTI3_IRQn);
+		HAL_NVIC_DisableIRQ(IR_RECV_IRQ);
 	}
 }
 

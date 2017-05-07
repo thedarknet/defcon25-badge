@@ -137,6 +137,8 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(RADIO_INTERRUPT_DIO1_EXTI11_GPIO_Port, &GPIO_InitStruct);
 
+  //do we need to enable an interrupt here?
+
   /*Configure GPIO pin : PtPin */
   GPIO_InitStruct.Pin = IR_RCV_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;

@@ -453,11 +453,11 @@ void RFM69::receiveBegin() {
 }
 
 void noInterrupts() {
-	//HAL_NVIC_DisableIRQ(EXTI0_IRQn);
+	HAL_NVIC_DisableIRQ(EXTI4_IRQn);
 }
 
 void interrupts() {
-	//HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+	HAL_NVIC_EnableIRQ(EXTI4_IRQn);
 }
 
 // checks if a packet was received and/or puts transceiver in receive (ie RX or listen) mode

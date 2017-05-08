@@ -111,6 +111,8 @@
 #define SD_CARD_CS_GPIO_Port GPIOB
 #define TIM_IR_CARRIER_FREQ_Pin GPIO_PIN_8
 #define TIM_IR_CARRIER_FREQ_GPIO_Port GPIOB
+#define IR_TX_Pin GPIO_PIN_9
+#define IR_TX_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

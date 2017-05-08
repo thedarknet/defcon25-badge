@@ -108,6 +108,20 @@ int main(void) {
 	MX_SPI3_Init();
 	IRInit();
 
+#if 0
+	uint32_t t = 0;
+	IRStartRx();
+	while (t==0) {
+		t = IRBytesAvailable();
+	}
+	//IRStartRx();
+	char *p = (char *)IRGetBuff();
+	INFOMSG(p);
+#elif 0
+	uint8_t b[5] = {0};
+	IRTxBuff(&b[0],5);
+#endif
+
 	/* USER CODE BEGIN 2 */
 	uint32_t initRet = DCDarkNet.init();
 	if ((initRet & DCDarkNetApp::COMPONENTS_ITEMS::LCD) == 0) {

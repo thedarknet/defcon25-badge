@@ -49,6 +49,7 @@ extern DMA_HandleTypeDef hdma_spi2_tx;
 extern DMA_HandleTypeDef hdma_spi3_rx;
 extern DMA_HandleTypeDef hdma_spi3_tx;
 extern TIM_HandleTypeDef htim3;
+extern TSC_HandleTypeDef htsc;
 
 /******************************************************************************/
 /*            Cortex-M4 Processor Interruption and Exception Handlers         */ 
@@ -231,6 +232,18 @@ void EXTI4_IRQHandler(void) {
 	/* USER CODE BEGIN EXTI0_IRQn 1 */
 	(*IRQ_HANDLER)();
 	/* USER CODE END EXTI0_IRQn 1 */
+}
+
+void EXTI2_TSC_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI2_TSC_IRQn 0 */
+
+  /* USER CODE END EXTI2_TSC_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_2);
+  HAL_TSC_IRQHandler(&htsc);
+  /* USER CODE BEGIN EXTI2_TSC_IRQn 1 */
+
+  /* USER CODE END EXTI2_TSC_IRQn 1 */
 }
 
 void TIM3_IRQHandler(void) {

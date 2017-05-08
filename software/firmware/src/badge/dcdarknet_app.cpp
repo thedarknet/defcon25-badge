@@ -154,11 +154,9 @@ uint32_t DCDarkNetApp::init() {
 
 void DCDarkNetApp::run() {
 	static uint32_t tick = HAL_GetTick();
-	static bool bStart = true;
 
-	//check to see if keyboard should be ignored
-	//uint32_t tick = HAL_GetTick();
 	KB.scan();
+
 	RunContext rc(&Display, &KB,&MyContacts, &Radio);
 
 	ReturnStateContext rsc = CurrentState->run(rc);

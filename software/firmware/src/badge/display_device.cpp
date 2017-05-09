@@ -330,6 +330,7 @@ ErrorType DisplayST7735::init(uint8_t pf, uint8_t madctl,
 			HAL_Delay(cmd->delay);
 	}
 
+	fillScreen(RGBColor::BLACK);
 	return et;
 }
 
@@ -367,6 +368,11 @@ void DisplayST7735::fillRec(int16_t x, int16_t y, int16_t w, int16_t h,
 
 void DisplayST7735::drawRec(int16_t x, int16_t y, int16_t w, int16_t h,
 		const RGBColor &color) {
+	UNUSED(x);
+	UNUSED(y);
+	UNUSED(w);
+	UNUSED(h);
+	UNUSED(color);
 	//TODO
 }
 
@@ -430,6 +436,10 @@ const RGBColor &DisplayST7735::getTextColor() {
 
 const RGBColor &DisplayST7735::getBackgroundColor() {
 	return CurrentBGColor;
+}
+
+uint32_t DisplayST7735::drawStringOnLine(uint8_t line, const char *msg) {
+	return drawString(0,getFont()->FontHeight*line,msg,RGBColor::WHITE, RGBColor::BLACK,1,true);
 }
 
 uint32_t DisplayST7735::drawString(uint16_t x, uint16_t y, const char *pt) {

@@ -55,6 +55,8 @@
 #define LED_STATUS_GPIO_Port GPIOC
 #define LED7_Pin GPIO_PIN_14
 #define LED7_GPIO_Port GPIOC
+#define AUDIO3_Pin GPIO_PIN_15
+#define AUDIO3_GPIO_Port GPIOC
 #define LED8_Pin GPIO_PIN_0
 #define LED8_GPIO_Port GPIOC
 #define LED6_Pin GPIO_PIN_1
@@ -65,10 +67,12 @@
 #define LED4_GPIO_Port GPIOC
 #define RFM69_RESET_Pin GPIO_PIN_4
 #define RFM69_RESET_GPIO_Port GPIOF
-#define LED3_Pin GPIO_PIN_7
-#define LED3_GPIO_Port GPIOA
+#define AUDIO_2_Pin GPIO_PIN_7
+#define AUDIO_2_GPIO_Port GPIOA
 #define RADIO_INTERRUPT_DIO0_EXTI4_Pin GPIO_PIN_4
 #define RADIO_INTERRUPT_DIO0_EXTI4_GPIO_Port GPIOC
+#define LED3_Pin GPIO_PIN_10
+#define LED3_GPIO_Port GPIOB
 #define RADIO_INTERRUPT_DIO1_EXTI11_Pin GPIO_PIN_11
 #define RADIO_INTERRUPT_DIO1_EXTI11_GPIO_Port GPIOB
 #define LCD_CS_Pin GPIO_PIN_12
@@ -87,6 +91,8 @@
 #define LED2_GPIO_Port GPIOC
 #define LED1_Pin GPIO_PIN_9
 #define LED1_GPIO_Port GPIOC
+#define AUDIO1_Pin GPIO_PIN_8
+#define AUDIO1_GPIO_Port GPIOA
 #define LED9_Pin GPIO_PIN_9
 #define LED9_GPIO_Port GPIOA
 #define LED10_Pin GPIO_PIN_10
@@ -105,6 +111,8 @@
 #define SD_CARD_CS_GPIO_Port GPIOB
 #define TIM_IR_CARRIER_FREQ_Pin GPIO_PIN_8
 #define TIM_IR_CARRIER_FREQ_GPIO_Port GPIOB
+#define IR_TX_Pin GPIO_PIN_9
+#define IR_TX_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

@@ -7,8 +7,15 @@ class StateBase;
 
 class DCDarkNetApp {
 public:
+	enum COMPONENTS_ITEMS {
+		LCD = (1<<0),
+		RADIO = (1<<1),
+		IR = (1<<2),
+		FLASH_MEM = (1<<3)
+	};
+public:
 	DCDarkNetApp();
-	ErrorType init();
+	uint32_t init();
 	void run();
 private:
 	StateBase *CurrentState;

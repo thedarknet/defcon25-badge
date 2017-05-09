@@ -53,6 +53,7 @@
 /* USER CODE BEGIN Includes */
 #include "badge/dcdarknet_app.h"
 #include "badge/logger.h"
+#include "badge/ir.h"
 
 /* USER CODE END Includes */
 
@@ -103,10 +104,35 @@ int main(void) {
 	MX_TIM16_Init();
 	MX_TSC_Init();
 	MX_USB_DEVICE_Init();
-//	MX_SPI3_Init();
+	//comment if working on dev board
+	MX_SPI3_Init();
+	IRInit();
+
+#if 0
+	uint32_t t = 0;
+	IRStartRx();
+	while (t==0) {
+		t = IRBytesAvailable();
+	}
+	//IRStartRx();
+	char *p = (char *)IRGetBuff();
+	INFOMSG(p);
+#elif 0
+	uint8_t b[5] = {0};
+	IRTxBuff(&b[0],5);
+#endif
 
 	/* USER CODE BEGIN 2 */
-	DCDarkNet.init();
+	uint32_t initRet = DCDarkNet.init();
+	if ((initRet & DCDarkNetApp::COMPONENTS_ITEMS::LCD) == 0) {
+		// LCD did not initialize so we'll let the agent know via LED
+		while (1) {
+			HAL_GPIO_WritePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin, GPIO_PIN_SET);
+			HAL_Delay(200);
+			HAL_GPIO_WritePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin, GPIO_PIN_RESET);
+			HAL_Delay(400);
+		}
+	}
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
@@ -199,6 +225,9 @@ void Error_Handler(void) {
  */
 void assert_failed(uint8_t* file, uint32_t line) {
 	/* USER CODE BEGIN 6 */
+	UNUSED(file);
+	UNUSED(line);
+	INFOMSG("assertion %s:%d", file, line);
 	/* User can add his own implementation to report the file name and line number,
 	 ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 	/* USER CODE END 6 */

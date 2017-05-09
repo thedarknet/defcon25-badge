@@ -36,7 +36,11 @@
 #include "stm32f3xx_it.h"
 
 /* USER CODE BEGIN 0 */
-
+static void (*IRQ_HANDLER)(void) = 0;
+extern void attachInterrupt(uint8_t pin, void (*handler)(void), int mode) {
+	UNUSED(pin);UNUSED(mode);
+	IRQ_HANDLER = handler;
+}
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
@@ -44,6 +48,8 @@ extern PCD_HandleTypeDef hpcd_USB_FS;
 extern DMA_HandleTypeDef hdma_spi2_tx;
 extern DMA_HandleTypeDef hdma_spi3_rx;
 extern DMA_HandleTypeDef hdma_spi3_tx;
+extern TIM_HandleTypeDef htim3;
+extern TSC_HandleTypeDef htsc;
 
 /******************************************************************************/
 /*            Cortex-M4 Processor Interruption and Exception Handlers         */ 
@@ -218,6 +224,31 @@ void DMA2_Channel2_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
+void EXTI4_IRQHandler(void) {
+	/* USER CODE BEGIN EXTI0_IRQn 0 */
+
+	/* USER CODE END EXTI0_IRQn 0 */
+	HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_4);
+	/* USER CODE BEGIN EXTI0_IRQn 1 */
+	(*IRQ_HANDLER)();
+	/* USER CODE END EXTI0_IRQn 1 */
+}
+
+void EXTI2_TSC_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI2_TSC_IRQn 0 */
+
+  /* USER CODE END EXTI2_TSC_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_2);
+  HAL_TSC_IRQHandler(&htsc);
+  /* USER CODE BEGIN EXTI2_TSC_IRQn 1 */
+
+  /* USER CODE END EXTI2_TSC_IRQn 1 */
+}
+
+void TIM3_IRQHandler(void) {
+	HAL_TIM_IRQHandler(&htim3);
+}
 
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

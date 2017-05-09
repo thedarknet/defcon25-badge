@@ -18,3 +18,9 @@ For 2017 development we are using this nucleo board, while it is not the exact M
 http://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mcu-eval-tools/stm32-mcu-eval-tools/stm32-mcu-nucleo/nucleo-f302r8.html
 
 ![alt text](https://github.com/thedarknet/defcon25-badge/blob/master/Debug-ScreenShot.png "Debug Config")
+
+
+If you have the actual badge board you'll need debugging to look like this:
+
+
+![alt text](https://github.com/thedarknet/defcon25-badge/blob/master/Debug-ScreenShot-OnBadge.png "Debug Config")

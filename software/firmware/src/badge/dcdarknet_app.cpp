@@ -166,14 +166,14 @@ void DCDarkNetApp::run() {
 			//on state switches reset keyboard and give a 1 second pause on reading from keyboard.
 			KB.reset();
 		}
-		//if (CurrentState != StateFactory::getGameOfLifeState() && (tick > KB.getLastPinSelectedTick())
-		//		&& (tick - KB.getLastPinSelectedTick()
-		//				> (1000 * 60 * getContactStore().getSettings().getScreenSaverTime()))) {
-		//	CurrentState->shutdown();
-		//	CurrentState = StateFactory::getGameOfLifeState();
-		//} else {
-		CurrentState = rsc.NextMenuToRun;
-		//}
+		if (CurrentState != StateFactory::getGameOfLifeState() && (tick > KB.getLastPinSelectedTick())
+				&& (tick - KB.getLastPinSelectedTick()
+						> (1000 * 60 * rc.getContactStore().getSettings().getScreenSaverTime()))) {
+			CurrentState->shutdown();
+			CurrentState = StateFactory::getGameOfLifeState();
+		} else {
+			CurrentState = rsc.NextMenuToRun;
+		}
 	} else {
 		CurrentState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), "Run State Error....", 2000);
 	}

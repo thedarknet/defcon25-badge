@@ -332,7 +332,7 @@ int32_t IRBytesAvailable() {
 void IRStartRx() {
 	irRxBits = 0;
 	IRState = IR_RX_IDLE;
-	__HAL_GPIO_EXTI_CLEAR_IT(IR_RCV_Pin);
+	//__HAL_GPIO_EXTI_CLEAR_IT(IR_RCV_Pin);
 	//HAL_NVIC_EnableIRQ(IR_RECV_IRQ);
 	ShouldRX = true;
 }

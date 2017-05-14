@@ -34,7 +34,7 @@ void MessageState::blink() {
 
 void MessageState::addRadioMessage(const char *msg, uint16_t msgSize, uint16_t uid, uint8_t rssi) {
 	memset(&RMsgs[CurrentPos].Msg[0], 0, sizeof(RMsgs[CurrentPos].Msg));
-	memcpy(&RMsgs[CurrentPos].Msg[0], msg, min(msgSize, sizeof(RMsgs[CurrentPos].Msg)));
+	memcpy(&RMsgs[CurrentPos].Msg[0], msg, min(msgSize, sizeof(RMsgs[CurrentPos].Msg)-1));
 	RMsgs[CurrentPos].Rssi = rssi;
 	RMsgs[CurrentPos].FromUID = uid;
 	CurrentPos++;
@@ -43,7 +43,24 @@ void MessageState::addRadioMessage(const char *msg, uint16_t msgSize, uint16_t u
 }
 
 ErrorType MessageState::onInit(RunContext &rc) {
-
+	InternalState = MESSAGE_LIST;
+	//look at the newest message (the one just before cur pos bc currentpos is inc'ed after adding a message
+	uint8_t v = CurrentPos == 0 ? MAX_R_MSGS - 1 : CurrentPos - 1;
+	for (uint16_t i = 0; i < MAX_R_MSGS; i++) {
+		Items[i].id = RMsgs[v].FromUID;
+		ContactStore::Contact c;
+		if (RMsgs[v].FromUID == RF69_BROADCAST_ADDR) {
+			Items[i].text = "Broadcast Msg";
+		} else if (rc.getContactStore().findContactByID(RMsgs[v].FromUID, c)) {
+			Items[i].text = c.getAgentName();
+			Items[i].setShouldScroll();
+		} else {
+			Items[i].text = "";
+		}
+		v = v == 0 ? (MAX_R_MSGS - 1) : v - 1;
+	}
+	rc.getDisplay().fillScreen(RGBColor::BLACK);
+	rc.getGUI().drawList(&RadioList);
 	return ErrorType();
 }
 
@@ -52,30 +69,11 @@ static char FromBuffer[20] = { '\0' };
 
 ReturnStateContext MessageState::onRun(RunContext &rc) {
 	StateBase *nextState = this;
-	if (getTimesRunCalledSinceLastReset() == 1) {
-		InternalState = MESSAGE_LIST;
-		//look at the newest message (the one just before cur pos bc currentpos is inc'ed after adding a message
-		uint8_t v = CurrentPos == 0 ? MAX_R_MSGS - 1 : CurrentPos - 1;
-		for (uint16_t i = 0; i < MAX_R_MSGS; i++) {
-			Items[i].id = RMsgs[v].FromUID;
-			ContactStore::Contact c;
-			if (RMsgs[v].FromUID == RF69_BROADCAST_ADDR) {
-				Items[i].text = "Broadcast Msg";
-			} else if (rc.getContactStore().findContactByID(RMsgs[v].FromUID, c)) {
-				Items[i].text = c.getAgentName();
-				Items[i].setShouldScroll();
-			} else {
-				Items[i].text = "";
-			}
-			v = v == 0 ? (MAX_R_MSGS - 1) : v - 1;
-		}
-		rc.getGUI().drawList(&RadioList);
-	} else {
-		uint8_t key = rc.getKB().getLastKeyReleased();
+	uint8_t key = rc.getKB().getLastKeyReleased();
 
-		if (InternalState == MESSAGE_LIST) {
-			NewMessage = false;
-			switch (key) {
+	if (InternalState == MESSAGE_LIST) {
+		NewMessage = false;
+		switch (key) {
 			case QKeyboard::UP: {
 				if (RadioList.selectedItem == 0) {
 					RadioList.selectedItem = sizeof(Items) / sizeof(Items[0]) - 1;
@@ -115,16 +113,16 @@ ReturnStateContext MessageState::onRun(RunContext &rc) {
 					}
 				}
 				break;
-				}
 			}
-			rc.getGUI().drawList(&RadioList);
-		} else {
-			//find message in array:
-			rc.getDisplay().drawString(0,10,&FromBuffer[0]);
-			rc.getDisplay().drawString(0,20,&MsgDisplayBuffer[0]);
-			if (key == 9 || key == 11) {
-				InternalState = MESSAGE_LIST;
-			}
+		}
+		rc.getGUI().drawList(&RadioList);
+	} else {
+		//find message in array:
+		rc.getDisplay().drawString(0, 10, &FromBuffer[0]);
+		rc.getDisplay().drawString(0, 20, &MsgDisplayBuffer[0]);
+		if (key == QKeyboard::BACK || key == QKeyboard::ENTER) {
+			onInit(rc);
+			InternalState = MESSAGE_LIST;
 		}
 	}
 	return ReturnStateContext(nextState);

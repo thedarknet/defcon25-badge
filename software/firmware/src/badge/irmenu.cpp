@@ -117,16 +117,19 @@ void IRState::ListenForAlice(RunContext &rc) {
 				sha256_digest(&msgHashCtx, &msgHash[0]);
 				if (uECC_verify(&uncompressedPublicKey[0], &msgHash[0], sizeof(msgHash), &atbs->signature[0],
 				THE_CURVE)) {
-					//ok to add to contacts
-					if (rc.getContactStore().addContact(AIC.AliceRadioID, &AIC.AliceName[0], &AIC.AlicePublicKey[0],
-							&atbs->signature[0])) {
+					ContactStore::Contact c;
+					if(!rc.getContactStore().findContactByID(AIC.AliceRadioID,c)) {
 						char displayBuf[24];
-						sprintf(&displayBuf[0], "New Contact: %s", &AIC.AliceName[0]);
-						//StateFactory::getEventState()->addMessage(&displayBuf[0]);
+						//ok to add to contacts
+						if (rc.getContactStore().addContact(AIC.AliceRadioID, &AIC.AliceName[0], &AIC.AlicePublicKey[0],
+								&atbs->signature[0])) {
+							sprintf(&displayBuf[0], "New Contact: %s", &AIC.AliceName[0]);
+							//StateFactory::getEventState()->addMessage(&displayBuf[0]);
+						} else {
+							sprintf(&displayBuf[0], "Could not write contact. full?");
+							//StateFactory::getEventState()->addMessage(&displayBuf[0]);
+						}
 					} else {
-						char displayBuf[24];
-						sprintf(&displayBuf[0], "New Contact: %s", &AIC.AliceName[0]);
-						//StateFactory::getEventState()->addMessage(&displayBuf[0]);
 					}
 				}
 				IRStartRx();
@@ -156,7 +159,6 @@ ReturnStateContext IRState::onRun(RunContext &rc) {
 	static const char *msg1 = "Init convo complete.";
 	static const char *msg2 = "Listening for Bob";
 	static const char *msg3 = "Sent final msg to Bob";
-	static const char *msg4 = "Contact added";
 	uint32_t bytesAvailable = IRBytesAvailable();
 	if (TransmitInternalState == ALICE_INIT_CONVERSATION) {
 		AIC.irmsgid = 1;
@@ -190,6 +192,7 @@ ReturnStateContext IRState::onRun(RunContext &rc) {
 				sha256_add(&msgHashCtx, (uint8_t*) rc.getContactStore().getMyInfo().getCompressedPublicKey(),
 						ContactStore::PUBLIC_KEY_COMPRESSED_LENGTH);
 				sha256_digest(&msgHashCtx, &msgHash[0]);
+				char displayBuf[24];
 				if (uECC_verify(&uncompressedPublicKey[0], &msgHash[0], sizeof(msgHash), &brti->SignatureOfAliceData[0],
 				THE_CURVE)) {
 
@@ -209,24 +212,27 @@ ReturnStateContext IRState::onRun(RunContext &rc) {
 					IRTxBuff((uint8_t*) &ATBS, sizeof(ATBS));
 
 					rc.getDisplay().drawString(0,30,msg3);
-					//ok to add to contacts
-					if (rc.getContactStore().addContact(brti->BoBRadioID, &brti->BobAgentName[0], &brti->BoBPublicKey[0],
-							&brti->SignatureOfAliceData[0])) {
-						char displayBuf[24];
-						sprintf(&displayBuf[0], "New Contact: %s", &brti->BobAgentName[0]);
-						rc.getDisplay().drawString(0,40,msg4);
-						//StateFactory::getEventState()->addMessage(&displayBuf[0]);
+					ContactStore::Contact c;
+					if(!rc.getContactStore().findContactByID(brti->BoBRadioID,c)) {
+						//ok to add to contacts
+						if (rc.getContactStore().addContact(brti->BoBRadioID, &brti->BobAgentName[0], &brti->BoBPublicKey[0],
+								&brti->SignatureOfAliceData[0])) {
+
+							sprintf(&displayBuf[0], "New Contact: %s", &brti->BobAgentName[0]);
+							//StateFactory::getEventState()->addMessage(&displayBuf[0]);
+						} else {
+							sprintf(&displayBuf[0], "Failed to save contact (full?): %s", &brti->BobAgentName[0]);
+							//StateFactory::getEventState()->addMessage(&displayBuf[0]);
+						}
 					} else {
-						char displayBuf[24];
-						sprintf(&displayBuf[0], "Failed to save contact: %s", &brti->BobAgentName[0]);
-						//StateFactory::getEventState()->addMessage(&displayBuf[0]);
+
 					}
 				} else {
-					char displayBuf[24];
 					sprintf(&displayBuf[0], "Signature Check Failed with %s", &brti->BobAgentName[0]);
 					//StateFactory::getEventState()->addMessage(&displayBuf[0]);
 				}
 				IRStartRx();
+				return ReturnStateContext(StateFactory::getDisplayMessageState(StateFactory::getMenuState(),&displayBuf[0],3000));
 			}
 			return ReturnStateContext(StateFactory::getMenuState());
 		}

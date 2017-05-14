@@ -107,10 +107,10 @@ ReturnStateContext AddressState::onRun(RunContext &rc) {
 				}
 			}
 				break;
-			case 9:
+			case QKeyboard::BACK:
 				nextState = StateFactory::getMenuState();
 				break;
-			case 11:
+			case QKeyboard::ENTER:
 				if (Items[AddressList.selectedItem].id != 0) {
 					DisplayList = &ContactDetails;
 					if (Items[AddressList.selectedItem].id == RF69_BROADCAST_ADDR) {
@@ -197,7 +197,9 @@ ReturnStateContext AddressState::onRun(RunContext &rc) {
 				break;
 		}
 	}
-	rc.getGUI().drawList(DisplayList);
+	if(rc.getKB().wasKeyReleased()) {
+		rc.getGUI().drawList(DisplayList);
+	}
 	return ReturnStateContext(nextState);
 }
 

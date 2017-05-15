@@ -21,6 +21,7 @@ ErrorType SendMsgState::onInit(RunContext &rc) {
 		clearState(DONT_RESET);
 	}
 	InternalState = TYPE_MESSAGE;
+	rc.getDisplay().fillScreen(RGBColor::BLACK);
 	return ErrorType();
 }
 

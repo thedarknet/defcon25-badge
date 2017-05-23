@@ -50,11 +50,11 @@ namespace darknet {
 	};
 }
 
-#define DBGMSG(a) if(LogManger::get().getLogger(DEBUG_LOGGER_ID)) \
-		LogManger::get().getLogger(DEBUG_LOGGER_ID)->printf(LogManger::get().getLogger(DEBUG_LOGGER_ID),a)
-#define INFOMSG(a) if(LogManger::get().getLogger(INFO_LOGGER_ID)) \
-		LogManger::get().getLogger(INFO_LOGGER_ID)->printf(LogManger::get().getLogger(INFO_LOGGER_ID),a)
-#define ERRMSG(a) if(LogManger::get().getLogger(ERROR_LOGGER_ID)) \
-		LogManger::get().getLogger(ERROR_LOGGER_ID)->printf(LogManger::get().getLogger(ERROR_LOGGER_ID),a)
+#define DBGMSG(...) if(LogManager::get().getLogger(darknet::DEBUG_LOGGER_ID)) \
+		darknet::LogManager::get().getLogger(darknet::DEBUG_LOGGER_ID)->printf(darknet::LogManager::get(),##__VA_ARGS__)
+#define INFOMSG(...) if(darknet::LogManager::get().getLogger(darknet::INFO_LOGGER_ID)) \
+		darknet::LogManager::get().getLogger(darknet::INFO_LOGGER_ID)->printf(darknet::LogManager::get(),##__VA_ARGS__)
+#define ERRMSG(...) if(LogManager::get().getLogger(darknet::ERROR_LOGGER_ID)) \
+		darknet::LogManager::get().getLogger(darknet::ERROR_LOGGER_ID)->printf(darknet::LogManager::get(),##__VA_ARGS__)
 
 #endif

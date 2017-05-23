@@ -75,26 +75,26 @@ uint8_t GUI::drawList(GUI_ListData* gui_CurList) const {
 		return 0;
 
 	Display->fillRec(gui_CurList->x, gui_CurList->y, gui_CurList->w, gui_CurList->h, RGBColor::BLACK);
-	Display->drawRec(gui_CurList->x+1, gui_CurList->y+1, gui_CurList->w-1, gui_CurList->h-1, RGBColor::BLUE);
+	Display->drawRec(gui_CurList->x, gui_CurList->y, gui_CurList->w-1, gui_CurList->h, RGBColor::BLUE);
 
 	uint8_t ry = gui_CurList->y + 2;
+	uint8_t rx = gui_CurList->x + 4;
 	if (gui_CurList->header != 0) {
-		Display->drawString(gui_CurList->x + 1, gui_CurList->y, gui_CurList->header, RGBColor::WHITE, RGBColor::BLACK,
+		Display->drawString(rx, ry, gui_CurList->header, RGBColor::WHITE, RGBColor::BLACK,
 				1, false);
 		ry += Display->getFont()->FontHeight;
 	}
 
-	uint8_t maxC = ((gui_CurList->h - 3) / Display->getFont()->FontHeight)
-			- (gui_CurList->header != 0);
+	uint8_t maxC = ((gui_CurList->h - 3) / Display->getFont()->FontHeight) - (gui_CurList->header != 0);
 
 	uint16_t i;
 	if (maxC >= gui_CurList->ItemsCount) {
 		for (i = 0; i < gui_CurList->ItemsCount; i++) {
 			if (i != gui_CurList->selectedItem) {
-				Display->drawString(gui_CurList->x + 1, ry + i * Display->getFont()->FontHeight,
+				Display->drawString(rx, ry + i * Display->getFont()->FontHeight,
 						gui_CurList->items[i].text, RGBColor::WHITE, RGBColor::BLACK, 1, false);
 			} else {
-				Display->drawString(gui_CurList->x + 1, ry + i * Display->getFont()->FontHeight,
+				Display->drawString(rx, ry + i * Display->getFont()->FontHeight,
 						gui_CurList->items[i].getScrollOffset(), RGBColor::BLACK, RGBColor::WHITE, 1, false);
 			}
 		}
@@ -104,11 +104,11 @@ uint8_t GUI::drawList(GUI_ListData* gui_CurList) const {
 			for (i = gui_CurList->ItemsCount - maxC;
 					i < gui_CurList->ItemsCount; i++) {
 				if (i != gui_CurList->selectedItem) {
-					Display->drawString(gui_CurList->x + 1,
+					Display->drawString(rx,
 							ry + (i - gui_CurList->ItemsCount + maxC) * Display->getFont()->FontHeight,
 							gui_CurList->items[i].text, RGBColor::WHITE, RGBColor::BLACK, 1, false);
 				} else {
-					Display->drawString(gui_CurList->x + 1,
+					Display->drawString(rx,
 							ry + (i - gui_CurList->ItemsCount + maxC) * Display->getFont()->FontHeight,
 							gui_CurList->items[i].getScrollOffset(), RGBColor::BLACK, RGBColor::WHITE, 1, false);
 				}
@@ -116,21 +116,21 @@ uint8_t GUI::drawList(GUI_ListData* gui_CurList) const {
 		} else if (gui_CurList->selectedItem < maxC / 2) {
 			for (i = 0; i < maxC; i++) {
 				if (i != gui_CurList->selectedItem)
-					Display->drawString(gui_CurList->x + 1, ry + i * Display->getFont()->FontHeight,
+					Display->drawString(rx, ry + i * Display->getFont()->FontHeight,
 							gui_CurList->items[i].text, RGBColor::WHITE, RGBColor::BLACK, 1, false);
 				else
-					Display->drawString(gui_CurList->x + 1, ry + i * Display->getFont()->FontHeight,
+					Display->drawString(rx, ry + i * Display->getFont()->FontHeight,
 							gui_CurList->items[i].getScrollOffset(), RGBColor::BLACK, RGBColor::WHITE, 1, false);
 			}
 		} else {
 			for (i = gui_CurList->selectedItem - maxC / 2;
 					i < gui_CurList->selectedItem - maxC / 2 + maxC; i++) {
 				if (i != gui_CurList->selectedItem) {
-				Display->drawString(gui_CurList->x + 1,
+				Display->drawString(rx,
 						ry + (i - gui_CurList->selectedItem + maxC / 2) * Display->getFont()->FontHeight,
 						gui_CurList->items[i].text, RGBColor::WHITE, RGBColor::BLACK, 1, false);
 				} else {
-					Display->drawString(gui_CurList->x + 1,
+					Display->drawString(rx,
 						ry + (i - gui_CurList->selectedItem + maxC / 2) * Display->getFont()->FontHeight,
 						gui_CurList->items[i].getScrollOffset(), RGBColor::BLACK, RGBColor::WHITE, 1, false);
 				}
@@ -138,14 +138,10 @@ uint8_t GUI::drawList(GUI_ListData* gui_CurList) const {
 		}
 	}
 	uint8_t sli_h = gui_CurList->h / gui_CurList->ItemsCount;
-	if (sli_h < 10)
-		sli_h = 10;
-	uint8_t yy = ((gui_CurList->h) * gui_CurList->selectedItem)
-			/ gui_CurList->ItemsCount;
-	Display->drawHorizontalLine(gui_CurList->x, ry - 2,
-			gui_CurList->x + gui_CurList->w, RGBColor::WHITE);
-//SSD1306_DrawLine(gui_CurList->x + gui_CurList->w - 1, gui_CurList->y + yy, gui_CurList->x + gui_CurList->w - 1,
-//	gui_CurList->y + yy + sli_h, 1);
+	if (sli_h < 14)
+		sli_h = 14;
+	Display->drawHorizontalLine(gui_CurList->x+2, ry - 2,
+			gui_CurList->x + gui_CurList->w-2, RGBColor::WHITE);
 	return 0;
 }
 

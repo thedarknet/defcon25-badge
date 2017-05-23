@@ -59,27 +59,27 @@ DisplayST7735::PackedColor DisplayST7735::PackedColor::create(
 		uint8_t pixelFormat, const RGBColor &c) {
 	PackedColor pc;
 	switch (pixelFormat) {
-	case FORMAT_12_BIT:
-		pc.SizeInBytes = 2;
-		break;
-	case FORMAT_16_BIT: {
-		uint16_t tmp;
-		tmp = (c.getR() & 0b11111) << 11;
-		tmp |= (c.getG() & 0b111111) << 5;
-		tmp |= (c.getB() & 0b11111);
-		pc.Color[0] = tmp >> 8;
-		pc.Color[1] = tmp & 0xFF;
-		pc.SizeInBytes = 2;
-	}
-		break;
-	case FORMAT_18_BIT:
-		pc.Color[0] = c.getR() << 2;
-		pc.Color[1] = c.getG() << 2;
-		pc.Color[2] = c.getB() << 2;
-		pc.SizeInBytes = 3;
-		break;
-	default:
-		assert(false);
+		case FORMAT_12_BIT:
+			pc.SizeInBytes = 2;
+			break;
+		case FORMAT_16_BIT: {
+			uint16_t tmp;
+			tmp = (c.getR() & 0b11111) << 11;
+			tmp |= (c.getG() & 0b111111) << 5;
+			tmp |= (c.getB() & 0b11111);
+			pc.Color[0] = tmp >> 8;
+			pc.Color[1] = tmp & 0xFF;
+			pc.SizeInBytes = 2;
+		}
+			break;
+		case FORMAT_18_BIT:
+			pc.Color[0] = c.getR() << 2;
+			pc.Color[1] = c.getG() << 2;
+			pc.Color[2] = c.getB() << 2;
+			pc.SizeInBytes = 3;
+			break;
+		default:
+			assert(false);
 	}
 	return pc;
 }
@@ -120,7 +120,7 @@ struct sCmdBuf {
 };
 
 static const struct sCmdBuf initializers[] = {
-// SWRESET Software reset
+		// SWRESET Software reset
 		{ DisplayST7735::SWRESET, 150, 0, 0 },
 		// SLPOUT Leave sleep mode
 		{ DisplayST7735::SLEEP_OUT, 150, 0, 0 },
@@ -330,6 +330,7 @@ ErrorType DisplayST7735::init(uint8_t pf, uint8_t madctl,
 			HAL_Delay(cmd->delay);
 	}
 
+	fillScreen(RGBColor::BLACK);
 	return et;
 }
 
@@ -367,7 +368,10 @@ void DisplayST7735::fillRec(int16_t x, int16_t y, int16_t w, int16_t h,
 
 void DisplayST7735::drawRec(int16_t x, int16_t y, int16_t w, int16_t h,
 		const RGBColor &color) {
-	//TODO
+	drawHorizontalLine(x, y, w, color);
+	drawVerticalLine(x, y, h, color);
+	drawHorizontalLine(x, y + h >= getHeight() ? getHeight() - 1 : y + h, w, color);
+	drawVerticalLine(x + w, y, h, color);
 }
 
 const uint8_t *DisplayST7735::getFontData() {
@@ -392,7 +396,7 @@ void DisplayST7735::drawCharAtPosition(int16_t x, int16_t y, char c,
 		return;
 
 	for (i = 0; i < CurrentFont->FontWidth; i++) {
-		if (i == CurrentFont->FontWidth-1)
+		if (i == CurrentFont->FontWidth - 1)
 			line = 0x0;
 		else
 			line = getFontData()[(c * CurrentFont->CharBytes) + i];
@@ -432,13 +436,17 @@ const RGBColor &DisplayST7735::getBackgroundColor() {
 	return CurrentBGColor;
 }
 
+uint32_t DisplayST7735::drawStringOnLine(uint8_t line, const char *msg) {
+	return drawString(0, getFont()->FontHeight * line, msg, RGBColor::WHITE, RGBColor::BLACK, 1, true);
+}
+
 uint32_t DisplayST7735::drawString(uint16_t x, uint16_t y, const char *pt) {
 	return drawString(x, y, pt, CurrentTextColor);
 }
 
 uint32_t DisplayST7735::drawString(uint16_t x, uint16_t y, const char *pt,
 		const RGBColor &textColor) {
-	return drawString(x, y, pt, textColor, CurrentBGColor, 1,false);
+	return drawString(x, y, pt, textColor, CurrentBGColor, 1, false);
 }
 
 uint32_t DisplayST7735::drawString(uint16_t xPos, uint16_t yPos, const char *pt,
@@ -452,19 +460,19 @@ uint32_t DisplayST7735::drawString(uint16_t xPos, uint16_t yPos, const char *pt,
 	while (*pt) {
 		if ((currentX > getWidth() && !lineWrap) || currentY > getHeight()) {
 			return pt - orig;
-		} else if (currentX>getWidth() && lineWrap) {
+		} else if (currentX > getWidth() && lineWrap) {
 			currentX = 0;
-			currentY+=CurrentFont->FontHeight*size;
+			currentY += CurrentFont->FontHeight * size;
 			drawCharAtPosition(currentX, currentY, *pt, textColor,
-									backGroundColor, size);
-			currentX+=CurrentFont->FontWidth;
+					backGroundColor, size);
+			currentX += CurrentFont->FontWidth;
 		} else if (*pt == '\n' || *pt == '\r') {
-				currentY+=CurrentFont->FontHeight*size;
-				currentX = 0;
+			currentY += CurrentFont->FontHeight * size;
+			currentX = 0;
 		} else {
 			drawCharAtPosition(currentX, currentY, *pt, textColor,
 					backGroundColor, size);
-			currentX+=CurrentFont->FontWidth*size;
+			currentX += CurrentFont->FontWidth * size;
 		}
 		pt++;
 	}
@@ -472,8 +480,8 @@ uint32_t DisplayST7735::drawString(uint16_t xPos, uint16_t yPos, const char *pt,
 #else
 	uint32_t count = 0;
 	//TODO clean this up
-	if (yPos > 15) //15*10 = 150
-		return 0;
+	if (yPos > 15)//15*10 = 150
+	return 0;
 
 	uint16_t w = 6 * size;
 	uint16_t h = 10 * size;
@@ -483,7 +491,7 @@ uint32_t DisplayST7735::drawString(uint16_t xPos, uint16_t yPos, const char *pt,
 		pt++;
 		xPos = xPos + 1;
 		if (xPos > 20)
-			return count;
+		return count;
 		count++;
 	}
 	return count;  // number of characters printed

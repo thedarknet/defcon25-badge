@@ -394,6 +394,7 @@ public:
 	uint32_t drawString(uint16_t xPos, uint16_t yPos, const char *pt);
 	uint32_t drawString(uint16_t xPos, uint16_t yPos, const char *pt, const RGBColor &textColor);
 	uint32_t drawString(uint16_t xPos, uint16_t yPos, const char *pt, const RGBColor &textColor, const RGBColor &bgColor, uint8_t size, bool lineWrap);
+	uint32_t drawStringOnLine(uint8_t line, const char *msg);
 	//x and y are pixel locations
 	void drawCharAtPosition(int16_t x, int16_t y, char c, const RGBColor &textColor, const RGBColor &bgColor, uint8_t size);
 	void setTextColor(const RGBColor &t);

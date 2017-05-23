@@ -3,9 +3,11 @@
 
 #include "gui.h"
 #include "KeyStore.h"
+#include "Keyboard.h"
 
 class StateBase;
 class DisplayST7735;
+class ContactStore;
 
 struct ReturnStateContext {
 	ReturnStateContext(StateBase *next, const ErrorType &er) :
@@ -18,14 +20,22 @@ struct ReturnStateContext {
 	ErrorType Err;
 };
 
+class RFM69;
+
 class RunContext {
 public:
-	RunContext(DisplayST7735 *display);
+	RunContext(DisplayST7735 *display, QKeyboard *kb, ContactStore *cs, RFM69 *r);
 	DisplayST7735 &getDisplay();
 	const GUI &getGUI();
+	QKeyboard &getKB();
+	ContactStore &getContactStore();
+	RFM69 &getRadio();
 private:
 	DisplayST7735 *dp; //should just be DisplayDevice rather than specific display //TODO
 	GUI GuiDisplay;
+	QKeyboard *KeyB;
+	ContactStore *CS;
+	RFM69 *Transciever;
 };
 
 class StateBase {
@@ -38,7 +48,8 @@ public:
 protected:
 	static const uint32_t INIT_BIT = 0x01;
 	static const uint32_t DONT_RESET = 0x02;
-	virtual ErrorType onInit()=0;
+	static const uint32_t SHIFT_FROM_BASE = 8;
+	virtual ErrorType onInit(RunContext &rc)=0;
 	virtual ReturnStateContext onRun(RunContext &rc)=0;
 	virtual ErrorType onShutdown()=0;
 	void setState(uint32_t n) {
@@ -46,6 +57,9 @@ protected:
 	}
 	void clearState(uint32_t n) {
 		StateData = (StateData & ~n);
+	}
+	bool checkState(uint32_t n) {
+		return (StateData & n) !=0;
 	}
 	bool hasBeenInitialized() {
 		return (StateData & INIT_BIT) != 0;
@@ -56,7 +70,7 @@ protected:
 	uint32_t getTimesRunCalledAllTime() { return TimesRunCalledAllTime;}
 	uint32_t getTimesRunCalledSinceLastReset() {return TimesRunCalledSinceLastReset;}
 private:
-	ErrorType init();
+	ErrorType init(RunContext &rc);
 private:
 	uint32_t StateData : 8;
 	uint32_t TimesRunCalledAllTime : 24;
@@ -79,7 +93,7 @@ public:
 		return NextState;
 	}
 protected:
-	virtual ErrorType onInit();
+	virtual ErrorType onInit(RunContext &rc);
 	virtual ReturnStateContext onRun(RunContext &rc);
 	virtual ErrorType onShutdown();
 private:
@@ -93,7 +107,7 @@ public:
 	MenuState();
 	virtual ~MenuState();
 protected:
-	virtual ErrorType onInit();
+	virtual ErrorType onInit(RunContext &rc);
 	virtual ReturnStateContext onRun(RunContext &rc);
 	virtual ErrorType onShutdown();
 private:
@@ -106,7 +120,7 @@ public:
 	SettingState();
 	virtual ~SettingState();
 protected:
-	virtual ErrorType onInit();
+	virtual ErrorType onInit(RunContext &rc);
 	virtual ReturnStateContext onRun(RunContext &rc);
 	virtual ErrorType onShutdown();
 private:
@@ -122,10 +136,10 @@ public:
 	BadgeInfoState();
 	virtual ~BadgeInfoState();
 protected:
-	virtual ErrorType onInit();
+	virtual ErrorType onInit(RunContext &rc);
 	virtual ReturnStateContext onRun(RunContext &rc);
 	virtual ErrorType onShutdown();
-	const char *getRegCode();
+	const char *getRegCode(ContactStore &cs);
 private:
 	GUI_ListData BadgeInfoList;
 	GUI_ListItemData Items[9];
@@ -133,6 +147,34 @@ private:
 	char RegCode[18];
 };
 
+class RadioInfoState: public StateBase {
+public:
+	RadioInfoState();
+	virtual ~RadioInfoState();
+protected:
+	virtual ErrorType onInit(RunContext &rc);
+	virtual ReturnStateContext onRun(RunContext &rc);
+	virtual ErrorType onShutdown();
+private:
+	GUI_ListData RadioInfoList;
+	GUI_ListItemData Items[6];
+	char ListBuffer[6][20];
+};
+
+class KeyBoardTest : public StateBase {
+public:
+	KeyBoardTest();
+	virtual ~KeyBoardTest();
+protected:
+	virtual ErrorType onInit(RunContext &rc);
+	virtual ReturnStateContext onRun(RunContext &rc);
+	virtual ErrorType onShutdown();
+private:
+	uint8_t LastKey;
+};
+
+class SendMsgState;
+class AddressState;
 //=============================
 class StateFactory {
 public:
@@ -141,8 +183,13 @@ public:
 	static StateBase *getMenuState();
 	static StateBase *getSettingState();
 	static StateBase *getGameOfLifeState();
-	//static StateBase* getBadgeInfoState();
-
+	static StateBase *getKeyBoardTest();
+	static StateBase *getMessageState();
+	static StateBase* getBadgeInfoState();
+	static StateBase *getRadioInfoState();
+	static StateBase *getIRPairingState();
+	static SendMsgState* getSendMessageState();
+	static AddressState* getAddressBookState();
 };
 
 #endif

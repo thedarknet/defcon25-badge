@@ -11592,7 +11592,7 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <part name="R34" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="2K DNP"/>
 <part name="R32" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="1K DNP"/>
 <part name="R35" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="2K DNP"/>
-<part name="C2" library="darknet_parts_library" deviceset="C-US" device="C0603" value="10uF DNP"/>
+<part name="C2" library="darknet_parts_library" deviceset="C-US" device="C0603" value="GRM188C80G106ME47D"/>
 <part name="R30" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="2K DNP"/>
 <part name="GND17" library="SYNShop" deviceset="GND" device=""/>
 <part name="GND18" library="SYNShop" deviceset="GND" device=""/>
@@ -13047,6 +13047,7 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <pinref part="R32" gate="G$1" pin="1"/>
 <wire x1="264.16" y1="38.1" x2="271.78" y2="38.1" width="0.1524" layer="91"/>
 <wire x1="264.16" y1="35.56" x2="264.16" y2="38.1" width="0.1524" layer="91"/>
+<junction x="264.16" y="38.1"/>
 </segment>
 </net>
 <net name="N$34" class="0">
@@ -13057,6 +13058,7 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <pinref part="R34" gate="G$1" pin="2"/>
 <wire x1="264.16" y1="22.86" x2="264.16" y2="20.32" width="0.1524" layer="91"/>
 <wire x1="261.62" y1="22.86" x2="264.16" y2="22.86" width="0.1524" layer="91"/>
+<junction x="264.16" y="22.86"/>
 </segment>
 </net>
 <net name="N$35" class="0">

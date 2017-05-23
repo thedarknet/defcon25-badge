@@ -4224,7 +4224,7 @@ We've spent an enormous amount of time creating and checking these footprints an
 <element name="R35" library="darknet_parts_library" package="0603-RES" value="2K DNP" x="48.10125" y="31.4325" smashed="yes" rot="MR0">
 <attribute name="NAME" x="49.990375" y="32.5755" size="0.6096" layer="26" font="vector" rot="MR180"/>
 </element>
-<element name="C2" library="darknet_parts_library" package="C0603" value="10uF DNP" x="44.846875" y="31.4325" smashed="yes" rot="MR0">
+<element name="C2" library="darknet_parts_library" package="C0603" value="GRM188C80G106ME47D" x="44.846875" y="31.4325" smashed="yes" rot="MR0">
 <attribute name="NAME" x="42.95775" y="31.162625" size="0.6096" layer="26" rot="MR0"/>
 </element>
 <element name="R30" library="darknet_parts_library" package="0603-RES" value="2K DNP" x="44.846875" y="37.861875" smashed="yes" rot="MR0">

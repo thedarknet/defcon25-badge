@@ -11587,13 +11587,13 @@ Resettable Fuse. Spark Fun Electronics SKU : COM-08357</description>
 <part name="U$23" library="darknet_parts_library" deviceset="CMD_C0DE_LOGO" device=""/>
 <part name="J1" library="MF_Connectors" deviceset="USB" device="_MICRO_RIGHT" value="MF-CON-MICROUSB-RIGHT"/>
 <part name="U$11" library="darknet_parts_library" deviceset="SWITCH_SPDT" device=""/>
-<part name="R33" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="2K DNP"/>
-<part name="R31" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="1K DNP"/>
-<part name="R34" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="2K DNP"/>
-<part name="R32" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="1K DNP"/>
-<part name="R35" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="2K DNP"/>
+<part name="R33" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="2K"/>
+<part name="R31" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="1K"/>
+<part name="R34" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="2K"/>
+<part name="R32" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="1K"/>
+<part name="R35" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="2K"/>
 <part name="C2" library="darknet_parts_library" deviceset="C-US" device="C0603" value="GRM188C80G106ME47D"/>
-<part name="R30" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="2K DNP"/>
+<part name="R30" library="darknet_parts_library" deviceset="RESISTOR" device="0603-RES" value="2K"/>
 <part name="GND17" library="SYNShop" deviceset="GND" device=""/>
 <part name="GND18" library="SYNShop" deviceset="GND" device=""/>
 <part name="JP1" library="adafruit" deviceset="PINHD-1X1" device="CB"/>

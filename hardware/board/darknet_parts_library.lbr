@@ -48,8 +48,8 @@
 <layer number="38" name="bTest" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="39" name="tKeepout" color="4" fill="11" visible="yes" active="yes"/>
 <layer number="40" name="bKeepout" color="1" fill="11" visible="yes" active="yes"/>
-<layer number="41" name="tRestrict" color="4" fill="10" visible="yes" active="yes"/>
-<layer number="42" name="bRestrict" color="1" fill="10" visible="yes" active="yes"/>
+<layer number="41" name="tRestrict" color="4" fill="10" visible="no" active="yes"/>
+<layer number="42" name="bRestrict" color="1" fill="10" visible="no" active="yes"/>
 <layer number="43" name="vRestrict" color="2" fill="10" visible="yes" active="yes"/>
 <layer number="44" name="Drills" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="45" name="Holes" color="7" fill="1" visible="yes" active="yes"/>
@@ -2320,7 +2320,7 @@
 <vertex x="6.8025" y="-5.8715"/>
 <vertex x="7.802" y="-6.0925"/>
 </polygon>
-<polygon width="0.0508" layer="41">
+<polygon width="0.8128" layer="41">
 <vertex x="-7.794" y="7.2605"/>
 <vertex x="-7.763" y="7.244"/>
 <vertex x="-7.741" y="7.216"/>
@@ -2408,7 +2408,7 @@
 <vertex x="-7.878" y="7.2575"/>
 <vertex x="-7.823" y="7.2645"/>
 </polygon>
-<polygon width="0.0508" layer="42">
+<polygon width="0.8128" layer="42">
 <vertex x="-7.794" y="7.2605"/>
 <vertex x="-7.763" y="7.244"/>
 <vertex x="-7.741" y="7.216"/>
@@ -2497,7 +2497,7 @@
 <vertex x="-7.823" y="7.2645"/>
 </polygon>
 <pad name="P$1" x="-8" y="6.3" drill="0.5"/>
-<polygon width="0.0508" layer="29">
+<polygon width="0.8128" layer="29">
 <vertex x="-7.794" y="7.2605"/>
 <vertex x="-7.763" y="7.244"/>
 <vertex x="-7.741" y="7.216"/>

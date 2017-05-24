@@ -3666,7 +3666,7 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <vertex x="6.8025" y="-5.8715"/>
 <vertex x="7.802" y="-6.0925"/>
 </polygon>
-<polygon width="0.0508" layer="41">
+<polygon width="0.8128" layer="41">
 <vertex x="-7.794" y="7.2605"/>
 <vertex x="-7.763" y="7.244"/>
 <vertex x="-7.741" y="7.216"/>
@@ -3754,7 +3754,7 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <vertex x="-7.878" y="7.2575"/>
 <vertex x="-7.823" y="7.2645"/>
 </polygon>
-<polygon width="0.0508" layer="42">
+<polygon width="0.8128" layer="42">
 <vertex x="-7.794" y="7.2605"/>
 <vertex x="-7.763" y="7.244"/>
 <vertex x="-7.741" y="7.216"/>
@@ -3843,7 +3843,7 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <vertex x="-7.823" y="7.2645"/>
 </polygon>
 <pad name="P$1" x="-8" y="6.3" drill="0.5"/>
-<polygon width="0.0508" layer="29">
+<polygon width="0.8128" layer="29">
 <vertex x="-7.794" y="7.2605"/>
 <vertex x="-7.763" y="7.244"/>
 <vertex x="-7.741" y="7.216"/>

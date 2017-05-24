@@ -454,7 +454,7 @@ ErrorType
 BadgeInfoState::onInit(RunContext & rc)
 		{
 	memset(&ListBuffer[0], 0, sizeof(ListBuffer));
-	sprintf(&ListBuffer[0][0], "N: %s", rc.getContactStore().getSettings().getAgentName());
+	sprintf(&ListBuffer[0][0], "Name: %s", rc.getContactStore().getSettings().getAgentName());
 	sprintf(&ListBuffer[1][0], "Num contacts: %u", rc.getContactStore().getSettings().getNumContacts());
 	sprintf(&ListBuffer[2][0], "REG: %s", getRegCode(rc.getContactStore()));
 	sprintf(&ListBuffer[3][0], "UID: %u", rc.getContactStore().getMyInfo().getUniqueID());

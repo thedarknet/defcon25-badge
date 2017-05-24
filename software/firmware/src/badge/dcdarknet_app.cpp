@@ -41,60 +41,9 @@ static const uint32_t MY_INFO_ADDRESS = 0x801FFD4; //2c needed
 ContactStore MyContacts(SETTING_SECTOR, FIRST_CONTACT_SECTOR, NUM_CONTACT_SECTOR, MY_INFO_ADDRESS);
 
 static void initFlash() {
-#if ONE_TIME==1
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wstrict-aliasing"
-
-	HAL_StatusTypeDef s = HAL_FLASH_Unlock();
-	//assert(s==HAL_OK);
-	uint16_t loc = 0;
-	HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, START_STORAGE_LOCATION, 0xDCDC);
-	loc += 2;
-	static const unsigned int defaults1 = 0b00100001;//screen saver type = 1 sleep time = 2
-	static const unsigned int defaults2 = 0b00000001;//screen saver time = 1
-	unsigned char reserveFlags = 0;// makeUber == 1 ? 0x1 : 0x0;
-	uint16_t ReserveContacts = ((reserveFlags) << 8) | 0x0;
-	HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, START_STORAGE_LOCATION + loc, ReserveContacts);
-	uint16_t Settings = (defaults1 << 8) | defaults2;
-	loc += 2;
-	HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, START_STORAGE_LOCATION + loc, Settings);
-	loc += 2;
-	uint8_t RadioID[2] = {0x3, 0x4};
-	HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, START_STORAGE_LOCATION + loc, *((uint32_t*) &RadioID[0]));
-	loc += 2;
-	uint8_t privateKey[ContactStore::PRIVATE_KEY_LENGTH] = {0xab, 0x34, 0x4e, 0x58, 0x3f, 0x2a, 0x56, 0x39, 0x17, 0xef, 0x5c, 0xff, 0x8b,
-		0xf8, 0x72, 0xe8, 0x87, 0x65, 0xd5, 0x11, 0x26, 0x58, 0x14, 0xb4};
-	for (int i = 0; i < ContactStore::PRIVATE_KEY_LENGTH/2; i++, loc += 2) {
-		HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, START_STORAGE_LOCATION + loc, *((uint16_t*) &privateKey[i]));
-	}
-	uint8_t agentName[ContactStore::AGENT_NAME_LENGTH] = {0x0};
-	for (int i = 0; i < ContactStore::AGENT_NAME_LENGTH/2; i++, loc += 2) {
-		HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, START_STORAGE_LOCATION + loc, *((uint16_t*) &agentName[i]));
-	}
-
-	HAL_FLASH_Lock();
-#pragma GCC diagnostic pop
-#endif
 }
 
 uint32_t DCDarkNetApp::init() {
-#if 0
-	//blink status led a few times
-	for (int i = 0; i < 5; i++) {
-		HAL_GPIO_TogglePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin);
-		HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
-		HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
-		HAL_GPIO_TogglePin(LED3_GPIO_Port, LED3_Pin);
-		HAL_GPIO_TogglePin(LED4_GPIO_Port, LED4_Pin);
-		HAL_GPIO_TogglePin(LED5_GPIO_Port, LED5_Pin);
-		HAL_GPIO_TogglePin(LED6_GPIO_Port, LED6_Pin);
-		HAL_GPIO_TogglePin(LED7_GPIO_Port, LED7_Pin);
-		HAL_GPIO_TogglePin(LED8_GPIO_Port, LED8_Pin);
-		HAL_GPIO_TogglePin(LED9_GPIO_Port, LED9_Pin);
-		HAL_GPIO_TogglePin(LED10_GPIO_Port, LED10_Pin);
-		HAL_Delay(500);
-	}
-#endif
 
 	uint32_t retVal = 0;
 	ErrorType et;

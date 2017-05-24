@@ -4209,25 +4209,25 @@ We've spent an enormous amount of time creating and checking these footprints an
 <attribute name="NAME" x="89.70356875" y="74.424221875" size="0.6096" layer="26" font="vector" rot="MR245"/>
 </element>
 <element name="U$11" library="darknet_parts_library" package="SPDT_SSAJ120100" value="SWITCH_SPDT" x="50.879375" y="84.93125" rot="MR270"/>
-<element name="R33" library="darknet_parts_library" package="0603-RES" value="2K DNP" x="48.10125" y="35.71875" smashed="yes" rot="MR0">
+<element name="R33" library="darknet_parts_library" package="0603-RES" value="2K" x="48.10125" y="35.71875" smashed="yes" rot="MR0">
 <attribute name="NAME" x="49.990375" y="36.068" size="0.6096" layer="26" font="vector" rot="MR180"/>
 </element>
-<element name="R31" library="darknet_parts_library" package="0603-RES" value="1K DNP" x="44.846875" y="35.71875" smashed="yes" rot="MR180">
+<element name="R31" library="darknet_parts_library" package="0603-RES" value="1K" x="44.846875" y="35.71875" smashed="yes" rot="MR180">
 <attribute name="NAME" x="43.037125" y="35.448875" size="0.6096" layer="26" font="vector" rot="MR0"/>
 </element>
-<element name="R34" library="darknet_parts_library" package="0603-RES" value="2K DNP" x="48.10125" y="33.575625" smashed="yes" rot="MR0">
+<element name="R34" library="darknet_parts_library" package="0603-RES" value="2K" x="48.10125" y="33.575625" smashed="yes" rot="MR0">
 <attribute name="NAME" x="49.990375" y="33.8455" size="0.6096" layer="26" font="vector" rot="MR180"/>
 </element>
-<element name="R32" library="darknet_parts_library" package="0603-RES" value="1K DNP" x="44.846875" y="33.575625" smashed="yes" rot="MR0">
+<element name="R32" library="darknet_parts_library" package="0603-RES" value="1K" x="44.846875" y="33.575625" smashed="yes" rot="MR0">
 <attribute name="NAME" x="43.037125" y="33.226375" size="0.6096" layer="26" font="vector" rot="MR0"/>
 </element>
-<element name="R35" library="darknet_parts_library" package="0603-RES" value="2K DNP" x="48.10125" y="31.4325" smashed="yes" rot="MR0">
+<element name="R35" library="darknet_parts_library" package="0603-RES" value="2K" x="48.10125" y="31.4325" smashed="yes" rot="MR0">
 <attribute name="NAME" x="49.990375" y="32.5755" size="0.6096" layer="26" font="vector" rot="MR180"/>
 </element>
-<element name="C2" library="darknet_parts_library" package="C0603" value="10uF DNP" x="44.846875" y="31.4325" smashed="yes" rot="MR0">
+<element name="C2" library="darknet_parts_library" package="C0603" value="GRM188C80G106ME47D" x="44.846875" y="31.4325" smashed="yes" rot="MR0">
 <attribute name="NAME" x="42.95775" y="31.162625" size="0.6096" layer="26" rot="MR0"/>
 </element>
-<element name="R30" library="darknet_parts_library" package="0603-RES" value="2K DNP" x="44.846875" y="37.861875" smashed="yes" rot="MR0">
+<element name="R30" library="darknet_parts_library" package="0603-RES" value="2K" x="44.846875" y="37.861875" smashed="yes" rot="MR0">
 <attribute name="NAME" x="43.037125" y="37.592" size="0.6096" layer="26" font="vector" rot="MR0"/>
 </element>
 <element name="JP1" library="adafruit" package="1X01-CLEANBIG" value="" x="44.45" y="29.21" smashed="yes">

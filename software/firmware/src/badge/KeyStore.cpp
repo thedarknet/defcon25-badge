@@ -158,7 +158,7 @@ bool ContactStore::SettingsInfo::setScreenSaverTime(uint8_t value) {
 }
 
 uint8_t ContactStore::SettingsInfo::getScreenSaverTime() {
-	return getSettings().ScreenSaverTime + 1;
+	return getSettings().ScreenSaverTime;
 }
 
 bool ContactStore::SettingsInfo::setSleepTime(uint8_t n) {

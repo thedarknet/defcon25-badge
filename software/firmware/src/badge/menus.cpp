@@ -258,8 +258,9 @@ ReturnStateContext KeyBoardTest::onRun(RunContext &rc) {
 		LastKey = key;
 		rc.getDisplay().fillRec(0, 20, 128, 20, RGBColor::BLACK);
 		char buf[16];
+		rc.getDisplay().fillRec(0,30,128,10,RGBColor::BLACK);
 		sprintf(&buf[0], "pushed:  %d", (int) key);
-		rc.getDisplay().drawString(0, 10, &buf[0]);
+		rc.getDisplay().drawString(0, 30, &buf[0]);
 	}
 	return ReturnStateContext(nextState);
 }
@@ -383,15 +384,15 @@ ReturnStateContext SettingState::onRun(RunContext &rc) {
 					nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), "Save FAILED!",
 							4000);
 				}
-			} else {
-				InputPos = rc.getKB().getLastKeyReleased();
+			} else if (rc.getKB().getLastKeyReleased()!=QKeyboard::NO_PIN_SELECTED){
+				InputPos = rc.getKB().getLastKeyReleased()+1;
 				if (InputPos > 8) {
 					InputPos = 8;
 				} else if (InputPos < 1) {
 					InputPos = 1;
 				}
 			}
-			sprintf(&AgentName[0], "%c Minutes", rc.getKB().getNumberAsCharacter());
+			sprintf(&AgentName[0], "%d Minutes", InputPos);
 			rc.getDisplay().drawString(0, 40, &AgentName[0]);
 			break;
 		case 102:

@@ -8,6 +8,7 @@
 #include "Keyboard.h"
 #include "irmenu.h"
 #include "MessageState.h"
+//#include "bitarray.h"
 
 DCDarkNetApp::DCDarkNetApp() :
 		CurrentState(0) {
@@ -15,7 +16,7 @@ DCDarkNetApp::DCDarkNetApp() :
 }
 
 static const uint32_t TIME_BETWEEN_INITS = 100;
-DisplayST7735 Display(128, 160, DisplayST7735::PORTAIT);
+
 RFM69 Radio(RADIO_SPI3_NSS_Pin, RADIO_INTERRUPT_DIO0_EXTI4_Pin, true);
 static QKeyboard::PinConfig KBPins[] = {
 		 {TSC_GROUP3_IO3,TSC_GROUP3_IO4, TSC_GROUP3_IDX} //1
@@ -43,6 +44,18 @@ ContactStore MyContacts(SETTING_SECTOR, FIRST_CONTACT_SECTOR, NUM_CONTACT_SECTOR
 static void initFlash() {
 }
 
+
+static const uint32_t DISPLAY_WIDTH = 128;
+static const uint32_t DISPLAY_HEIGHT = 160;
+static const uint32_t DISPLAY_OPT_WRITE_ROWS = 2;
+DisplayST7735 Display(DISPLAY_WIDTH, DISPLAY_HEIGHT, DisplayST7735::PORTAIT);
+uint16_t DrawBuffer[DISPLAY_WIDTH * DISPLAY_OPT_WRITE_ROWS]; //120 wide, 10 pixels high, 2 bytes per pixel
+uint8_t DrawBufferRangeChange[DISPLAY_HEIGHT/DISPLAY_OPT_WRITE_ROWS+1];
+DrawBufferNoBuffer NoBuffer(&Display,&DrawBuffer[0],DISPLAY_OPT_WRITE_ROWS);
+static const uint8_t BITS_PER_PIXEL = 6;
+uint8_t BackBuffer[((DISPLAY_WIDTH * DISPLAY_HEIGHT * BITS_PER_PIXEL)/8)+1];
+DrawBuffer2D16BitColor DB2D16(DISPLAY_WIDTH,DISPLAY_HEIGHT,&BackBuffer[0],&DrawBuffer[0],DISPLAY_OPT_WRITE_ROWS,&DrawBufferRangeChange[0], &Display);
+
 uint32_t DCDarkNetApp::init() {
 
 	uint32_t retVal = 0;
@@ -54,7 +67,7 @@ uint32_t DCDarkNetApp::init() {
 	GUI_ListData DrawList((const char *) "Self Check", items, uint8_t(0), uint8_t(0), uint8_t(128), uint8_t(64),
 			uint8_t(0), uint8_t(0));
 	//DO SELF CHECK
-	if ((et = Display.init()).ok()) {
+	if ((et = Display.init(DisplayST7735::FORMAT_16_BIT, DisplayST7735::ROW_COLUMN_ORDER, &Font_6x10,&DB2D16)).ok()) {
 		HAL_Delay(1000);
 		items[0].set(0, "OLED_INIT");
 		DrawList.ItemsCount++;
@@ -62,6 +75,7 @@ uint32_t DCDarkNetApp::init() {
 	}
 	GUI gui(&Display);
 	gui.drawList(&DrawList);
+	Display.swap();
 
 	HAL_Delay(TIME_BETWEEN_INITS);
 	if (MyContacts.init()) {
@@ -73,6 +87,7 @@ uint32_t DCDarkNetApp::init() {
 	DrawList.ItemsCount++;
 	DrawList.selectedItem++;
 	gui.drawList(&DrawList);
+	Display.swap();
 	HAL_Delay(TIME_BETWEEN_INITS);
 
 	//test for IR??
@@ -87,12 +102,14 @@ uint32_t DCDarkNetApp::init() {
 	DrawList.ItemsCount++;
 	DrawList.selectedItem++;
 	gui.drawList(&DrawList);
+	Display.swap();
 	HAL_Delay(TIME_BETWEEN_INITS);
 
 	Display.fillScreen(RGBColor::BLACK);
 	Display.drawString(0,10,"#dcdn17");
 	Display.drawString(0,40,"><>");
 	Display.drawString(0,50,"   Cyberez Inc");
+	Display.swap();
 	HAL_Delay(3000);
 
 	((IRState *)StateFactory::getIRPairingState())->BeTheBob();
@@ -109,6 +126,7 @@ void DCDarkNetApp::run() {
 	RunContext rc(&Display, &KB,&MyContacts, &Radio);
 
 	ReturnStateContext rsc = CurrentState->run(rc);
+	Display.swap();
 
 	if (rsc.Err.ok()) {
 		if (CurrentState != rsc.NextMenuToRun) {

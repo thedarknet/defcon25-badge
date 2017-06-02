@@ -508,7 +508,7 @@ BadgeInfoState::onRun(RunContext & rc)
 			nextState = StateFactory::getMenuState();
 			break;
 	}
-	if (rc.getKB().wasKeyReleased()) {
+	if (rc.getKB().wasKeyReleased() || (Items[BadgeInfoList.selectedItem].shouldScroll() && getTimesRunCalledSinceLastReset()%5==0)) {
 		rc.getGUI().drawList(&BadgeInfoList);
 	}
 	return ReturnStateContext(nextState);

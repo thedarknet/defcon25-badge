@@ -2,11 +2,18 @@
 #include "stm32f3xx_hal.h"
 
 void GUI_ListItemData::setShouldScroll() {
-	if (strlen(text) > 14) {
+	if (shouldScroll()) {
 		resetScrollable();
 	} else {
 		Scrollable = 0;
 	}
+}
+
+bool GUI_ListItemData::shouldScroll() {
+	if (strlen(text)*6 > 120) {
+		return true;
+	}
+	return false;
 }
 
 GUI_TickerData::GUI_TickerData(const char * txt, uint8_t X, uint8_t Y,

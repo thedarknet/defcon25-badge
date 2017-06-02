@@ -183,9 +183,9 @@ DrawBufferNoBuffer::~DrawBufferNoBuffer() {
 }
 
 DrawBuffer2D16BitColor::DrawBuffer2D16BitColor(uint8_t w, uint8_t h, uint8_t *backBuffer, uint16_t *spiBuffer,
-		uint8_t rowsForDrawBuffer, DisplayST7735 *d) :
+		uint8_t rowsForDrawBuffer, uint8_t *drawBlocksBuffer, DisplayST7735 *d) :
 		Width(w), Height(h), BufferSize(w * h), BackBuffer(backBuffer), SPIBuffer(spiBuffer), RowsForDrawBuffer(
-				rowsForDrawBuffer), DrawBlocksChanged(0), Display(d) {
+				rowsForDrawBuffer), DrawBlocksChanged(drawBlocksBuffer,h/rowsForDrawBuffer,1), Display(d) {
 }
 
 DrawBuffer2D16BitColor::~DrawBuffer2D16BitColor() {
@@ -194,7 +194,7 @@ DrawBuffer2D16BitColor::~DrawBuffer2D16BitColor() {
 bool DrawBuffer2D16BitColor::drawPixel(uint16_t x, uint16_t y, const RGBColor &color) {
 	uint8_t c = deresColor(color);
 	BackBuffer[(y * Width) + x] = c;
-	DrawBlocksChanged |= (1 << (y / RowsForDrawBuffer));
+	DrawBlocksChanged.setValueAsByte(y / RowsForDrawBuffer,1);
 	return true;
 }
 
@@ -202,7 +202,7 @@ void DrawBuffer2D16BitColor::fillRec(int16_t x, int16_t y, int16_t w, int16_t h,
 	uint8_t c = deresColor(color);
 	for (int i = y; i < (h + y); ++i) {
 		memset(&BackBuffer[(i * Display->getWidth()) + x], c, w);
-		DrawBlocksChanged |= (1 << (i / RowsForDrawBuffer));
+		DrawBlocksChanged.setValueAsByte(i / RowsForDrawBuffer,1);
 	}
 }
 
@@ -210,7 +210,7 @@ void DrawBuffer2D16BitColor::drawVerticalLine(int16_t x, int16_t y, int16_t h, c
 	uint8_t c = deresColor(color);
 	for (int i = y; i < (h + y); ++i) {
 		BackBuffer[(i * Display->getWidth()) + x] = c;
-		DrawBlocksChanged |= (1 << (i / RowsForDrawBuffer));
+		DrawBlocksChanged.setValueAsByte(i / RowsForDrawBuffer,1);
 	}
 }
 
@@ -219,7 +219,7 @@ void DrawBuffer2D16BitColor::drawHorizontalLine(int16_t x, int16_t y, int16_t w,
 	for(int i=x;i<(x+w);++i) {
 		BackBuffer[(y*Display->getWidth())+i] = c;
 	}
-	DrawBlocksChanged|=(1<<(y/RowsForDrawBuffer));
+	DrawBlocksChanged.setValueAsByte(y/RowsForDrawBuffer,1);
 }
 
 //////
@@ -228,19 +228,19 @@ void DrawBuffer2D16BitColor::drawHorizontalLine(int16_t x, int16_t y, int16_t w,
 //	then send to LCD
 void DrawBuffer2D16BitColor::swap() {
 	for (int h = 0; h < Height; h++) {
-		if ((DrawBlocksChanged & (1 << (h / RowsForDrawBuffer))) != 0) {
+		if ((DrawBlocksChanged.getValueAsByte(h / RowsForDrawBuffer)) != 0) {
 			for (int w = 0; w < Width; w++) {
 				uint32_t SPIY = h % RowsForDrawBuffer;
 				SPIBuffer[(SPIY * Width) + w] = calcLCDColor(BackBuffer[(h * Width) + w]);
 			}
-			if (h != 0 && h % RowsForDrawBuffer == 0) {
-				Display->setAddrWindow(0, h - RowsForDrawBuffer, Width, h);
+			if (h != 0 && (h % RowsForDrawBuffer == (RowsForDrawBuffer-1))) {
+				Display->setAddrWindow(0, h - (RowsForDrawBuffer-1), Width, h);
 				Display->writeCmd(DisplayST7735::MEMORY_WRITE);
-				Display->writeNData((uint8_t*) &SPIBuffer[0], sizeof(SPIBuffer));
+				Display->writeNData((uint8_t*) &SPIBuffer[0], Width*RowsForDrawBuffer*sizeof(uint16_t));
 			}
 		}
 	}
-	DrawBlocksChanged = 0;
+	DrawBlocksChanged.clear();
 }
 
 uint16_t DrawBuffer2D16BitColor::calcLCDColor(uint8_t packedColor) {
@@ -481,6 +481,7 @@ ErrorType DisplayST7735::init(uint8_t pf, uint8_t madctl, const FontDef_t *defau
 	}
 
 	fillScreen(RGBColor::BLACK);
+	swap();
 	return et;
 }
 

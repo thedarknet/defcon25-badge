@@ -3,6 +3,7 @@
 
 #include "error_type.h"
 #include "fonts.h"
+#include "bitarray.h"
 
 /*
  * @Author cmdc0de
@@ -486,7 +487,7 @@ public:
 		BLACK = 0, RED_MASK = 0xE0, GREEN_MASK = 0x18, BLUE_MASK = 0x7, WHITE = 0xFF
 	};
 public:
-	DrawBuffer2D16BitColor(uint8_t w, uint8_t h, uint8_t *backBuffer, uint16_t *spiBuffer, uint8_t rowsForDrawBuffer,
+	DrawBuffer2D16BitColor(uint8_t w, uint8_t h, uint8_t *backBuffer, uint16_t *spiBuffer, uint8_t rowsForDrawBuffer, uint8_t *DrawBlocksBuf,
 			DisplayST7735 *d);
 	virtual ~DrawBuffer2D16BitColor();
 	virtual bool drawPixel(uint16_t x, uint16_t y, const RGBColor &color);
@@ -504,7 +505,7 @@ private:
 	uint8_t *BackBuffer;
 	uint16_t *SPIBuffer;
 	uint8_t RowsForDrawBuffer;
-	uint32_t DrawBlocksChanged;
+	BitArray DrawBlocksChanged;
 	DisplayST7735 *Display;
 };
 

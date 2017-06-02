@@ -91,9 +91,8 @@ public:
 		virtual void drawVerticalLine(int16_t x, int16_t y, int16_t h, const RGBColor &color)=0;
 		virtual void drawHorizontalLine(int16_t x, int16_t y, int16_t w, const RGBColor& color)=0;
 		virtual void swap()=0;
-		virtual bool drawPixel(uint16_t x0, uint16_t y0, const RGBColor &color);
+		virtual bool drawPixel(uint16_t x0, uint16_t y0, const RGBColor &color)=0;
 	};
-	friend class FrameBuf;
 public:
 	///parameter to Memory Data access control command
 	enum MEMORY_DATA_ACCESS_CONTROL_BITS {
@@ -483,8 +482,8 @@ private:
  */
 class DrawBuffer2D16BitColor: public DisplayST7735::FrameBuf {
 public:
-	enum COLOR { // 3/2/3
-		BLACK = 0, RED_MASK = 0xE0, GREEN_MASK = 0x18, BLUE_MASK = 0x7, WHITE = 0xFF
+	enum COLOR { // 2/2/2
+		BLACK = 0, RED_MASK = 0x30, GREEN_MASK = 0xC, BLUE_MASK = 0x3, WHITE = 0x3F, BITS_PER_PIXEL = 2
 	};
 public:
 	DrawBuffer2D16BitColor(uint8_t w, uint8_t h, uint8_t *backBuffer, uint16_t *spiBuffer, uint8_t rowsForDrawBuffer, uint8_t *DrawBlocksBuf,
@@ -502,7 +501,7 @@ private:
 	uint8_t Width;
 	uint8_t Height;
 	uint16_t BufferSize;
-	uint8_t *BackBuffer;
+	BitArray BackBuffer;
 	uint16_t *SPIBuffer;
 	uint8_t RowsForDrawBuffer;
 	BitArray DrawBlocksChanged;

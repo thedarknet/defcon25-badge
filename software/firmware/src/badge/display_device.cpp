@@ -184,16 +184,17 @@ DrawBufferNoBuffer::~DrawBufferNoBuffer() {
 
 DrawBuffer2D16BitColor::DrawBuffer2D16BitColor(uint8_t w, uint8_t h, uint8_t *backBuffer, uint16_t *spiBuffer,
 		uint8_t rowsForDrawBuffer, uint8_t *drawBlocksBuffer, DisplayST7735 *d) :
-		Width(w), Height(h), BufferSize(w * h), BackBuffer(backBuffer), SPIBuffer(spiBuffer), RowsForDrawBuffer(
+		Width(w), Height(h), BufferSize(w * h), BackBuffer(backBuffer,w*h,6), SPIBuffer(spiBuffer), RowsForDrawBuffer(
 				rowsForDrawBuffer), DrawBlocksChanged(drawBlocksBuffer,h/rowsForDrawBuffer,1), Display(d) {
 }
 
 DrawBuffer2D16BitColor::~DrawBuffer2D16BitColor() {
+
 }
 
 bool DrawBuffer2D16BitColor::drawPixel(uint16_t x, uint16_t y, const RGBColor &color) {
 	uint8_t c = deresColor(color);
-	BackBuffer[(y * Width) + x] = c;
+	BackBuffer.setValueAsByte((y * Width) + x,c);
 	DrawBlocksChanged.setValueAsByte(y / RowsForDrawBuffer,1);
 	return true;
 }
@@ -201,7 +202,11 @@ bool DrawBuffer2D16BitColor::drawPixel(uint16_t x, uint16_t y, const RGBColor &c
 void DrawBuffer2D16BitColor::fillRec(int16_t x, int16_t y, int16_t w, int16_t h, const RGBColor &color) {
 	uint8_t c = deresColor(color);
 	for (int i = y; i < (h + y); ++i) {
-		memset(&BackBuffer[(i * Display->getWidth()) + x], c, w);
+		//OPTIMIZE THIS BY MAKING A SET RANGE IN BITARRAY
+		uint32_t offset = i * Display->getWidth();
+		for(int j=0;j<w;++j) {
+			BackBuffer.setValueAsByte(offset+x+j, c);
+		}
 		DrawBlocksChanged.setValueAsByte(i / RowsForDrawBuffer,1);
 	}
 }
@@ -209,15 +214,16 @@ void DrawBuffer2D16BitColor::fillRec(int16_t x, int16_t y, int16_t w, int16_t h,
 void DrawBuffer2D16BitColor::drawVerticalLine(int16_t x, int16_t y, int16_t h, const RGBColor &color) {
 	uint8_t c = deresColor(color);
 	for (int i = y; i < (h + y); ++i) {
-		BackBuffer[(i * Display->getWidth()) + x] = c;
+		BackBuffer.setValueAsByte(i * Display->getWidth() + x,c);
 		DrawBlocksChanged.setValueAsByte(i / RowsForDrawBuffer,1);
 	}
 }
 
 void DrawBuffer2D16BitColor::drawHorizontalLine(int16_t x, int16_t y, int16_t w, const RGBColor& color) {
 	uint8_t c = deresColor(color);
+	uint32_t offset = y*Display->getWidth();
 	for(int i=x;i<(x+w);++i) {
-		BackBuffer[(y*Display->getWidth())+i] = c;
+		BackBuffer.setValueAsByte(offset+i, c);
 	}
 	DrawBlocksChanged.setValueAsByte(y/RowsForDrawBuffer,1);
 }
@@ -231,7 +237,7 @@ void DrawBuffer2D16BitColor::swap() {
 		if ((DrawBlocksChanged.getValueAsByte(h / RowsForDrawBuffer)) != 0) {
 			for (int w = 0; w < Width; w++) {
 				uint32_t SPIY = h % RowsForDrawBuffer;
-				SPIBuffer[(SPIY * Width) + w] = calcLCDColor(BackBuffer[(h * Width) + w]);
+				SPIBuffer[(SPIY * Width) + w] = calcLCDColor(BackBuffer.getValueAsByte((h * Width) + w));
 			}
 			if (h != 0 && (h % RowsForDrawBuffer == (RowsForDrawBuffer-1))) {
 				Display->setAddrWindow(0, h - (RowsForDrawBuffer-1), Width, h);
@@ -244,17 +250,20 @@ void DrawBuffer2D16BitColor::swap() {
 }
 
 uint16_t DrawBuffer2D16BitColor::calcLCDColor(uint8_t packedColor) {
-	uint32_t rc = packedColor & RED_MASK >> 5;
-	uint32_t gc = packedColor & GREEN_MASK >> 3;
+	static const uint8_t colorValues[4] = {0,85,170,255};
+	uint32_t rc = (packedColor & RED_MASK) >> 4;
+	uint32_t gc = (packedColor & GREEN_MASK) >> 2;
 	uint32_t bc = packedColor & BLUE_MASK;
-	RGBColor lcdColor(rc * 36, gc * 85, bc * 36);
-	return uint16_t(*DisplayST7735::PackedColor::create(Display->getPixelFormat(), lcdColor).getPackedColorData());
+	RGBColor lcdColor(colorValues[rc], colorValues[gc], colorValues[bc]);
+	uint8_t *packedData = DisplayST7735::PackedColor::create(Display->getPixelFormat(), lcdColor).getPackedColorData();
+	uint16_t *pcd = (uint16_t*)packedData;
+	return *pcd;
 }
 uint8_t DrawBuffer2D16BitColor::deresColor(const RGBColor &color) {
 	uint32_t retVal = 0;
-	retVal = (color.getR() / 36) << 5; //3 bits = 7, 36 is ~1/7 of 255
-	retVal |= (color.getG() / 85) << 3;
-	retVal |= (color.getB() / 36);
+	retVal = (color.getR() / 85) << 4;
+	retVal |= (color.getG() / 85) << 2;
+	retVal |= (color.getB() / 85);
 	return retVal;
 }
 
@@ -482,6 +491,8 @@ ErrorType DisplayST7735::init(uint8_t pf, uint8_t madctl, const FontDef_t *defau
 
 	fillScreen(RGBColor::BLACK);
 	swap();
+	//fillScreen(RGBColor::BLUE);
+	//swap();
 	return et;
 }
 

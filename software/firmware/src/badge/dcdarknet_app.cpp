@@ -49,10 +49,11 @@ static const uint32_t DISPLAY_WIDTH = 128;
 static const uint32_t DISPLAY_HEIGHT = 160;
 static const uint32_t DISPLAY_OPT_WRITE_ROWS = 2;
 DisplayST7735 Display(DISPLAY_WIDTH, DISPLAY_HEIGHT, DisplayST7735::PORTAIT);
-uint8_t BackBuffer[DISPLAY_WIDTH * DISPLAY_HEIGHT];
 uint16_t DrawBuffer[DISPLAY_WIDTH * DISPLAY_OPT_WRITE_ROWS]; //120 wide, 10 pixels high, 2 bytes per pixel
 uint8_t DrawBufferRangeChange[DISPLAY_HEIGHT/DISPLAY_OPT_WRITE_ROWS+1];
 DrawBufferNoBuffer NoBuffer(&Display,&DrawBuffer[0],DISPLAY_OPT_WRITE_ROWS);
+static const uint8_t BITS_PER_PIXEL = 6;
+uint8_t BackBuffer[((DISPLAY_WIDTH * DISPLAY_HEIGHT * BITS_PER_PIXEL)/8)+1];
 DrawBuffer2D16BitColor DB2D16(DISPLAY_WIDTH,DISPLAY_HEIGHT,&BackBuffer[0],&DrawBuffer[0],DISPLAY_OPT_WRITE_ROWS,&DrawBufferRangeChange[0], &Display);
 
 uint32_t DCDarkNetApp::init() {

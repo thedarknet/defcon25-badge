@@ -15,7 +15,7 @@ DCDarkNetApp::DCDarkNetApp() :
 }
 
 static const uint32_t TIME_BETWEEN_INITS = 100;
-DisplayST7735 Display(128, 160, DisplayST7735::PORTAIT);
+
 RFM69 Radio(RADIO_SPI3_NSS_Pin, RADIO_INTERRUPT_DIO0_EXTI4_Pin, true);
 static QKeyboard::PinConfig KBPins[] = {
 		 {TSC_GROUP3_IO3,TSC_GROUP3_IO4, TSC_GROUP3_IDX} //1
@@ -43,6 +43,16 @@ ContactStore MyContacts(SETTING_SECTOR, FIRST_CONTACT_SECTOR, NUM_CONTACT_SECTOR
 static void initFlash() {
 }
 
+
+static const uint32_t DISPLAY_WIDTH = 128;
+static const uint32_t DISPLAY_HEIGHT = 160;
+static const uint32_t DISPLAY_OPT_WRITE_ROWS = 2;
+DisplayST7735 Display(DISPLAY_WIDTH, DISPLAY_HEIGHT, DisplayST7735::PORTAIT);
+uint8_t BackBuffer[DISPLAY_WIDTH * DISPLAY_HEIGHT];
+uint16_t DrawBuffer[DISPLAY_WIDTH * DISPLAY_OPT_WRITE_ROWS]; //120 wide, 10 pixels high, 2 bytes per pixel
+DrawBufferNoBuffer NoBuffer(&Display,&DrawBuffer[0],DISPLAY_OPT_WRITE_ROWS);
+//DrawBuffer2D16BitColor DB2D16(DISPLAY_WIDTH,DISPLAY_HEIGHT,&BackBuffer[0],&DrawBuffer[0],DISPLAY_OPT_WRITE_ROWS,&Display);
+
 uint32_t DCDarkNetApp::init() {
 
 	uint32_t retVal = 0;
@@ -54,7 +64,7 @@ uint32_t DCDarkNetApp::init() {
 	GUI_ListData DrawList((const char *) "Self Check", items, uint8_t(0), uint8_t(0), uint8_t(128), uint8_t(64),
 			uint8_t(0), uint8_t(0));
 	//DO SELF CHECK
-	if ((et = Display.init()).ok()) {
+	if ((et = Display.init(DisplayST7735::FORMAT_16_BIT, DisplayST7735::ROW_COLUMN_ORDER, &Font_6x10,&NoBuffer)).ok()) {
 		HAL_Delay(1000);
 		items[0].set(0, "OLED_INIT");
 		DrawList.ItemsCount++;

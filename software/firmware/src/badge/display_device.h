@@ -43,8 +43,7 @@ public:
 	};
 public:
 	DisplayDevice(uint16_t w, uint16_t h, ROTATION r);
-	ErrorType init();
-	virtual ~DisplayDevice();
+	~DisplayDevice();
 public:
 	uint16_t getWidth();
 	uint16_t getHeight();
@@ -59,10 +58,11 @@ private:
 /*
  * @author cmdc0de
  *
- * Big thank you to adafruit as the interface of this st7735 driver was inspired by their GFX libraries.
+ * Big thank you to adafruit as the interface of this st7735 driver was inspired by their GFX libraries however the memory
+ * management is all original
  */
 class DisplayST7735 : public DisplayDevice {
-protected:
+public:
 	///Used to convert from the RGB Color class to something the driver chip understands
 	class PackedColor {
 	public:
@@ -75,7 +75,24 @@ protected:
 		uint8_t Color[3];
 		uint8_t SizeInBytes;
 	};
-
+public:
+	/*
+	 * Allows us to have different frame buffer types to make optimal use of memory
+	 * Current implemented (see below)
+	 * pass though
+	 * 2d buffer
+	 * 3d buffer
+	 */
+	class FrameBuf {
+	public:
+		virtual ~FrameBuf() {}
+		virtual void fillRec(int16_t x, int16_t y, int16_t w, int16_t h, const RGBColor &color)=0;
+		virtual void drawVerticalLine(int16_t x, int16_t y, int16_t h, const RGBColor &color)=0;
+		virtual void drawHorizontalLine(int16_t x, int16_t y, int16_t w, const RGBColor& color)=0;
+		virtual void swap()=0;
+		virtual bool drawPixel(uint16_t x0, uint16_t y0, const RGBColor &color);
+	};
+	friend class FrameBuf;
 public:
 	///parameter to Memory Data access control command
 	enum MEMORY_DATA_ACCESS_CONTROL_BITS {
@@ -376,15 +393,22 @@ public:
 	};
 public:
 	DisplayST7735(uint16_t w, uint16_t h, ROTATION r);
-	virtual ErrorType init();
-	ErrorType init(uint8_t pf, uint8_t mac, const FontDef_t *defaultFont);
+	ErrorType init(uint8_t pf, uint8_t mac, const FontDef_t *defaultFont, FrameBuf *);
 	virtual ~DisplayST7735();
 	bool drawPixel(uint16_t x0, uint16_t y0, const RGBColor &color);
 	void setMemoryAccessControl(uint8_t macctl);
 	void fillRec(int16_t x, int16_t y, int16_t w, int16_t h, const RGBColor &color);
 	void drawRec(int16_t x, int16_t y, int16_t w, int16_t h, const RGBColor &color);
 	void fillScreen(const RGBColor &color);
+	/////////////////////////////////////////
+	// uint8_t to save space format is one of the value in the PIXEL_FORMAT ENUM
 	void setPixelFormat(uint8_t pf);
+	uint8_t getPixelFormat() const {return PixelFormat;}
+	//////////////////////////////////////////
+	void setFrameBuffer(FrameBuf *fb) {FB=fb;}
+	const FrameBuf *getFrameBuffer() const {return FB;}
+	void swap();
+	///////////////////////////////////////////////////////
 	void drawVerticalLine(int16_t x, int16_t y, int16_t h);
 	void drawVerticalLine(int16_t x, int16_t y, int16_t h, const RGBColor &color);
 	void drawHorizontalLine(int16_t x, int16_t y, int16_t w);
@@ -404,7 +428,7 @@ public:
 	void setBackLightOn(bool on);
 	void setFont(const FontDef_t *font);
 	const FontDef_t *getFont() {return CurrentFont;}
-protected:
+//protected:
 	bool writeCmd(uint8_t c);
 	bool writeNData(const uint8_t *data, int nbytes);
 	bool write16Data(const uint16_t &data);
@@ -412,12 +436,85 @@ protected:
 	bool writeN(char dc, const uint8_t *data, int nbytes);
 	PackedColor makeColor(const RGBColor &c);
 	const uint8_t *getFontData();
+protected:
+	FrameBuf *getFrameBuffer() {return FB;}
 private:
 	uint8_t 	PixelFormat;
 	uint8_t  	MemoryAccessControl;
 	RGBColor	CurrentTextColor;
 	RGBColor	CurrentBGColor;
 	const FontDef_t   *CurrentFont;
+	FrameBuf	*FB;
 };
 
+/*
+ * @author cmdc0de
+ * @date 6/2/17
+ * Pass through frame buffer, basically no buffer every pixel goes
+ * directly to SPI bus
+ */
+class DrawBufferNoBuffer: public DisplayST7735::FrameBuf {
+public:
+	DrawBufferNoBuffer(DisplayST7735 *d, uint16_t *optimizedFillBuf, uint8_t rowsForDrawBuffer);
+	virtual bool drawPixel(uint16_t x0, uint16_t y0, const RGBColor &color);
+	virtual void drawVerticalLine(int16_t x, int16_t y, int16_t h, const RGBColor &color);
+	virtual void drawHorizontalLine(int16_t x, int16_t y, int16_t w, const RGBColor& color);
+	virtual void fillRec(int16_t x, int16_t y, int16_t w, int16_t h, const RGBColor &color);
+	virtual void swap();
+	virtual ~DrawBufferNoBuffer();
+private:
+	DisplayST7735 *Display;
+	uint16_t *SPIBuffer;
+	uint8_t RowsForDrawBuffer;
+};
+
+
+/*
+ * @author cmdc0de
+ * @date 6/2/17
+ *
+ * 1 byte per pixel for backbuffer
+ * 3 bits Red, 2 Bits Green, 3 bits blue - color passed in is deresed from 565 to 323
+ * On each pixel write we track if we changed any pixel in rowsForDrawBuffer,
+ * if not on swap we skip those rows, otherwise write 2 bytes (565) to drawBuffer
+ * for the width of the screen for 'rowsForDrawBuffer' rows. flush to SPI bus then repeat until
+ * entire screen is rendered
+ */
+class DrawBuffer2D16BitColor: public DisplayST7735::FrameBuf {
+public:
+	enum COLOR { // 3/2/3
+		BLACK = 0, RED_MASK = 0xE0, GREEN_MASK = 0x18, BLUE_MASK = 0x7, WHITE = 0xFF
+	};
+public:
+	DrawBuffer2D16BitColor(uint8_t w, uint8_t h, uint8_t *backBuffer, uint16_t *spiBuffer, uint8_t rowsForDrawBuffer,
+			DisplayST7735 *d);
+	virtual ~DrawBuffer2D16BitColor();
+	virtual bool drawPixel(uint16_t x, uint16_t y, const RGBColor &color);
+	virtual void drawVerticalLine(int16_t x, int16_t y, int16_t h, const RGBColor &color);
+	virtual void drawHorizontalLine(int16_t x, int16_t y, int16_t w, const RGBColor& color);
+	virtual void fillRec(int16_t x, int16_t y, int16_t w, int16_t h, const RGBColor &color);
+	virtual void swap();
+protected:
+	uint16_t calcLCDColor(uint8_t packedColor);
+	uint8_t deresColor(const RGBColor &color);
+private:
+	uint8_t Width;
+	uint8_t Height;
+	uint16_t BufferSize;
+	uint8_t *BackBuffer;
+	uint16_t *SPIBuffer;
+	uint8_t RowsForDrawBuffer;
+	uint32_t DrawBlocksChanged;
+	DisplayST7735 *Display;
+};
+
+/*
+ * @author cmdc0de
+ * @date 6/2/17
+ *
+ * 7 bits are zbuffer 1 bit for pixel, then use image for pixel color
+ *   On swap buffer in 3D mode:
+ *		If pixel is on ...look up color in pixel write to drawBuffer, when 120x10 pixel is complete
+ *			write buffer to lcd
+ */
 #endif

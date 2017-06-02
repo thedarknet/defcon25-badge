@@ -25,7 +25,7 @@ private:
 	uint16_t Generations;
 	uint16_t CurrentGeneration;
 	uint8_t Neighborhood;
-	uint32_t gol[height]; //width = 32
+	uint32_t gol[height];
 	char UtilityBuf[64];
 	INTERNAL_STATE InternalState;
 	uint32_t DisplayMessageUntil;

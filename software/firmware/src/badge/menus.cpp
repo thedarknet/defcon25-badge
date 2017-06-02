@@ -258,8 +258,9 @@ ReturnStateContext KeyBoardTest::onRun(RunContext &rc) {
 		LastKey = key;
 		rc.getDisplay().fillRec(0, 20, 128, 20, RGBColor::BLACK);
 		char buf[16];
+		rc.getDisplay().fillRec(0,30,128,10,RGBColor::BLACK);
 		sprintf(&buf[0], "pushed:  %d", (int) key);
-		rc.getDisplay().drawString(0, 10, &buf[0]);
+		rc.getDisplay().drawString(0, 30, &buf[0]);
 	}
 	return ReturnStateContext(nextState);
 }

@@ -232,7 +232,7 @@ void triangle(Vec3i *pts, IShader &shader, ZBuff &zbuffer, DisplayST7735 *displa
 		}
 	}
 	Vec3i P;
-	RGBColor color;
+	RGBColor color(RGBColor::BLACK);
 
 	for (P.x = bboxmin.x; P.x <= bboxmax.x; P.x++) {
 		for (P.y = bboxmin.y; P.y <= bboxmax.y; P.y++) {

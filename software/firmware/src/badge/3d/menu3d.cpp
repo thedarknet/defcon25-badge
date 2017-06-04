@@ -50,7 +50,7 @@ enum INTERNAL_STATE {
 };
 static INTERNAL_STATE InternalState = INIT;
 
-ErrorType Menu3D::onInit() {
+ErrorType Menu3D::onInit(RunContext &rc) {
 	//initGame();
 	InternalState = INIT;
 	model.set(&Cube[0], (sizeof(Cube) / sizeof(Cube[0])), &CubeIndexes[0],

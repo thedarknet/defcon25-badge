@@ -9,6 +9,7 @@
 #include "irmenu.h"
 #include "SendMsgState.h"
 #include "AddressState.h"
+#include "3d/menu3d.h"
 //#include <tim.h>
 //#include <uECC.h>
 //#include <sha256.h>
@@ -144,7 +145,7 @@ ErrorType MenuState::onInit(RunContext &rc) {
 		Items[3].text = NoHasMessage;
 	}
 	Items[4].id = 4;
-	Items[4].text = (const char *) "UNKNOWN";
+	Items[4].text = (const char *) "3D";
 	Items[5].id = 5;
 	Items[5].text = (const char *) "Screen Saver";
 	Items[6].id = 6;
@@ -203,7 +204,7 @@ ReturnStateContext MenuState::onRun(RunContext &rc) {
 					nextState = StateFactory::getMessageState();
 					break;
 				case 4:
-					//nextState =
+					nextState = StateFactory::get3DState();
 					break;
 				case 5:
 					nextState = StateFactory::getGameOfLifeState();
@@ -581,6 +582,12 @@ static RadioInfoState TheRadioInfoState;
 static IRState TheIRState(2000, 5);
 static SendMsgState TheMsgState;
 static AddressState TheAddressState;
+static Menu3D The3DMenu;
+
+
+Menu3D *StateFactory::get3DState() {
+	return &The3DMenu;
+}
 
 SendMsgState* StateFactory::getSendMessageState() {
 	return &TheMsgState;

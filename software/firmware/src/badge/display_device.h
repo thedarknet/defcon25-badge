@@ -22,6 +22,9 @@ public:
 	RGBColor(uint8_t r, uint8_t g, uint8_t b) :
 			R(r), G(g), B(b) {
 	}
+	RGBColor(const RGBColor &r) {
+		(*this) = r;
+	}
 	uint16_t getR() const {
 		return R;
 	}
@@ -30,6 +33,9 @@ public:
 	}
 	uint16_t getB() const {
 		return B;
+	}
+	RGBColor &operator=(const RGBColor &r) {
+		R = r.getR();G=r.getG();B=r.getB();return *this;
 	}
 	bool operator==(const RGBColor &r) const;
 	bool operator!=(const RGBColor &r) const;

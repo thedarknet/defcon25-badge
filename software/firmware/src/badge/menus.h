@@ -175,6 +175,7 @@ private:
 
 class SendMsgState;
 class AddressState;
+class Menu3D;
 //=============================
 class StateFactory {
 public:
@@ -190,6 +191,7 @@ public:
 	static StateBase *getIRPairingState();
 	static SendMsgState* getSendMessageState();
 	static AddressState* getAddressBookState();
+	static Menu3D *get3DState();
 };
 
 #endif

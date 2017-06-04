@@ -97,9 +97,9 @@ void MX_SPI3_Init(void)
   hspi3.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi3.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi3.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
-  hspi3.Init.CRCPolynomial = 7;
-  hspi3.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
-  hspi3.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
+  hspi3.Init.CRCPolynomial = 10;
+  //hspi3.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
+  //hspi3.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
   if (HAL_SPI_Init(&hspi3) != HAL_OK)
   {
     Error_Handler();
@@ -166,11 +166,16 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* spiHandle)
     PC12     ------> SPI3_MOSI 
     */
     GPIO_InitStruct.Pin = RADIO_SPI3_NSS_Pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-    GPIO_InitStruct.Alternate = GPIO_AF6_SPI3;
+    //MAking this manual
+    //GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    //GPIO_InitStruct.Pull = GPIO_NOPULL;
+    //GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+    //GPIO_InitStruct.Alternate = GPIO_AF6_SPI3;
     HAL_GPIO_Init(RADIO_SPI3_NSS_GPIO_Port, &GPIO_InitStruct);
+    //setting high
+    HAL_GPIO_WritePin(RADIO_SPI3_NSS_GPIO_Port,RADIO_SPI3_NSS_Pin,GPIO_PIN_SET);
 
     GPIO_InitStruct.Pin = RADIO_SPI3_SCK_Pin|RADIO_SPI3_MISO_Pin|RADIO_SPI3_MOSI_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;

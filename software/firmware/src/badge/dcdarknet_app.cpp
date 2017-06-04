@@ -2,45 +2,82 @@
 #include "display_device.h"
 #include "stm32f3xx_hal.h"
 #include "menus.h"
+#include "Radio/RFM69.h"
+#include "logger.h"
+#include <tsc.h>
+#include "Keyboard.h"
+#include "irmenu.h"
+#include "MessageState.h"
+//#include "bitarray.h"
 
 DCDarkNetApp::DCDarkNetApp() :
 		CurrentState(0) {
 
 }
 
-DisplayST7735 Display(128, 160, DisplayST7735::PORTAIT);
+static const uint32_t TIME_BETWEEN_INITS = 100;
 
-ErrorType DCDarkNetApp::init() {
-	ErrorType et;
-	et = Display.init();
+RFM69 Radio(RADIO_SPI3_NSS_Pin, RADIO_INTERRUPT_DIO0_EXTI4_Pin, true);
+static QKeyboard::PinConfig KBPins[] = {
+		 {TSC_GROUP3_IO3,TSC_GROUP3_IO4, TSC_GROUP3_IDX} //1
+		,{TSC_GROUP3_IO2,TSC_GROUP3_IO4, TSC_GROUP3_IDX} //2
+		,{TSC_GROUP3_IO1,TSC_GROUP3_IO4, TSC_GROUP3_IDX} //3
+		,{TSC_GROUP2_IO1,TSC_GROUP2_IO3, TSC_GROUP2_IDX} //4
+		,{TSC_GROUP2_IO2,TSC_GROUP2_IO3, TSC_GROUP2_IDX} //5
+		,{TSC_GROUP1_IO3,TSC_GROUP1_IO4, TSC_GROUP1_IDX} //6
+		,{TSC_GROUP1_IO2,TSC_GROUP1_IO4, TSC_GROUP1_IDX} //7
+		,{TSC_GROUP1_IO1,TSC_GROUP1_IO4, TSC_GROUP1_IDX} //8
+		,{TSC_GROUP5_IO3,TSC_GROUP5_IO4, TSC_GROUP5_IDX} //9
+		,{TSC_GROUP5_IO2,TSC_GROUP5_IO4, TSC_GROUP5_IDX} //0
+		,{TSC_GROUP5_IO1,TSC_GROUP5_IO4, TSC_GROUP5_IDX} //hook
+};
 
-	//blink status led a few times
-	for (int i = 0; i < 5; i++) {
-		HAL_GPIO_TogglePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin);
-		HAL_GPIO_TogglePin(LED7_GPIO_Port, LED7_Pin);
-		HAL_GPIO_TogglePin(LED8_GPIO_Port, LED8_Pin);
-		HAL_GPIO_TogglePin(LED9_GPIO_Port, LED9_Pin);
-		HAL_GPIO_TogglePin(LED10_GPIO_Port, LED10_Pin);
-		HAL_Delay(500);
-	}
+QKeyboard KB(&KBPins[0],sizeof(KBPins)/sizeof(KBPins[0]));
 
-#if 0
+static const uint16_t SETTING_SECTOR = 57; //0x801C800
+static const uint16_t FIRST_CONTACT_SECTOR = SETTING_SECTOR + 1;
+static const uint16_t NUM_CONTACT_SECTOR = 64 - FIRST_CONTACT_SECTOR;
+static const uint32_t MY_INFO_ADDRESS = 0x801FFD4; //2c needed
+
+ContactStore MyContacts(SETTING_SECTOR, FIRST_CONTACT_SECTOR, NUM_CONTACT_SECTOR, MY_INFO_ADDRESS);
+
+static void initFlash() {
+}
+
+
+static const uint32_t DISPLAY_WIDTH = 128;
+static const uint32_t DISPLAY_HEIGHT = 160;
+static const uint32_t DISPLAY_OPT_WRITE_ROWS = 2;
+DisplayST7735 Display(DISPLAY_WIDTH, DISPLAY_HEIGHT, DisplayST7735::PORTAIT);
+uint16_t DrawBuffer[DISPLAY_WIDTH * DISPLAY_OPT_WRITE_ROWS]; //120 wide, 10 pixels high, 2 bytes per pixel
+uint8_t DrawBufferRangeChange[DISPLAY_HEIGHT/DISPLAY_OPT_WRITE_ROWS+1];
+DrawBufferNoBuffer NoBuffer(&Display,&DrawBuffer[0],DISPLAY_OPT_WRITE_ROWS);
+static const uint8_t BITS_PER_PIXEL = 6;
+uint8_t BackBuffer[((DISPLAY_WIDTH * DISPLAY_HEIGHT * BITS_PER_PIXEL)/8)+1];
+DrawBuffer2D16BitColor DB2D16(DISPLAY_WIDTH,DISPLAY_HEIGHT,&BackBuffer[0],&DrawBuffer[0],DISPLAY_OPT_WRITE_ROWS,&DrawBufferRangeChange[0], &Display);
+
+uint32_t DCDarkNetApp::init() {
+
 	uint32_t retVal = 0;
-	initFlash();
+	ErrorType et;
+
+	initFlash(); //only used for development
 
 	GUI_ListItemData items[4];
 	GUI_ListData DrawList((const char *) "Self Check", items, uint8_t(0), uint8_t(0), uint8_t(128), uint8_t(64),
 			uint8_t(0), uint8_t(0));
 	//DO SELF CHECK
-	if (gui_init()) {
-		delay(1000);
+	if ((et = Display.init(DisplayST7735::FORMAT_16_BIT, DisplayST7735::ROW_COLUMN_ORDER, &Font_6x10,&DB2D16)).ok()) {
+		HAL_Delay(1000);
 		items[0].set(0, "OLED_INIT");
 		DrawList.ItemsCount++;
-		retVal |= COMPONENTS_ITEMS::OLED;
-		gui_set_curList(&DrawList);
+		retVal |= COMPONENTS_ITEMS::LCD;
 	}
-	gui_draw();
-	delay(TIME_BETWEEN_INITS);
+	GUI gui(&Display);
+	gui.drawList(&DrawList);
+	Display.swap();
+
+	HAL_Delay(TIME_BETWEEN_INITS);
 	if (MyContacts.init()) {
 		items[1].set(2, "FLASH MEM INIT");
 		retVal |= COMPONENTS_ITEMS::FLASH_MEM;
@@ -48,11 +85,13 @@ ErrorType DCDarkNetApp::init() {
 		items[1].set(2, "FLASH FAILED");
 	}
 	DrawList.ItemsCount++;
-	gui_draw();
-	delay(TIME_BETWEEN_INITS);
+	DrawList.selectedItem++;
+	gui.drawList(&DrawList);
+	Display.swap();
+	HAL_Delay(TIME_BETWEEN_INITS);
 
 	//test for IR??
-	if (Radio.initialize(RF69_915MHZ, getContactStore().getMyInfo().getUniqueID())) {
+	if (Radio.initialize(RF69_915MHZ, MyContacts.getMyInfo().getUniqueID())) {
 		items[2].set(1, "RADIO INIT");
 		Radio.setPowerLevel(31);
 		retVal |= COMPONENTS_ITEMS::RADIO;
@@ -61,65 +100,64 @@ ErrorType DCDarkNetApp::init() {
 	}
 
 	DrawList.ItemsCount++;
-	delay(TIME_BETWEEN_INITS);
-	gui_draw();
-	delay(1000);
-	StateFactory::getIRPairingState()->BeTheBob();
+	DrawList.selectedItem++;
+	gui.drawList(&DrawList);
+	Display.swap();
+	HAL_Delay(TIME_BETWEEN_INITS);
+
+	Display.fillScreen(RGBColor::BLACK);
+	Display.drawString(0,10,"#dcdn17");
+	Display.drawString(0,40,"><>");
+	Display.drawString(0,50,"   Cyberez Inc");
+	Display.swap();
+	HAL_Delay(3000);
+
+	((IRState *)StateFactory::getIRPairingState())->BeTheBob();
 	CurrentState = StateFactory::getMenuState();
 	KB.resetLastPinTick();
-#endif
-	//GUI gui(&Display);
-	Display.drawString(0,10,(const char *)"#dcdn17",RGBColor::BLUE,RGBColor::BLACK,2,false);
-	Display.drawString(20,80,(const char *)"Cyberez Inc",RGBColor::BLUE,RGBColor::BLACK,1,false);
-	HAL_Delay(1000);
-
-	//CurrentState = StateFactory::getMenuState();
-	CurrentState = StateFactory::getMenu3D();
-	return et;
+	return retVal;
 }
 
 void DCDarkNetApp::run() {
-	static uint32_t time = HAL_GetTick();
-	static bool bStart = true;
+	static uint32_t tick = HAL_GetTick();
 
-	//check to see if keyboard should be ignored
-	//uint32_t tick = HAL_GetTick();
-	//KB.scan();
-	RunContext rc(&Display);
+	KB.scan();
+
+	RunContext rc(&Display, &KB,&MyContacts, &Radio);
 
 	ReturnStateContext rsc = CurrentState->run(rc);
+	Display.swap();
 
 	if (rsc.Err.ok()) {
 		if (CurrentState != rsc.NextMenuToRun) {
 			//on state switches reset keyboard and give a 1 second pause on reading from keyboard.
-			//KB.reset();
+			KB.reset();
 		}
-		//if (CurrentState != StateFactory::getGameOfLifeState() && (tick > KB.getLastPinSelectedTick())
-		//		&& (tick - KB.getLastPinSelectedTick()
-		//				> (1000 * 60 * getContactStore().getSettings().getScreenSaverTime()))) {
-		//	CurrentState->shutdown();
-		//	CurrentState = StateFactory::getGameOfLifeState();
-		//} else {
-		CurrentState = rsc.NextMenuToRun;
-		//}
+		if (CurrentState != StateFactory::getGameOfLifeState() && (tick > KB.getLastPinSelectedTick())
+				&& (tick - KB.getLastPinSelectedTick()
+						> (1000 * 60 * rc.getContactStore().getSettings().getScreenSaverTime()))) {
+			CurrentState->shutdown();
+			CurrentState = StateFactory::getGameOfLifeState();
+		} else {
+			CurrentState = rsc.NextMenuToRun;
+		}
 	} else {
 		CurrentState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), "Run State Error....", 2000);
 	}
-#if 0
-	if (getContactStore().getSettings().isNameSet()) {
-		StateFactory::getIRPairingState()->ListenForAlice();
+	if (MyContacts.getSettings().isNameSet()) {
+		((IRState *)StateFactory::getIRPairingState())->ListenForAlice(rc);
 	}
-	StateFactory::getMessageState()->blink();
+	((MessageState *)StateFactory::getMessageState())->blink();
 
 	static uint32_t lastSendTime = 0;
 	if (tick - lastSendTime > 10) {
 		lastSendTime = tick;
 		if (Radio.receiveDone()) {
 			if (Radio.TARGETID == RF69_BROADCAST_ADDR) {
-				StateFactory::getMessageState()->addRadioMessage((const char *) &Radio.DATA[0], Radio.DATALEN,
+				((MessageState *)StateFactory::getMessageState())->addRadioMessage((const char *) &Radio.DATA[0], Radio.DATALEN,
 						RF69_BROADCAST_ADDR, Radio.RSSI);
 			} else {
-				StateFactory::getMessageState()->addRadioMessage((const char *) &Radio.DATA[0], Radio.DATALEN,
+				((MessageState *)StateFactory::getMessageState())->addRadioMessage((const char *) &Radio.DATA[0], Radio.DATALEN,
 						Radio.SENDERID, Radio.RSSI);
 			}
 #ifndef DONT_USE_ACK
@@ -129,5 +167,4 @@ void DCDarkNetApp::run() {
 #endif
 		}
 	}
-#endif
 }

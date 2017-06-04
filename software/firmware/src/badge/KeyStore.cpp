@@ -158,7 +158,7 @@ bool ContactStore::SettingsInfo::setScreenSaverTime(uint8_t value) {
 }
 
 uint8_t ContactStore::SettingsInfo::getScreenSaverTime() {
-	return getSettings().ScreenSaverTime + 1;
+	return getSettings().ScreenSaverTime;
 }
 
 bool ContactStore::SettingsInfo::setSleepTime(uint8_t n) {
@@ -325,7 +325,7 @@ void ContactStore::resetToFactory() {
 }
 
 bool ContactStore::init() {
-	if (Settings.init() && getMyInfo().init()) {
+	if (getMyInfo().init() && Settings.init()) {
 		//version is good, validate keys:
 		uint8_t publicKey[PUBLIC_KEY_LENGTH] = { 0 };
 		//given our private key, generate our public key and ensure its good

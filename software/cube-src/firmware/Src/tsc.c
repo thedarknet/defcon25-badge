@@ -70,6 +70,7 @@ void MX_TSC_Init(void)
   htsc.Init.IODefaultMode = TSC_IODEF_OUT_PP_LOW;
   htsc.Init.SynchroPinPolarity = TSC_SYNC_POLARITY_FALLING;
   htsc.Init.AcquisitionMode = TSC_ACQ_MODE_NORMAL;
+  htsc.Init.MaxCountInterrupt = DISABLE;
   htsc.Init.ChannelIOs = TSC_GROUP1_IO1|TSC_GROUP1_IO2|TSC_GROUP1_IO3|TSC_GROUP2_IO1
                     |TSC_GROUP2_IO2|TSC_GROUP3_IO1|TSC_GROUP3_IO2|TSC_GROUP3_IO3
                     |TSC_GROUP5_IO1|TSC_GROUP5_IO2|TSC_GROUP5_IO3;
@@ -147,6 +148,9 @@ void HAL_TSC_MspInit(TSC_HandleTypeDef* tscHandle)
     GPIO_InitStruct.Alternate = GPIO_AF3_TSC;
     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
+    /* Peripheral interrupt init */
+    HAL_NVIC_SetPriority(EXTI2_TSC_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(EXTI2_TSC_IRQn);
   /* USER CODE BEGIN TSC_MspInit 1 */
 
   /* USER CODE END TSC_MspInit 1 */
@@ -188,6 +192,15 @@ void HAL_TSC_MspDeInit(TSC_HandleTypeDef* tscHandle)
 
     HAL_GPIO_DeInit(GPIOB, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3 
                           |GPIO_PIN_4|GPIO_PIN_6|GPIO_PIN_7);
+
+    /* Peripheral interrupt Deinit*/
+  /* USER CODE BEGIN TSC:EXTI2_TSC_IRQn disable */
+    /**
+    * Uncomment the line below to disable the "EXTI2_TSC_IRQn" interrupt
+    * Be aware, disabling shared interrupt may affect other IPs
+    */
+    /* HAL_NVIC_DisableIRQ(EXTI2_TSC_IRQn); */
+  /* USER CODE END TSC:EXTI2_TSC_IRQn disable */
 
   }
   /* USER CODE BEGIN TSC_MspDeInit 1 */

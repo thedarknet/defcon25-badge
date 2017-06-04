@@ -45,6 +45,7 @@ public:
 	uint8_t LastScrollPosition;
 	const char *getScrollOffset();
 	void setShouldScroll();
+	bool shouldScroll();
 	void resetScrollable() {
 		Scrollable = 1;
 		LastScrollTime = 0;

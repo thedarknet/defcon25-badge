@@ -50,22 +50,32 @@ public:
 		NONE = 0
 		, DIALER = 1
 		, GAME_OF_LIFE = 2
+		, INIT = 3
 	};
 public:
 	LedDC25();
 	~LedDC25();
 	void setAllOn();
+	void setAllOff();
 	void setLedOn(LED_ID ledid);
 	void setLedOff(LED_ID ledid);
 	bool isLedOn(LED_ID ledid);
 	void setDanceType(LED_DANCE_TYPE t);
 	void setDanceType(LED_DANCE_TYPE t, uint8_t data);
 	void process();
+protected:
+	void setInternalLedOn(uint32_t t);
+	void SetInternalLedOff(uint32_t t);
 private:
 	uint16_t LedState;
 	uint8_t DanceType;
 	uint8_t DanceTypeData;
 	static const PinConfig PC[LED_COUNT];
+	uint32_t lastBlinkTime;
+	uint32_t lastDialerTime;
+	uint8_t DialerData;
+	uint8_t Counter;
+
 };
 
 #endif

@@ -117,6 +117,7 @@ uint32_t DCDarkNetApp::init() {
 	((IRState *)StateFactory::getIRPairingState())->BeTheBob();
 	CurrentState = StateFactory::getMenuState();
 	KB.resetLastPinTick();
+	LedControl.setDanceType(LedDC25::INIT);
 	return retVal;
 }
 

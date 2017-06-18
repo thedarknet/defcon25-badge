@@ -87,7 +87,6 @@ ReturnStateContext GameOfLife::onRun(RunContext &rc) {
 	if (rc.getKB().getLastKeyReleased() == QKeyboard::NO_PIN_SELECTED) {
 		return ReturnStateContext(this);
 	} else {
-		rc.getKB().setAllLightsOn(true);
 		return ReturnStateContext(StateFactory::getMenuState());
 	}
 }

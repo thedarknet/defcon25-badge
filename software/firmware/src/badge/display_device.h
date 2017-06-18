@@ -589,34 +589,4 @@ private:
 	DisplayST7735 *Display;
 };
 
-/*
- * @author cmdc0de
- * @date 6/2/17
- *
- * 7 bits are zbuffer 1 bit for pixel, then use image for pixel color
- *   On swap buffer in 3D mode:
- *		If pixel is on ...look up color in pixel write to drawBuffer, when 120x10 pixel is complete
- *			write buffer to lcd
- */
-
-class DrawBuffer3D16BitColor: public DisplayST7735::FrameBuf {
-public:
-	DrawBuffer3D16BitColor(uint8_t w, uint8_t h, uint8_t *backBuffer, uint16_t *spiBuffer, uint8_t rowsForDrawBuffer,
-			uint8_t *DrawBlocksBuf, DisplayST7735 *d);
-	virtual ~DrawBuffer3D16BitColor();
-	virtual bool drawPixel(uint16_t x, uint16_t y, const RGBColor &color);
-	virtual void drawVerticalLine(int16_t x, int16_t y, int16_t h, const RGBColor &color);
-	virtual void drawHorizontalLine(int16_t x, int16_t y, int16_t w, const RGBColor& color);
-	virtual void fillRec(int16_t x, int16_t y, int16_t w, int16_t h, const RGBColor &color);
-	virtual void swap();
-private:
-	uint8_t Width;
-	uint8_t Height;
-	uint16_t BufferSize;
-	BitArray BackBuffer;
-	uint16_t *SPIBuffer;
-	uint8_t RowsForDrawBuffer;
-	BitArray DrawBlocksChanged;
-	DisplayST7735 *Display;
-};
 #endif

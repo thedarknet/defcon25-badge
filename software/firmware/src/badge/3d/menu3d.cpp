@@ -59,12 +59,13 @@ ErrorType Menu3D::onInit(RunContext &rc) {
 	eye = Vec3f(0, 1, 6);
 	center = Vec3f(0, 0, 0);
 	up = Vec3f(0, 1, 0);
+	rc.getDisplay().fillScreen(RGBColor::BLACK);
 	return ErrorType();
 }
 
 void Menu3D::initMenu3d(RunContext &rc) {
-	CanvasHeight = rc.getDisplay().getHeight()/2;
-	CanvasWidth = rc.getDisplay().getWidth()/2;
+	CanvasHeight = rc.getDisplay().getHeight()-20;
+	CanvasWidth = rc.getDisplay().getWidth();
 	lookat(eye, center, up);
 	viewport(CanvasWidth / 8, CanvasHeight / 8, CanvasWidth * 3 / 4,
 			CanvasHeight * 3 / 4);
@@ -99,19 +100,21 @@ void Menu3D::update(RunContext &rc) {
 static uint32_t renderTime = 0, count = 0;
 
 void Menu3D::render(RunContext &rc) {
-	rc.getDisplay().fillRec(0,0,80,80,RGBColor::BLACK);
+	rc.getDisplay().fillRec(0,0,128,CanvasHeight,RGBColor::BLACK);
 	//uint8_t b[(128*160)/2];
-	uint8_t b[(CanvasWidth*CanvasHeight)/2];
+	uint8_t b[((CanvasWidth*CanvasHeight*3)/8)+1];
 	memset(&b[0],0,sizeof(b));
-	ZBuff zbuf(4, CanvasWidth, CanvasHeight, &b[0]);
+	BitArray zbuf(&b[0],CanvasWidth*CanvasHeight,3);
+	//ZBuff zbuf(4, CanvasWidth, CanvasHeight, &b[0]);
 	//model.getModelTransform().
 
 	GouraudShader shader;
+	Matrix modelViewProj = Projection * ModelView;
 	shader.setLightDir(light_dir);
 	for (uint32_t i = 0; i < model.nFaces(); i++) {
 		Vec3i screen_coords[3];
 		for (int j = 0; j < 3; j++) {
-			screen_coords[j] = shader.vertex(model, i, j);
+			screen_coords[j] = shader.vertex(modelViewProj, model, i, j);
 		}
 		triangle(screen_coords, shader, zbuf, &rc.getDisplay());
 	}
@@ -121,7 +124,7 @@ void Menu3D::render(RunContext &rc) {
 		rc.getDisplay().drawString(0,140,&buf[0]);
 		count = 0;
 		renderTime = HAL_GetTick();
-		HAL_Delay(500);
+		//HAL_Delay(500);
 	}
 	++count;
 }

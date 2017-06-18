@@ -325,56 +325,6 @@ uint8_t DrawBuffer2D16BitColor::deresColor(const RGBColor &color) {
 
 ////////////////////////////////////////////////////////
 
-DrawBuffer3D16BitColor::DrawBuffer3D16BitColor(uint8_t w, uint8_t h, uint8_t *backBuffer, uint16_t *spiBuffer,
-		uint8_t rowsForDrawBuffer, uint8_t *drawBlocksBuffer, DisplayST7735 *d) :
-		Width(w), Height(h), BufferSize(w * h), BackBuffer(backBuffer,w*h,6), SPIBuffer(spiBuffer), RowsForDrawBuffer(
-				rowsForDrawBuffer), DrawBlocksChanged(drawBlocksBuffer,h/rowsForDrawBuffer,1), Display(d) {
-}
-
-DrawBuffer3D16BitColor::~DrawBuffer3D16BitColor() {
-
-}
-
-bool DrawBuffer3D16BitColor::drawPixel(uint16_t x, uint16_t y, const RGBColor &color) {
-
-	return true;
-}
-
-void DrawBuffer3D16BitColor::fillRec(int16_t x, int16_t y, int16_t w, int16_t h, const RGBColor &color) {
-
-}
-
-void DrawBuffer3D16BitColor::drawVerticalLine(int16_t x, int16_t y, int16_t h, const RGBColor &color) {
-
-}
-
-void DrawBuffer3D16BitColor::drawHorizontalLine(int16_t x, int16_t y, int16_t w, const RGBColor& color) {
-
-}
-
-//////
-// first check to see if we changed anything in the draw block, if not skip it
-// if we did change something convert from our short hand notation to something the LCD will understand
-//	then send to LCD
-void DrawBuffer3D16BitColor::swap() {
-	for (int h = 0; h < Height; h++) {
-		if ((DrawBlocksChanged.getValueAsByte(h / RowsForDrawBuffer)) != 0) {
-			for (int w = 0; w < Width; w++) {
-				uint32_t SPIY = h % RowsForDrawBuffer;
-				//SPIBuffer[(SPIY * Width) + w] = calcLCDColor(BackBuffer.getValueAsByte((h * Width) + w));
-			}
-			if (h != 0 && (h % RowsForDrawBuffer == (RowsForDrawBuffer-1))) {
-				setAddrWindow(0, h - (RowsForDrawBuffer-1), Width, h);
-				writeCmd(DisplayST7735::MEMORY_WRITE);
-				writeNData((uint8_t*) &SPIBuffer[0], Width*RowsForDrawBuffer*sizeof(uint16_t));
-			}
-		}
-	}
-	DrawBlocksChanged.clear();
-}
-
-////////////////////////////////////////////////////////
-
 DisplayST7735::DisplayST7735(uint16_t w, uint16_t h, DisplayST7735::ROTATION r) :
 		DisplayDevice(w, h, r), CurrentTextColor(RGBColor::WHITE), CurrentBGColor(
 				RGBColor::BLACK), CurrentFont(0) {

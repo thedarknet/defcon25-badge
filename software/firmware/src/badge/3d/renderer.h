@@ -31,26 +31,12 @@ private:
 	Matrix ModelTransform;
 };
 
-class ZBuff {
-public:
-	ZBuff(uint8_t bitsPerPixel, uint8_t width, uint8_t height, uint8_t *buf);
-	~ZBuff();
-	bool set(uint16_t x, uint16_t y, uint16_t z);
-	uint16_t get(uint16_t x, uint16_t y);
-protected:
-	uint16_t optimzedGet(uint32_t bitOffSet);
-private:
-	uint8_t *Buff;
-	uint8_t BitsPerPixel;
-	uint8_t Width;
-	uint8_t Height;
-};
 
 class IShader {
 public:
 	IShader();
 	virtual ~IShader() = 0;
-	virtual Vec3i vertex(const Model &model, int iface, int nthvert) = 0;
+	virtual Vec3i vertex(const Matrix &ModelViewProj, const Model &model, int iface, int nthvert) = 0;
 	virtual bool fragment(Vec3f bar, RGBColor &color) = 0;
 	void setLightDir(const Vec3f &ld);
 	const Vec3f &getLightDir() const;
@@ -63,7 +49,7 @@ public:
 	FlatShader();
 	virtual ~FlatShader();
 
-	virtual Vec3i vertex(const Model &model, int iface, int nthvert);
+	virtual Vec3i vertex(const Matrix &ModelViewProj, const Model &model, int iface, int nthvert);
 	virtual bool fragment(Vec3f bar, RGBColor &color);
 private:
 	mat<3, 3, float> varying_tri;
@@ -73,7 +59,7 @@ struct GouraudShader: public IShader {
 public:
 	GouraudShader();
 	virtual ~GouraudShader();
-	virtual Vec3i vertex(const Model &model, int iface, int nthvert);
+	virtual Vec3i vertex(const Matrix &ModelViewProj, const Model &model, int iface, int nthvert);
 	virtual bool fragment(Vec3f bar, RGBColor &color);
 private:
 	mat<3, 3, float> varying_tri;
@@ -84,7 +70,7 @@ class ToonShader: public IShader {
 public:
 	ToonShader();
 	virtual ~ToonShader();
-	virtual Vec3i vertex(const Model &model, int iface, int nthvert);
+	virtual Vec3i vertex(const Matrix &ModelViewProj, const Model &model, int iface, int nthvert);
 	virtual bool fragment(Vec3f bar, RGBColor &color);
 private:
 	mat<3, 3, float> varying_tri;
@@ -95,7 +81,7 @@ private:
 void viewport(int x, int y, int w, int h);
 void projection(float coeff = 0.f); // coeff = -1/c
 void lookat(Vec3f eye, Vec3f center, Vec3f up);
-void triangle(Vec3i *pts, IShader &shader, ZBuff &zbuffer, DisplayST7735 *display);
+void triangle(Vec3i *pts, IShader &shader, BitArray &zbuffer, DisplayST7735 *display);
 
 template<typename T> T CLAMP(const T& value, const T& low, const T& high) {
 	return value < low ? low : (value > high ? high : value);

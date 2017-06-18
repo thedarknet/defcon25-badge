@@ -1,6 +1,28 @@
 #include "renderer.h"
 #include <algorithm>
 #include "stm32f3xx_hal.h"
+#include "../logger.h"
+
+class Timer {
+public:
+	Timer(const char *n) : Name(n) {
+		Start = HAL_GetTick();
+	}
+	void stop() {
+		Stop = HAL_GetTick();
+		diff = Stop-Start;
+	}
+	~Timer() {
+		stop();
+		INFOMSG("%s: %u", Name, HAL_GetTick()-Start);
+	}
+private:
+	const char *Name;
+	uint32_t Start;
+	uint32_t Stop;
+	uint32_t diff;
+};
+
 
 Matrix ModelView;
 Matrix Viewport;
@@ -53,9 +75,9 @@ FlatShader::FlatShader() :
 FlatShader::~FlatShader() {
 }
 
-Vec3i FlatShader::vertex(const Model &model, int iface, int nthvert) {
+Vec3i FlatShader::vertex(const Matrix &ModelViewProj, const Model &model, int iface, int nthvert) {
 	Vec4f gl_Vertex = embed<4>(model.vert(iface, nthvert));
-	gl_Vertex = Projection * ModelView * gl_Vertex;
+	gl_Vertex = ModelViewProj * gl_Vertex;
 	varying_tri.set_col(nthvert, proj<3>(gl_Vertex / gl_Vertex[3]));
 	gl_Vertex = Viewport * gl_Vertex;
 	return proj<3>(gl_Vertex / gl_Vertex[3]);
@@ -76,9 +98,9 @@ GouraudShader::GouraudShader() :
 GouraudShader::~GouraudShader() {
 }
 
-Vec3i GouraudShader::vertex(const Model &model, int iface, int nthvert) {
+Vec3i GouraudShader::vertex(const Matrix &ModelViewProj, const Model &model, int iface, int nthvert) {
 	Vec4f gl_Vertex = embed<4>(model.vert(iface, nthvert));
-	gl_Vertex = Projection * ModelView * gl_Vertex;
+	gl_Vertex = ModelViewProj * gl_Vertex;
 	varying_tri.set_col(nthvert, proj<3>(gl_Vertex / gl_Vertex[3]));
 
 	varying_ity[nthvert] = CLAMP(model.normal(iface, nthvert) * getLightDir(), 0.f, 1.f);
@@ -100,9 +122,9 @@ ToonShader::ToonShader() :
 ToonShader::~ToonShader() {
 }
 
-Vec3i ToonShader::vertex(const Model &model, int iface, int nthvert) {
+Vec3i ToonShader::vertex(const Matrix &ModelViewProj, const Model &model, int iface, int nthvert) {
 	Vec4f gl_Vertex = embed<4>(model.vert(iface, nthvert));
-	gl_Vertex = Projection * ModelView * gl_Vertex;
+	gl_Vertex = ModelViewProj * gl_Vertex;
 	varying_tri.set_col(nthvert, proj<3>(gl_Vertex / gl_Vertex[3]));
 
 	varying_ity[nthvert] = CLAMP(model.normal(iface, nthvert) * getLightDir(), 0.f, 1.f);
@@ -127,59 +149,6 @@ bool ToonShader::fragment(Vec3f bar, RGBColor &color) {
 	return false;
 }
 
-ZBuff::ZBuff(uint8_t bitsPerPixel, uint8_t width, uint8_t height, uint8_t *buf)
-:
-		Buff(buf), BitsPerPixel(bitsPerPixel), Width(width), Height(height) {
-
-}
-
-ZBuff::~ZBuff() {
-
-}
-
-bool ZBuff::set(uint16_t x, uint16_t y, uint16_t z) {
-	return true;
-#if 0
-	uint32_t offSet = Width * y * BitsPerPixel + x * BitsPerPixel;
-	uint16_t currentValue = optimzedGet(offSet);
-	uint8_t Max = 1 << BitsPerPixel;
-	z = z > Max ? Max : z;
-	if (z < currentValue) {
-		uint8_t mod = offSet % 8;
-		offSet = offSet / 8;
-		for (int i = BitsPerPixel - 1; i >= 0; --i) {
-			(*(Buff + offSet)) |= (z & (1 << i)) << mod;
-			mod = ++mod % 8;
-			if (mod == 0)
-				++offSet;
-		}
-		return true;
-	}
-	return false;
-#endif
-}
-
-uint16_t ZBuff::optimzedGet(uint32_t bitOffSet) {
-	uint32_t offSet = bitOffSet / 8;
-	uint8_t mod = bitOffSet % 8;
-	uint8_t currentValue = 0;
-	for (int i = BitsPerPixel - 1; i >= 0; --i) {
-		currentValue |= ((*(Buff + offSet)) & (1 << mod)) << i;
-		mod = ++mod % 8;
-		if (mod == 0)
-			++offSet;
-	}
-	return currentValue;
-}
-
-uint16_t ZBuff::get(uint16_t x, uint16_t y) {
-#if 0
-	uint32_t offSet = Width * y * BitsPerPixel + x * BitsPerPixel;
-	return optimzedGet(offSet);
-#else
-	return 0;
-#endif
-}
 
 void viewport(int x, int y, int w, int h) {
 	Viewport = Matrix::identity();
@@ -222,7 +191,9 @@ Vec3f barycentric(Vec3i A, Vec3i B, Vec3i C, Vec3i P) {
 	return Vec3f(-1, 1, 1); // in this case generate negative coordinates, it will be thrown away by the rasterizator
 }
 
-void triangle(Vec3i *pts, IShader &shader, ZBuff &zbuffer, DisplayST7735 *display) {
+
+void triangle(Vec3i *pts, IShader &shader, BitArray &zbuffer, DisplayST7735 *display) {
+	Timer bt("bbbox");
 	Vec2i bboxmin( INT16_MAX, INT16_MAX);
 	Vec2i bboxmax(INT16_MIN, INT16_MIN);
 	for (int i = 0; i < 3; i++) {
@@ -231,21 +202,22 @@ void triangle(Vec3i *pts, IShader &shader, ZBuff &zbuffer, DisplayST7735 *displa
 			bboxmax[j] = bboxmax[j] > pts[i][j] ? bboxmax[j] : pts[i][j];
 		}
 	}
+	bt.stop();
 	Vec3i P;
 	RGBColor color(RGBColor::BLACK);
+	//display->fillRec(bboxmin.x,bboxmin.y,bboxmax.x-bboxmin.x,bboxmax.y-bboxmin.y,RGBColor::BLACK);
 
 	for (P.x = bboxmin.x; P.x <= bboxmax.x; P.x++) {
 		for (P.y = bboxmin.y; P.y <= bboxmax.y; P.y++) {
 			Vec3f c = barycentric(pts[0], pts[1], pts[2], P);
 			float tmp = pts[0].z * c.x + pts[1].z * c.y + pts[2].z * c.z + .5;
-			P.z = (int)tmp;
+			P.z = int(tmp*7.0f); //scale Z for int math
 			//P.z = std::max(0, std::min(255, int(pts[0].z * c.x + pts[1].z * c.y + pts[2].z * c.z + .5))); // clamping to 0-255 since it is stored in unsigned char
-			if (c.x < 0 || c.y < 0 || c.z < 0 || zbuffer.get(P.x, P.y) > P.z)
+			if (c.x < 0 || c.y < 0 || c.z < 0 || zbuffer.getValueAsByte(P.y*128+P.x) > P.z)
 				continue;
 			bool discard = shader.fragment(c, color);
 			if (!discard) {
-				zbuffer.set(P.x, P.y, P.z);
-				//image.set(P.x, P.y, color);
+				zbuffer.setValueAsByte(P.y*128+P.x,P.z);
 				display->drawPixel(P.x, P.y, color);
 			}
 		}

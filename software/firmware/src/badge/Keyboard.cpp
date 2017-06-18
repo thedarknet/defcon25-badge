@@ -1,8 +1,48 @@
 #include "Keyboard.h"
 #include <tsc.h>
 #include <string.h>
+#include "logger.h"
 
 KeyBoardLetterCtx KCTX;
+
+class DialerMode {
+public:
+	DialerMode() : StartPin(QKeyboard::NO_PIN_SELECTED), DialTimer(0) {}
+	~DialerMode() {}
+	uint8_t selectPin(uint8_t p) {
+		if(StartPin==QKeyboard::NO_PIN_SELECTED) {
+			if(p!=QKeyboard::ENTER) {
+				StartPin = p;
+			}
+		} else {
+			if(p!=QKeyboard::NO_PIN_SELECTED) {
+				if(p==QKeyboard::ENTER && ((HAL_GetTick()-DialTimer)<2000)) {
+					uint8_t retVal = StartPin;
+					reset();
+					return retVal;
+				} else if(p<StartPin) {
+					resetTimer();
+				} else {
+					reset();
+				}
+			}
+		}
+		return QKeyboard::NO_PIN_SELECTED;
+	}
+protected:
+	void resetTimer() {
+		DialTimer = HAL_GetTick();
+	}
+	void reset() {
+		resetTimer();
+		StartPin = QKeyboard::NO_PIN_SELECTED;
+	}
+private:
+	uint8_t StartPin;
+	uint32_t DialTimer;
+};
+
+DialerMode sDialerMode;
 
 KeyBoardLetterCtx &getKeyboardContext() {
 	return KCTX;
@@ -111,10 +151,10 @@ void KeyBoardLetterCtx::init(char *b, uint16_t s) {
 	LastPin = QKeyboard::NO_PIN_SELECTED;
 }
 
-QKeyboard::QKeyboard(PinConfig *pinConfig, uint8_t count) :
+QKeyboard::QKeyboard(const PinConfig *pinConfig, uint8_t count) :
 		PC(pinConfig), Count(count), LastSelectedPin(NO_PIN_SELECTED), TimesLastPinSelected(0), KeyJustReleased(
 				NO_PIN_SELECTED), LastPinSelectedTick(
-				HAL_GetTick()), LightAll(true) {
+				HAL_GetTick()), DM(0) {
 
 }
 
@@ -122,41 +162,49 @@ void QKeyboard::resetLastPinTick() {
 	LastPinSelectedTick = HAL_GetTick();
 }
 
-void QKeyboard::setAllLightsOn(bool b) {
-	LightAll = b;
-}
-
 char QKeyboard::getNumberAsCharacter() {
 	switch (getLastKeyReleased()) {
-	case ONE:
-		return '1';
-	case TWO:
-		return '2';
-	case THREE:
-		return '3';
-	case FOUR:
-		return '4';
-	case FIVE:
-		return '5';
-	case SIX:
-		return '6';
-	case SEVEN:
-		return '7';
-	case EIGHT:
-		return '8';
-	case NINE:
-		return '9';
-	case ZERO:
-		return '0';
-	default:
-		return '*';
+		case ONE:
+			return '1';
+		case TWO:
+			return '2';
+		case THREE:
+			return '3';
+		case FOUR:
+			return '4';
+		case FIVE:
+			return '5';
+		case SIX:
+			return '6';
+		case SEVEN:
+			return '7';
+		case EIGHT:
+			return '8';
+		case NINE:
+			return '9';
+		case ZERO:
+			return '0';
+		default:
+			return '*';
+	}
+}
+
+bool QKeyboard::isDialerMode() {
+	return DM!=0;
+}
+
+void QKeyboard::setDialerMode(bool b) {
+	if(b) {
+		DM = &sDialerMode;
+	} else {
+		DM = 0;
 	}
 }
 
 void QKeyboard::scan() {
 	uint8_t selectedPin = NO_PIN_SELECTED;
 	HAL_TSC_IODischarge(&htsc, ENABLE);
-	HAL_Delay(100);
+	HAL_Delay(50);
 
 	for (int r = 0; r < Count && selectedPin == NO_PIN_SELECTED; ++r) {
 		TSC_IOConfigTypeDef conf;
@@ -172,13 +220,13 @@ void QKeyboard::scan() {
 						LastPinSelectedTick = HAL_GetTick();
 					}
 				} else {
-					//ERRMSG("Error during Poll");
+					ERRMSG("Error during Poll");
 				}
 				if (HAL_OK != HAL_TSC_Stop(&htsc)) {
-					//ERRMSG("Error during stop");
+					ERRMSG("Error during stop");
 				}
 			} else {
-				//ERRMSG("Error during start");
+				ERRMSG("Error during start");
 			}
 		}
 	}
@@ -190,22 +238,14 @@ void QKeyboard::scan() {
 			KeyJustReleased = NO_PIN_SELECTED;
 		}
 	} else {
-		KeyJustReleased = LastSelectedPin;
-		LastSelectedPin = selectedPin;
-		TimesLastPinSelected = 0;
-	}
-	if (getAllLightsOn()) {
-		HAL_GPIO_WritePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(LED4_GPIO_Port, LED4_Pin, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(LED5_GPIO_Port, LED5_Pin, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(LED6_GPIO_Port, LED6_Pin, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(LED7_GPIO_Port, LED7_Pin, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(LED8_GPIO_Port, LED8_Pin, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(LED9_GPIO_Port, LED9_Pin, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(LED10_GPIO_Port, LED10_Pin, GPIO_PIN_SET);
+		if (isDialerMode()) {
+			KeyJustReleased = DM->selectPin(selectedPin);
+			LastSelectedPin = selectedPin;
+		} else {
+			KeyJustReleased = getLastPinSeleted(); //LastSelectedPin;
+			LastSelectedPin = selectedPin;
+			TimesLastPinSelected = 0;
+		}
 	}
 }
 
@@ -230,39 +270,39 @@ void QKeyboard::updateContext(KeyBoardLetterCtx &ctx) {
 	} else if (wasKeyReleased()) {
 		const char *current = 0;
 		switch (getLastKeyReleased()) {
-		case 0:
-			current = ".,?1";
-			break;
-		case 1:
-			current = "ABC2";
-			break;
-		case 2:
-			current = "DEF3";
-			break;
-		case 3:
-			current = "GHI4";
-			break;
-		case 4:
-			current = "JKL5";
-			break;
-		case 5:
-			current = "MNO6";
-			break;
-		case 6:
-			current = "PRS7";
-			break;
-		case 7:
-			current = "TUV8";
-			break;
-		case 8:
-			current = "WXY9";
-			break;
-			//case 9:
-			//	current = "##+";
-			//	break;
-		case 9:
-			current = "Z0 \b";
-			break;
+			case 0:
+				current = ".,?1";
+				break;
+			case 1:
+				current = "ABC2";
+				break;
+			case 2:
+				current = "DEF3";
+				break;
+			case 3:
+				current = "GHI4";
+				break;
+			case 4:
+				current = "JKL5";
+				break;
+			case 5:
+				current = "MNO6";
+				break;
+			case 6:
+				current = "PRS7";
+				break;
+			case 7:
+				current = "TUV8";
+				break;
+			case 8:
+				current = "WXY9";
+				break;
+				//case 9:
+				//	current = "##+";
+				//	break;
+			case 9:
+				current = "Z0 \b";
+				break;
 		}
 		if (getLastKeyReleased() < 10) {
 			ctx.processButtonPush(getLastKeyReleased(), current);

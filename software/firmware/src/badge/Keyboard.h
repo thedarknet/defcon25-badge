@@ -32,6 +32,7 @@ private:
 };
 
 KeyBoardLetterCtx &getKeyboardContext();
+class DialerMode;
 
 class QKeyboard {
 public:
@@ -49,7 +50,7 @@ public:
 	static const uint8_t NO_PIN_SELECTED = 0xFF;
 	static const uint8_t NOT_A_NUMBER = 0xFF;
 	static const uint8_t NO_LETTER_SELECTED = 0xFF;
-	static const uint8_t TIMES_BUTTON_MUST_BE_HELD = 5;
+	static const uint8_t TIMES_BUTTON_MUST_BE_HELD = 2;
 	enum KEYS {
 		ONE = 0
 		, TWO = 1
@@ -68,7 +69,7 @@ public:
 		, DOWN=EIGHT
 	};
 public:
-	QKeyboard(PinConfig *pinConfig, uint8_t count);
+	QKeyboard(const PinConfig *pinConfig, uint8_t count);
 	void scan();
 	///last button pushed
 	uint8_t getLastPinPushed();
@@ -78,25 +79,24 @@ public:
 	bool wasKeyReleased();
 	void updateContext(KeyBoardLetterCtx &ctx);
 	void reset();
-	void setAllLightsOn(bool b);
-	bool getAllLightsOn() {
-		return LightAll;
-	}
 	uint32_t getLastPinSelectedTick() {
 		return LastPinSelectedTick;
 	}
 	char getNumberAsCharacter();
 	void resetLastPinTick();
+	bool isDialerMode();
+	void setDialerMode(bool b);
 protected:
 	void setLetter();
 private:
-	PinConfig *PC;
+	const PinConfig *PC;
 	uint8_t Count;
 	uint8_t LastSelectedPin;
 	uint8_t TimesLastPinSelected;
 	uint8_t KeyJustReleased;
 	uint32_t LastPinSelectedTick;
-	bool LightAll;
+private:
+	DialerMode *DM;
 };
 
 #endif

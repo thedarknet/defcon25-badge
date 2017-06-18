@@ -10,12 +10,13 @@
 #include "SendMsgState.h"
 #include "AddressState.h"
 #include "3d/menu3d.h"
+#include "leddc25.h"
 //#include <tim.h>
 //#include <uECC.h>
 //#include <sha256.h>
 
-RunContext::RunContext(DisplayST7735 *display, QKeyboard *kb, ContactStore *cs, RFM69 *r) :
-		dp(display), GuiDisplay(display), KeyB(kb), CS(cs), Transciever(r) {
+RunContext::RunContext(DisplayST7735 *display, QKeyboard *kb, ContactStore *cs, RFM69 *r, LedDC25 *ledControl) :
+		dp(display), GuiDisplay(display), KeyB(kb), CS(cs), Transciever(r), LedControl(ledControl) {
 
 }
 
@@ -37,6 +38,10 @@ ContactStore &RunContext::getContactStore() {
 
 RFM69 &RunContext::getRadio() {
 	return *Transciever;
+}
+
+LedDC25 &RunContext::getLedControl() {
+	return *LedControl;
 }
 
 ///////////////////////////
@@ -154,6 +159,8 @@ ErrorType MenuState::onInit(RunContext &rc) {
 	Items[7].text = (const char *) "Radio Info";
 	Items[8].id = 8;
 	Items[8].text = (const char *) "KeyBoard Test";
+	Items[9].id = 9;
+	Items[9].text = (const char *) "Dialer Test";
 	rc.getDisplay().fillScreen(RGBColor::BLACK);
 	rc.getGUI().drawList(&this->MenuList);
 	return ErrorType();
@@ -218,6 +225,10 @@ ReturnStateContext MenuState::onRun(RunContext &rc) {
 				case 8:
 					nextState = StateFactory::getKeyBoardTest();
 					break;
+				case 9:
+					rc.getKB().setDialerMode(true);
+					nextState = StateFactory::getKeyBoardTest();
+					break;
 			}
 		}
 			break;
@@ -245,23 +256,43 @@ KeyBoardTest::~KeyBoardTest() {
 ErrorType KeyBoardTest::onInit(RunContext &rc) {
 	LastKey = QKeyboard::NO_PIN_SELECTED - 1;
 	rc.getDisplay().fillScreen(RGBColor::BLACK);
-	rc.getDisplay().drawString(0, 10, (const char*) "Hook then 1 to exit");
+	if (rc.getKB().isDialerMode()) {
+		rc.getDisplay().drawString(0, 10, (const char*) "Reset to exit");
+	} else {
+		rc.getDisplay().drawString(0, 10, (const char*) "Hook then 1 to exit");
+	}
 	return ErrorType();
 }
 
 ReturnStateContext KeyBoardTest::onRun(RunContext &rc) {
 	StateBase *nextState = this;
-	uint8_t key = rc.getKB().getLastPinPushed();
-	if (LastKey == 10 && key == 0) {
-		nextState = StateFactory::getMenuState();
-	}
-	if (LastKey != key) {
-		LastKey = key;
+	uint8_t key = QKeyboard::NO_PIN_SELECTED;
+	if (rc.getKB().isDialerMode()) {
+		if(rc.getKB().getLastPinPushed()==QKeyboard::ENTER) {
+			LastKey = rc.getKB().getLastKeyReleased();
+		}
+		key = rc.getKB().getLastPinPushed();
+		char buf[24];
 		rc.getDisplay().fillRec(0, 20, 128, 20, RGBColor::BLACK);
-		char buf[16];
-		rc.getDisplay().fillRec(0,30,128,10,RGBColor::BLACK);
-		sprintf(&buf[0], "pushed:  %d", (int) key);
+		sprintf(&buf[0], "Dialer Number:  %d", (int) LastKey);
+		rc.getDisplay().drawString(0, 20, &buf[0]);
+		rc.getDisplay().fillRec(0, 30, 128, 10, RGBColor::BLACK);
+		sprintf(&buf[0], "Current Number:  %d", (int) key);
 		rc.getDisplay().drawString(0, 30, &buf[0]);
+	} else {
+		key = rc.getKB().getLastPinPushed();
+		if (LastKey == 10 && key == 0) {
+			rc.getKB().setDialerMode(false);
+			nextState = StateFactory::getMenuState();
+		}
+		if (LastKey != key) {
+			LastKey = key;
+			rc.getDisplay().fillRec(0, 20, 128, 20, RGBColor::BLACK);
+			char buf[16];
+			rc.getDisplay().fillRec(0, 30, 128, 10, RGBColor::BLACK);
+			sprintf(&buf[0], "pushed:  %d", (int) key);
+			rc.getDisplay().drawString(0, 30, &buf[0]);
+		}
 	}
 	return ReturnStateContext(nextState);
 }
@@ -385,8 +416,8 @@ ReturnStateContext SettingState::onRun(RunContext &rc) {
 					nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), "Save FAILED!",
 							4000);
 				}
-			} else if (rc.getKB().getLastKeyReleased()!=QKeyboard::NO_PIN_SELECTED){
-				InputPos = rc.getKB().getLastKeyReleased()+1;
+			} else if (rc.getKB().getLastKeyReleased() != QKeyboard::NO_PIN_SELECTED) {
+				InputPos = rc.getKB().getLastKeyReleased() + 1;
 				if (InputPos > 8) {
 					InputPos = 8;
 				} else if (InputPos < 1) {
@@ -505,7 +536,7 @@ BadgeInfoState::onRun(RunContext & rc)
 			break;
 		}
 		case QKeyboard::ENTER:
-		case QKeyboard::BACK:
+			case QKeyboard::BACK:
 			nextState = StateFactory::getMenuState();
 			break;
 	}
@@ -634,7 +665,7 @@ StateBase * StateFactory::getKeyBoardTest()
 	return &TheKeyBoardTest;
 }
 
-StateBase * StateFactory::getMessageState()
+MessageState * StateFactory::getMessageState()
 {
 	return &TheMessageState;
 }

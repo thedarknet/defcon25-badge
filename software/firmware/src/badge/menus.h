@@ -21,21 +21,24 @@ struct ReturnStateContext {
 };
 
 class RFM69;
+class LedDC25;
 
 class RunContext {
 public:
-	RunContext(DisplayST7735 *display, QKeyboard *kb, ContactStore *cs, RFM69 *r);
+	RunContext(DisplayST7735 *display, QKeyboard *kb, ContactStore *cs, RFM69 *r, LedDC25 *ledControl);
 	DisplayST7735 &getDisplay();
 	const GUI &getGUI();
 	QKeyboard &getKB();
 	ContactStore &getContactStore();
 	RFM69 &getRadio();
+	LedDC25 &getLedControl();
 private:
 	DisplayST7735 *dp; //should just be DisplayDevice rather than specific display //TODO
 	GUI GuiDisplay;
 	QKeyboard *KeyB;
 	ContactStore *CS;
 	RFM69 *Transciever;
+	LedDC25 *LedControl;
 };
 
 class StateBase {
@@ -112,7 +115,7 @@ protected:
 	virtual ErrorType onShutdown();
 private:
 	GUI_ListData MenuList;
-	GUI_ListItemData Items[9];
+	GUI_ListItemData Items[10];
 };
 
 class SettingState: public StateBase {
@@ -176,7 +179,7 @@ private:
 class SendMsgState;
 class AddressState;
 class Menu3D;
-//=============================
+class MessageState;
 class StateFactory {
 public:
 	static bool init();
@@ -185,7 +188,7 @@ public:
 	static StateBase *getSettingState();
 	static StateBase *getGameOfLifeState();
 	static StateBase *getKeyBoardTest();
-	static StateBase *getMessageState();
+	static MessageState *getMessageState();
 	static StateBase* getBadgeInfoState();
 	static StateBase *getRadioInfoState();
 	static StateBase *getIRPairingState();

@@ -1,11 +1,11 @@
 #include "renderer.h"
-#include <algorithm>
+//#include <algorithm>
 #include "stm32f3xx_hal.h"
 #include "../logger.h"
 
 class Timer {
 public:
-	Timer(const char *n) : Name(n) {
+	Timer(const char *n) : Name(n), Stop(0), diff(0) {
 		Start = HAL_GetTick();
 	}
 	void stop() {

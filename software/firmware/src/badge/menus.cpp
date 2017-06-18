@@ -436,9 +436,9 @@ ReturnStateContext SettingState::onRun(RunContext &rc) {
 			}
 			break;
 	}
-	if (rc.getKB().wasKeyReleased() && SubState < 100) {
-		rc.getGUI().drawList(&SettingList);
-	}
+	//if (rc.getKB().wasKeyReleased() && SubState < 100) {
+	rc.getGUI().drawList(&SettingList);
+	//}
 	return ReturnStateContext(nextState);
 }
 
@@ -539,9 +539,9 @@ BadgeInfoState::onRun(RunContext & rc)
 			nextState = StateFactory::getMenuState();
 			break;
 	}
-	if (rc.getKB().wasKeyReleased()) {
-		rc.getGUI().drawList(&BadgeInfoList);
-	}
+	//if (rc.getKB().wasKeyReleased()) {
+	rc.getGUI().drawList(&BadgeInfoList);
+	//}
 	return ReturnStateContext(nextState);
 }
 

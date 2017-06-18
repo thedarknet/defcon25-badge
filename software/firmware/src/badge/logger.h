@@ -54,7 +54,7 @@ namespace darknet {
 		darknet::LogManager::get().getLogger(darknet::DEBUG_LOGGER_ID)->printf(darknet::LogManager::get(),##__VA_ARGS__)
 #define INFOMSG(...) if(darknet::LogManager::get().getLogger(darknet::INFO_LOGGER_ID)) \
 		darknet::LogManager::get().getLogger(darknet::INFO_LOGGER_ID)->printf(darknet::LogManager::get(),##__VA_ARGS__)
-#define ERRMSG(...) if(LogManager::get().getLogger(darknet::ERROR_LOGGER_ID)) \
+#define ERRMSG(...) if(darknet::LogManager::get().getLogger(darknet::ERROR_LOGGER_ID)) \
 		darknet::LogManager::get().getLogger(darknet::ERROR_LOGGER_ID)->printf(darknet::LogManager::get(),##__VA_ARGS__)
 
 #endif

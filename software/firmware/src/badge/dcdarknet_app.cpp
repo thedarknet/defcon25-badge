@@ -8,6 +8,7 @@
 #include "Keyboard.h"
 #include "irmenu.h"
 #include "MessageState.h"
+#include "leddc25.h"
 //#include "bitarray.h"
 
 DCDarkNetApp::DCDarkNetApp() :
@@ -18,7 +19,7 @@ DCDarkNetApp::DCDarkNetApp() :
 static const uint32_t TIME_BETWEEN_INITS = 100;
 
 RFM69 Radio(RADIO_SPI3_NSS_Pin, RADIO_INTERRUPT_DIO0_EXTI4_Pin, true);
-static QKeyboard::PinConfig KBPins[] = {
+static const QKeyboard::PinConfig KBPins[] = {
 		 {TSC_GROUP3_IO3,TSC_GROUP3_IO4, TSC_GROUP3_IDX} //1
 		,{TSC_GROUP3_IO2,TSC_GROUP3_IO4, TSC_GROUP3_IDX} //2
 		,{TSC_GROUP3_IO1,TSC_GROUP3_IO4, TSC_GROUP3_IDX} //3
@@ -55,6 +56,7 @@ DrawBufferNoBuffer NoBuffer(&Display,&DrawBuffer[0],DISPLAY_OPT_WRITE_ROWS);
 static const uint8_t BITS_PER_PIXEL = 6;
 uint8_t BackBuffer[((DISPLAY_WIDTH * DISPLAY_HEIGHT * BITS_PER_PIXEL)/8)+1];
 DrawBuffer2D16BitColor DB2D16(DISPLAY_WIDTH,DISPLAY_HEIGHT,&BackBuffer[0],&DrawBuffer[0],DISPLAY_OPT_WRITE_ROWS,&DrawBufferRangeChange[0], &Display);
+LedDC25 LedControl;
 
 uint32_t DCDarkNetApp::init() {
 
@@ -122,8 +124,13 @@ void DCDarkNetApp::run() {
 	static uint32_t tick = HAL_GetTick();
 
 	KB.scan();
+	if(KB.isDialerMode()) {
+		if(KB.wasKeyReleased()) {
+			LedControl.setDanceType(LedDC25::DIALER,KB.getLastKeyReleased());
+		}
+	}
 
-	RunContext rc(&Display, &KB,&MyContacts, &Radio);
+	RunContext rc(&Display, &KB,&MyContacts, &Radio, &LedControl);
 
 	ReturnStateContext rsc = CurrentState->run(rc);
 	Display.swap();
@@ -147,7 +154,7 @@ void DCDarkNetApp::run() {
 	if (MyContacts.getSettings().isNameSet()) {
 		((IRState *)StateFactory::getIRPairingState())->ListenForAlice(rc);
 	}
-	((MessageState *)StateFactory::getMessageState())->blink();
+	LedControl.process();
 
 	static uint32_t lastSendTime = 0;
 	if (tick - lastSendTime > 10) {

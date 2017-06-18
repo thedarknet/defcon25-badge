@@ -21,17 +21,6 @@ uint32_t min(uint32_t one, uint32_t two) {
 	return two;
 }
 
-static uint32_t lastBlinkTime = 0;
-void MessageState::blink() {
-	if (NewMessage) {
-		if (HAL_GetTick() - lastBlinkTime > 1000) {
-			HAL_GPIO_TogglePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin);
-		}
-	} else {
-		HAL_GPIO_WritePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin, GPIO_PIN_RESET);
-	}
-}
-
 void MessageState::addRadioMessage(const char *msg, uint16_t msgSize, uint16_t uid, uint8_t rssi) {
 	memset(&RMsgs[CurrentPos].Msg[0], 0, sizeof(RMsgs[CurrentPos].Msg));
 	memcpy(&RMsgs[CurrentPos].Msg[0], msg, min(msgSize, sizeof(RMsgs[CurrentPos].Msg)-1));

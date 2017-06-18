@@ -128,6 +128,16 @@ void DCDarkNetApp::run() {
 	if(KB.isDialerMode()) {
 		if(KB.wasKeyReleased()) {
 			LedControl.setDanceType(LedDC25::DIALER,KB.getLastKeyReleased());
+		} else if(KB.getLastPinSeleted()!=QKeyboard::NO_PIN_SELECTED) {
+			LedControl.setLedOff(LedDC25::ALL);
+			LedControl.setLedOn(LedDC25::LED_ID(1<<(KB.getLastPinSeleted()+1)));
+		}
+	} else {
+		if(KB.getLastPinSeleted()!=QKeyboard::NO_PIN_SELECTED) {
+			LedControl.setLedOff(LedDC25::ALL);
+			LedControl.setLedOn(LedDC25::LED_ID(1<<(KB.getLastPinSeleted()+1)));
+		} else {
+			LedControl.setLedOff(LedDC25::ALL);
 		}
 	}
 

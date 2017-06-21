@@ -65,8 +65,8 @@ public:
 		, HOOK = 10
 		, BACK = ONE
 		, ENTER = HOOK
-		, UP=TWO
-		, DOWN=EIGHT
+		, UP=FIVE
+		, DOWN=SIX
 	};
 public:
 	QKeyboard(const PinConfig *pinConfig, uint8_t count);

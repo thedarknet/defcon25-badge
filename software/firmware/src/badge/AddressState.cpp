@@ -167,6 +167,9 @@ ReturnStateContext AddressState::onRun(RunContext &rc) {
 				}
 				break;
 		}
+		if(rc.getKB().wasKeyReleased()) {
+			rc.getGUI().drawList(DisplayList);
+		}
 	} else {
 		if (pin != QKeyboard::NO_PIN_SELECTED) {
 			if (DetailItems[ContactDetails.selectedItem].Scrollable) {
@@ -196,8 +199,6 @@ ReturnStateContext AddressState::onRun(RunContext &rc) {
 				nextState = StateFactory::getSendMessageState();
 				break;
 		}
-	}
-	if(rc.getKB().wasKeyReleased()) {
 		rc.getGUI().drawList(DisplayList);
 	}
 	return ReturnStateContext(nextState);

@@ -437,9 +437,9 @@ ReturnStateContext SettingState::onRun(RunContext &rc) {
 			}
 			break;
 	}
-	if (rc.getKB().wasKeyReleased() && SubState < 100) {
-		rc.getGUI().drawList(&SettingList);
-	}
+	//if (rc.getKB().wasKeyReleased() && SubState < 100) {
+	rc.getGUI().drawList(&SettingList);
+	//}
 	return ReturnStateContext(nextState);
 }
 

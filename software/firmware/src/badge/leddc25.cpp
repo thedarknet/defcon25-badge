@@ -69,12 +69,15 @@ void LedDC25::setDanceType(LED_DANCE_TYPE t, uint8_t data) {
 	Counter = 0;
 }
 
+#define BLINK_TIME 350
+#define DIALER_BACK_TIME 50
+
 void LedDC25::process() {
 	switch (DanceType) {
 		case NONE:
 			{
 			if (StateFactory::getMessageState()->hasNewMessage()) {
-				if (HAL_GetTick() - lastBlinkTime > 1000) {
+				if (HAL_GetTick() - lastBlinkTime > BLINK_TIME) {
 					HAL_GPIO_TogglePin(PC[LED_STATUS_OFFSET].Port, PC[LED_STATUS_OFFSET].Pin);
 					lastBlinkTime = HAL_GetTick();
 				}
@@ -90,10 +93,8 @@ void LedDC25::process() {
 			for (int i = 1; i < LED_COUNT; i++) {
 				if (i - 1 <= DialerData) {
 					setInternalLedOn((1 << i));
-					//HAL_GPIO_WritePin(PC[i].Port, PC[i].Pin, GPIO_PIN_SET);
 				} else {
 					SetInternalLedOff((1 << i));
-					//HAL_GPIO_WritePin(PC[i].Port, PC[i].Pin, GPIO_PIN_RESET);
 				}
 			}
 			if (HAL_GetTick() - lastDialerTime > 200) {
@@ -112,7 +113,7 @@ void LedDC25::process() {
 			{
 			if (Counter < 12) {
 				if (Counter < 4) {
-					if ((HAL_GetTick() - lastBlinkTime) > 300) {
+					if ((HAL_GetTick() - lastBlinkTime) > BLINK_TIME) {
 						lastBlinkTime = HAL_GetTick();
 						if ((Counter & 0x1) == 0) {
 							setAllOn();
@@ -122,15 +123,13 @@ void LedDC25::process() {
 						++Counter;
 					}
 				} else {
-					if ((HAL_GetTick() - lastBlinkTime) > 50) {
+					if ((HAL_GetTick() - lastBlinkTime) > DIALER_BACK_TIME) {
 						lastBlinkTime = HAL_GetTick();
 						if ((Counter & 0x1) == 0) {
 							for (int i = 0; i < LED_COUNT; i++) {
 								if (i <= DialerData) {
 									setInternalLedOn((1 << i));
-									//HAL_GPIO_WritePin(PC[i].Port, PC[i].Pin, GPIO_PIN_SET);
 								} else {
-									//HAL_GPIO_WritePin(PC[i].Port, PC[i].Pin, GPIO_PIN_RESET);
 									SetInternalLedOff((1 << i));
 								}
 							}
@@ -143,9 +142,7 @@ void LedDC25::process() {
 							for (int i = 0; i < LED_COUNT; i++) {
 								if (i <= DialerData) {
 									setInternalLedOn((1 << i));
-									//HAL_GPIO_WritePin(PC[i].Port, PC[i].Pin, GPIO_PIN_SET);
 								} else {
-									//HAL_GPIO_WritePin(PC[i].Port, PC[i].Pin, GPIO_PIN_RESET);
 									SetInternalLedOff((1 << i));
 								}
 							}
@@ -158,7 +155,7 @@ void LedDC25::process() {
 					}
 				}
 			} else if (Counter < 14) {
-				if ((HAL_GetTick() - lastBlinkTime) > 300) {
+				if ((HAL_GetTick() - lastBlinkTime) > BLINK_TIME) {
 					lastBlinkTime = HAL_GetTick();
 					if ((Counter & 0x1) == 0) {
 						setAllOn();

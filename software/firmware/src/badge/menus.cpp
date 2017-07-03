@@ -484,29 +484,56 @@ const char *BadgeInfoState::getRegCode(ContactStore &cs) {
 static const char *VERSION = "dc25.1.1";
 
 ErrorType
-BadgeInfoState::onInit(RunContext & rc)
-		{
-	memset(&ListBuffer[0], 0, sizeof(ListBuffer));
-	sprintf(&ListBuffer[0][0], "Name: %s", rc.getContactStore().getSettings().getAgentName());
-	sprintf(&ListBuffer[1][0], "Num contacts: %u", rc.getContactStore().getSettings().getNumContacts());
-	sprintf(&ListBuffer[2][0], "REG: %s", getRegCode(rc.getContactStore()));
-	sprintf(&ListBuffer[3][0], "UID: %u", rc.getContactStore().getMyInfo().getUniqueID());
+BadgeInfoState::onInit(RunContext & rc) {
+	memset(&NameBuffer[0], 0, sizeof(NameBuffer));
+	sprintf(&NameBuffer[0], "Name: %s", rc.getContactStore().getSettings().getAgentName());
+	sprintf(&NumContacts[0], "Num contacts: %u", rc.getContactStore().getSettings().getNumContacts());
+	sprintf(&RegCodeDisplayBuf[0], "REG: %s", getRegCode(rc.getContactStore()));
+	sprintf(&UniqueIDBuffer[0], "UID: %u", rc.getContactStore().getMyInfo().getUniqueID());
 	uint8_t *pCP = rc.getContactStore().getMyInfo().getCompressedPublicKey();
-	sprintf(&ListBuffer[4][0],
+	sprintf(&PKBuffer[0],
 			"PK: %02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
 			pCP[0], pCP[1], pCP[2], pCP[3], pCP[4], pCP[5], pCP[6], pCP[7], pCP[8], pCP[9], pCP[10], pCP[11],
 			pCP[12],
 			pCP[13], pCP[14], pCP[15], pCP[16], pCP[17], pCP[18], pCP[19], pCP[20], pCP[21], pCP[22], pCP[23],
 			pCP[24]);
-	sprintf(&ListBuffer[5][0], "DEVID: %lu", HAL_GetDEVID());
-	sprintf(&ListBuffer[6][0], "REVID: %lu", HAL_GetREVID());
-	sprintf(&ListBuffer[7][0], "HAL Version: %lu", HAL_GetHalVersion());
-	sprintf(&ListBuffer[8][0], "SVer: %s", VERSION);
+	sprintf(&DevID[0], "DEVID: %lu", HAL_GetDEVID());
+	sprintf(&RevID[0], "REVID: %lu", HAL_GetREVID());
+	sprintf(&HalVer[0], "HAL Ver: %lu", HAL_GetHalVersion());
+	sprintf(&SoftwareVersion[0], "SVer: %s", VERSION);
 
 	for (uint32_t i = 0; i < (sizeof(Items) / sizeof(Items[0])); i++) {
-		Items[i].text = &ListBuffer[i][0];
 		Items[i].id = i;
 		Items[i].setShouldScroll();
+		switch(i) {
+			case 0:
+				Items[i].text = &NameBuffer[0];
+				break;
+			case 1:
+				Items[i].text = &NumContacts[0];
+				break;
+			case 2:
+				Items[i].text = &RegCodeDisplayBuf[0];
+				break;
+			case 3:
+				Items[i].text = &UniqueIDBuffer[0];
+				break;
+			case 4:
+				Items[i].text = &PKBuffer[0];
+				break;
+			case 5:
+				Items[i].text = &DevID[0];
+				break;
+			case 6:
+				Items[i].text = &RevID[0];
+				break;
+			case 7:
+				Items[i].text = &HalVer[0];
+				break;
+			case 8:
+				Items[i].text = &SoftwareVersion[0];
+				break;
+		}
 	}
 	rc.getDisplay().fillScreen(RGBColor::BLACK);
 	rc.getGUI().drawList(&BadgeInfoList);

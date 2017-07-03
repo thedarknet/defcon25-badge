@@ -146,7 +146,16 @@ protected:
 private:
 	GUI_ListData BadgeInfoList;
 	GUI_ListItemData Items[9];
-	char ListBuffer[9][64]; //height then width
+	//char ListBuffer[9][64]; //height then width
+	char NameBuffer[20];
+	char NumContacts[20];
+	char RegCodeDisplayBuf[24];
+	char UniqueIDBuffer[16];
+	char PKBuffer[64];
+	char DevID[24];
+	char RevID[24];
+	char HalVer[24];
+	char SoftwareVersion[20];
 	char RegCode[18];
 };
 

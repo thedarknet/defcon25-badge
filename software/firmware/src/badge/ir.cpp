@@ -50,7 +50,7 @@
 #define RX_MARGIN (TICK_BASE/2)
 
 // RX Buffer size
-#define IR_RX_BUFF_SIZE (256)
+#define IR_RX_BUFF_SIZE (128)
 
 // States for state machine
 typedef enum {

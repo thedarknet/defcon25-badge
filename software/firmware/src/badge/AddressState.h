@@ -20,8 +20,8 @@ private:
 	GUI_ListData ContactDetails;
 	GUI_ListItemData DetailItems[5];
 	char RadioIDBuf[12];
-	char PublicKey[64];
-	char SignatureKey[128];
+	char PublicKey[56];
+	char SignatureKey[108];
 	uint8_t Index;
 	GUI_ListData *DisplayList;
 };

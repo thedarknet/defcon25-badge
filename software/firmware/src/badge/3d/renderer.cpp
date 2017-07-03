@@ -2,6 +2,7 @@
 //#include <algorithm>
 #include "stm32f3xx_hal.h"
 #include "../logger.h"
+#include <stdlib.h>
 
 class Timer {
 public:
@@ -32,7 +33,7 @@ Model::Model() : Verts(0), NumVerts(0), Indexes(0), NumIndexes(0), ModelTransfor
 
 }
 
-void Model::set(VertexStruct *v, uint16_t nv, uint16_t *i, uint16_t ni) {
+void Model::set(const VertexStruct *v, uint16_t nv, const uint16_t *i, uint16_t ni) {
 	Verts = v;
 	NumVerts=nv;
 	Indexes=i;
@@ -165,7 +166,7 @@ void projection(float coeff) {
 	Projection[3][2] = coeff;
 }
 
-void lookat(Vec3f eye, Vec3f center, Vec3f up) {
+void lookat(const Vec3f &eye, const Vec3f &center, const Vec3f &up) {
 	Vec3f z = (eye - center).normalize();
 	Vec3f x = cross(up, z).normalize();
 	Vec3f y = cross(z, x).normalize();
@@ -178,7 +179,7 @@ void lookat(Vec3f eye, Vec3f center, Vec3f up) {
 	}
 }
 
-Vec3f barycentric(Vec3i A, Vec3i B, Vec3i C, Vec3i P) {
+Vec3f barycentric(const Vec3i &A, const Vec3i &B, const Vec3i &C, const Vec3i &P) {
 	Vec3i s[2];
 	for (int i = 2; i--;) {
 		s[i][0] = C[i] - A[i];
@@ -186,15 +187,15 @@ Vec3f barycentric(Vec3i A, Vec3i B, Vec3i C, Vec3i P) {
 		s[i][2] = A[i] - P[i];
 	}
 	Vec3f u = cross(s[0], s[1]);
-	if (std::abs(u[2]) > 1e-2) // dont forget that u[2] is integer. If it is zero then triangle ABC is degenerate
+	if (abs(u[2]) > 1e-2) // dont forget that u[2] is integer. If it is zero then triangle ABC is degenerate
 		return Vec3f(1.f - (u.x + u.y) / u.z, u.y / u.z, u.x / u.z);
 	return Vec3f(-1, 1, 1); // in this case generate negative coordinates, it will be thrown away by the rasterizator
 }
 
 
-void triangle(Vec3i *pts, IShader &shader, BitArray &zbuffer, DisplayST7735 *display) {
-	Timer bt("bbbox");
-	Vec2i bboxmin( INT16_MAX, INT16_MAX);
+void triangle(Vec3i *pts, IShader &shader, BitArray &zbuffer, DisplayST7735 *display, const Vec2i &bboxmin, const Vec2i &bboxmax) {
+	//Timer bt("bbbox");
+	/*Vec2i bboxmin( INT16_MAX, INT16_MAX);
 	Vec2i bboxmax(INT16_MIN, INT16_MIN);
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 2; j++) {
@@ -202,10 +203,10 @@ void triangle(Vec3i *pts, IShader &shader, BitArray &zbuffer, DisplayST7735 *dis
 			bboxmax[j] = bboxmax[j] > pts[i][j] ? bboxmax[j] : pts[i][j];
 		}
 	}
-	bt.stop();
+	*/
+	//bt.stop();
 	Vec3i P;
 	RGBColor color(RGBColor::BLACK);
-	//display->fillRec(bboxmin.x,bboxmin.y,bboxmax.x-bboxmin.x,bboxmax.y-bboxmin.y,RGBColor::BLACK);
 
 	for (P.x = bboxmin.x; P.x <= bboxmax.x; P.x++) {
 		for (P.y = bboxmin.y; P.y <= bboxmax.y; P.y++) {

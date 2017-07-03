@@ -327,7 +327,7 @@ uint8_t DrawBuffer2D16BitColor::deresColor(const RGBColor &color) {
 
 DisplayST7735::DisplayST7735(uint16_t w, uint16_t h, DisplayST7735::ROTATION r) :
 		DisplayDevice(w, h, r), CurrentTextColor(RGBColor::WHITE), CurrentBGColor(
-				RGBColor::BLACK), CurrentFont(0) {
+				RGBColor::BLACK), CurrentFont(0), FB(0) {
 
 }
 

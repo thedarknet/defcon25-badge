@@ -165,6 +165,12 @@ public:
         T tmp = ret[0]*rows[0];
         return ret/tmp;
     }
+
+    void setRotation(float f) {
+    	rows[2][2] = rows[0][0] = cos(f);
+    	rows[0][2] = sin(f);
+    	rows[2][0] = -sin(f);
+    }
 };
 
 /////////////////////////////////////////////////////////////////////////////////

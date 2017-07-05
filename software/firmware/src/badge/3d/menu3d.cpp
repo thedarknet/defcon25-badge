@@ -3,6 +3,27 @@
 #include "renderer.h"
 #include "menu3d.h"
 
+/*
+ * The model, view and projection matrices are three separate matrices. Model maps from an object's local coordinate
+ * space into world space, view from world space to camera space, projection from camera to screen.
+ *
+ * https://en.wikipedia.org/wiki/Triangle_strip
+ * static const GLfloat cubeVertices[] = {
+    -1.0, -1.0,  1.0,
+    1.0, -1.0,  1.0,
+    -1.0,  1.0,  1.0,
+    1.0,  1.0,  1.0,
+    -1.0, -1.0, -1.0,
+    1.0, -1.0, -1.0,
+    -1.0,  1.0, -1.0,
+    1.0,  1.0, -1.0,
+};
+
+static const GLushort cubeIndices[] = {
+    0, 1, 2, 3, 7, 1, 5, 4, 7, 6, 2, 4, 0, 1
+};
+ */
+
 const struct VertexStruct Cube[] = {
 		/* CUBE: 24 vertices */
 		{ { 1.000000f, 1.000000f, -1.000000f }, { 0.000000f, 0.000000f, -1.000000f }, { 0.000000f, 0.000000f } },
@@ -37,8 +58,8 @@ const unsigned short CubeIndexes[] = {
 		22, 20, 22, 23,
 };
 
-const Vec3f Menu3D::center(0,0,0);
-const Vec3f Menu3D::up(0,1,0);
+const Vec3f Menu3D::center(0, 0, 0);
+const Vec3f Menu3D::up(0, 1, 0);
 
 Menu3D::Menu3D() :
 		model(), light_dir(), eye(), CanvasWidth(0), CanvasHeight(0) {
@@ -95,43 +116,60 @@ ErrorType Menu3D::onShutdown() {
 	return ErrorType();
 }
 
-static uint32_t renderTime = 0, count = 0, total_frames=0;
+static uint32_t renderTime = 0, count = 0, total_frames = 0;
 
 void Menu3D::update(RunContext &rc) {
 	UNUSED(rc);
 	model.setTransformation(rotation);
-	rotation+=0.05f;
+	rotation += 0.05f;
 }
 
 void Menu3D::render(RunContext &rc) {
 	rc.getDisplay().fillRec(0, 0, CanvasWidth, CanvasHeight, RGBColor::BLACK);
-	uint8_t b[((CanvasWidth * CanvasHeight * 3) / 8) + 1] = {0};
+	uint8_t b[((CanvasWidth * CanvasHeight * 3) / 8) + 1] = { 0 };
 	//memset(&b[0], 0, sizeof(b));
 	BitArray zbuf(&b[0], CanvasWidth * CanvasHeight, 3);
 
-	GouraudShader shader;
+	//GouraudShader shader;
+	FlatShader shader;
 	Matrix modelViewProj = Projection * ModelView * model.getModelTransform();
 	shader.setLightDir(light_dir);
 	{
 		Vec3i screen_coords[3];
 
 		for (uint32_t i = 0; i < model.nFaces(); i++) {
-			Vec2i bboxmin( INT16_MAX, INT16_MAX);
-			Vec2i bboxmax(INT16_MIN, INT16_MIN);
-			for (int j = 0; j < 3; j++) {
-				screen_coords[j] = shader.vertex(modelViewProj, model, i, j);
-				if(screen_coords[j].x < bboxmin.x) bboxmin.x = screen_coords[j].x<0?0:screen_coords[j].x;
-				if(screen_coords[j].y < bboxmin.y) bboxmin.y = screen_coords[j].y<0?0:screen_coords[j].y;
-				if(screen_coords[j].x > bboxmax.x) bboxmax.x = screen_coords[j].x>CanvasWidth?CanvasWidth:screen_coords[j].x;
-				if(screen_coords[j].y > bboxmax.y) bboxmax.y = screen_coords[j].y>CanvasHeight?CanvasHeight:screen_coords[j].y;
+			////start backface cull
+			Vec3f one = model.vert(i, 1) - model.vert(i, 0);
+			Vec3f two = model.vert(i, 2) - model.vert(i, 0);
+			Vec3f c = cross(one, two);
+			Vec3f normalized = c.normalize();
+			float dd = (normalized.x * one.x) + (normalized.y * one.y) + (normalized.z * one.z);
+			//solve plane eq
+			float solve = eye.x * normalized.x + eye.y * normalized.y + eye.z * normalized.z + dd;
+			//end backface cull
+			if (solve > 0.01f) {
+
+				Vec2i bboxmin( INT16_MAX, INT16_MAX);
+				Vec2i bboxmax(INT16_MIN, INT16_MIN);
+				for (int j = 0; j < 3; j++) {
+					screen_coords[j] = shader.vertex(modelViewProj, model, i, j);
+					if (screen_coords[j].x < bboxmin.x)
+						bboxmin.x = screen_coords[j].x < 0 ? 0 : screen_coords[j].x;
+					if (screen_coords[j].y < bboxmin.y)
+						bboxmin.y = screen_coords[j].y < 0 ? 0 : screen_coords[j].y;
+					if (screen_coords[j].x > bboxmax.x)
+						bboxmax.x = screen_coords[j].x > CanvasWidth ? CanvasWidth : screen_coords[j].x;
+					if (screen_coords[j].y > bboxmax.y)
+						bboxmax.y = screen_coords[j].y > CanvasHeight ? CanvasHeight : screen_coords[j].y;
+				}
+				//check for backface culling
+				triangle(screen_coords, shader, zbuf, &rc.getDisplay(), bboxmin, bboxmax);
 			}
-			//check for backface culling
-			triangle(screen_coords, shader, zbuf, &rc.getDisplay(), bboxmin, bboxmax);
 		}
 	}
 	if (HAL_GetTick() - renderTime > 1000) {
 		char buf[12];
-		sprintf(&buf[0], "FPS: %u:%u", count,total_frames);
+		sprintf(&buf[0], "FPS: %u:%u", count, total_frames);
 		rc.getDisplay().drawString(0, 140, &buf[0]);
 		count = 0;
 		renderTime = HAL_GetTick();

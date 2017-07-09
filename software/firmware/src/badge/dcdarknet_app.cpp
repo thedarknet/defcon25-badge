@@ -9,7 +9,7 @@
 #include "irmenu.h"
 #include "MessageState.h"
 #include "leddc25.h"
-//#include "bitarray.h"
+#include "images/images.h"
 
 DCDarkNetApp::DCDarkNetApp() :
 		CurrentState(0) {
@@ -109,11 +109,10 @@ uint32_t DCDarkNetApp::init() {
 	gui.drawList(&DrawList);
 	Display.swap();
 	HAL_Delay(TIME_BETWEEN_INITS);
-
 	Display.fillScreen(RGBColor::BLACK);
-	Display.drawString(0,10,"#dcdn17");
-	Display.drawString(0,40,"><>");
-	Display.drawString(0,50,"   Cyberez Inc");
+	Display.swap();
+	Display.drawImage(getCyberez());
+	Display.drawString(0,150,"><>  #dcdn17");
 	Display.swap();
 	HAL_Delay(3000);
 

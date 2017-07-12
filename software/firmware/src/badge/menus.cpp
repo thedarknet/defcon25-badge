@@ -160,7 +160,7 @@ ErrorType MenuState::onInit(RunContext &rc) {
 	Items[8].id = 8;
 	Items[8].text = (const char *) "KeyBoard Test";
 	Items[9].id = 9;
-	Items[9].text = (const char *) "Dialer Test";
+	Items[9].text = (const char *) "Quest dialing";
 	rc.getDisplay().fillScreen(RGBColor::BLACK);
 	rc.getGUI().drawList(&this->MenuList);
 	return ErrorType();
@@ -279,6 +279,9 @@ ReturnStateContext KeyBoardTest::onRun(RunContext &rc) {
 		rc.getDisplay().fillRec(0, 30, 128, 10, RGBColor::BLACK);
 		sprintf(&buf[0], "Current Number:  %d", (int) key);
 		rc.getDisplay().drawString(0, 30, &buf[0]);
+		//TODO
+		//add cool response to 911, 411, 8675309
+		//and Krux's 8743221
 	} else {
 		key = rc.getKB().getLastPinPushed();
 		if (LastKey == 10 && key == 0) {

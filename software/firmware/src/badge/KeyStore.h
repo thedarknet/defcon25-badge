@@ -18,7 +18,7 @@ public:
 	static const uint8_t AGENT_NAME_LENGTH = 12;
 	static const uint8_t CURRENT_VERSION = 0xDC;
 
-	static const uint8_t MAX_CONTACTS = 66; //1024/88 bytes = 11 per sector * 6 sectors
+	static const uint8_t MAX_CONTACTS = 66; //2048/88 bytes = 11 per sector * 3 sectors
 	/////////////////////////////
 	// Sector 57: erase then rotate though saving SettingInfo
 	//				  	byte 0: 0xDC

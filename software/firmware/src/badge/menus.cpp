@@ -282,6 +282,12 @@ ReturnStateContext KeyBoardTest::onRun(RunContext &rc) {
 		//TODO
 		//add cool response to 911, 411, 8675309
 		//and Krux's 8743221
+		//
+		//Hey! Suggestions for dialer numbers for the badge: The 911 equivalents for Europe, India, Australia, and/or Japan; Ghostbusters (555-2368); other 555 numbers from various movies; The Simpsons' Mr. Plow (636-555-3226); The Lost sequence 4, 8, 15, 16, 23, 42; the other Lost sequence 1057; Pi, Euler's number; the Golden Ratio; 10:10/11:11 (from clocks)
+
+		//As easy reference: Rapper Sir Mix-a-Lot touted the benefits of a larger derriere and encouraged fans to dial 1-900-MIXALOT with his 1992 No. 1 single. The famous ditty samples a song from an Irish band.
+		//and "Michael J. Fox was a time-traveling teen who saved the Clock Tower and romanced his high school sweetheart, Jennifer Parker (played by two different actresses). She kissed him in the courthouse square before handing over her phone number (555-4823).
+		//http://www.11points.com/Movies/11_Memorable_555_Phone_Numbers_From_Movies_and_TV
 	} else {
 		key = rc.getKB().getLastPinPushed();
 		if (LastKey == 10 && key == 0) {

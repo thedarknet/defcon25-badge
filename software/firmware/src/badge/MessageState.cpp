@@ -107,6 +107,7 @@ ReturnStateContext MessageState::onRun(RunContext &rc) {
 		rc.getGUI().drawList(&RadioList);
 	} else {
 		//find message in array:
+		rc.getDisplay().fillScreen(RGBColor::BLACK);
 		rc.getDisplay().drawString(0, 10, &FromBuffer[0]);
 		rc.getDisplay().drawString(0, 20, &MsgDisplayBuffer[0]);
 		if (key == QKeyboard::BACK || key == QKeyboard::ENTER) {

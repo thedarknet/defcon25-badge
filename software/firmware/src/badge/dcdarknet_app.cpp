@@ -35,7 +35,7 @@ static const QKeyboard::PinConfig KBPins[] = {
 
 QKeyboard KB(&KBPins[0],sizeof(KBPins)/sizeof(KBPins[0]));
 
-static const uint16_t SETTING_SECTOR = 57; //0x801C800
+static const uint16_t SETTING_SECTOR = 59;
 static const uint16_t FIRST_CONTACT_SECTOR = SETTING_SECTOR + 1;
 static const uint16_t NUM_CONTACT_SECTOR = 64 - FIRST_CONTACT_SECTOR;
 static const uint32_t MY_INFO_ADDRESS = 0x801FFD4; //2c needed
@@ -121,8 +121,10 @@ uint32_t DCDarkNetApp::init() {
 	return retVal;
 }
 
+static uint32_t lastSendTime = 0;
+
 void DCDarkNetApp::run() {
-	static uint32_t tick = HAL_GetTick();
+	uint32_t tick = HAL_GetTick();
 
 	KB.scan();
 	if(KB.isDialerMode()) {
@@ -167,7 +169,6 @@ void DCDarkNetApp::run() {
 	}
 	LedControl.process();
 
-	static uint32_t lastSendTime = 0;
 	if (tick - lastSendTime > 10) {
 		lastSendTime = tick;
 		if (Radio.receiveDone()) {

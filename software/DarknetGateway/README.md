@@ -9,7 +9,7 @@ cd bcm2835-1.52
 make
 sudo make install
 
-git clone https://github.com/thedarknet/defcon25-badge.git
+git clone --recursive https://github.com/thedarknet/defcon25-badge.git
 cd defcon25-badge/software/DarknetGateway
 make
 sudo ./darknet-gateway.bin

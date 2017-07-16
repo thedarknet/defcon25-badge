@@ -2,7 +2,7 @@ VERSION = 0.0.1
 CC      = g++
 CFLAGS  = -Wall -g --std=c++0x -DVERSION=\"$(VERSION)\" -DRPI=1
 #LDFLAGS = -lm `pkg-config --cflags gtk+-2.0` `pkg-config --libs gtk+-2.0`
-LDFLAGS = -lm -lcurl
+LDFLAGS = -lm -lcurl -L src/tbb/build/linux_armv7_gcc_cc4.9.2_libc2.19_kernel4.9.28_release -l tbb
 
 BUILDDIR = build
 SOURCEDIR = src
@@ -24,7 +24,7 @@ INSTALL = install
 all: $(BINARY)
 
 
-$(BINARY): $(BUILDDIR)/$(OBJECTS)
+$(BINARY): tbb $(BUILDDIR)/$(OBJECTS)
 	$(CC) $(CFLAGS) $(LDFLAGS) -I$(HEADERDIR) -I$(SOURCEDIR) $(OBJECTS) /usr/local/lib/libbcm2835.a  -o $(BINARY) 
 
 
@@ -34,19 +34,17 @@ $(BUILDDIR)/%.o: $(SOURCEDIR)/%.cpp
 setup:
 	$(MKDIR) -p $(BUILDDIR)
 
-install:
-	$(INSTALL) -m 755 -o 0 -g 0 -d $(DESTDIR)/usr/local/bin/
-	$(INSTALL) -m 755 -o 0 -g 0 $(BINARY) $(DESTDIR)/usr/local/bin/$(BINARY)
-	$(INSTALL) -m 755 -o 0 -g 0 -d $(DESTDIR)/usr/local/$(NAME)/ui/
-	$(INSTALL) -m 644 -o 0 -g 0 ./ui/*.ui $(DESTDIR)/usr/local/$(NAME)/ui/
-#	$(INSTALL) -m 755 -o 0 -g 0 -d $(DESTDIR)/usr/local/$(NAME)/model/
-#	$(INSTALL) -m 644 -o 0 -g 0 ./model/*.model $(DESTDIR)/usr/local/$(NAME)/model/
-
 clean:
 	$(RM) $(BINARY) $(OBJECTS)
+	make -C src/tbb clean
 
 distclean: clean
 
+tbb:
+	make -C src/tbb
+
+run:
+	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):src/tbb/build/linux_armv7_gcc_cc4.9.2_libc2.19_kernel4.9.28_release;sudo ./$(BINARY)
 
 help:
 	@$(ECHO) "Targets:"

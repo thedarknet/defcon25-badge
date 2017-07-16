@@ -1,3 +1,6 @@
 [submodule "software/3rdParty/CubeMXImporter"]
 	path = software/3rdParty/CubeMXImporter
 	url = https://github.com/cnoviello/CubeMXImporter.git
+[submodule "software/DarknetGateway/src/tbb"]
+	path = software/DarknetGateway/src/tbb
+	url = https://github.com/01org/tbb.git

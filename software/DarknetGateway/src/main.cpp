@@ -26,16 +26,9 @@ void sig_handler(int sig) {
   force_exit=true;
 }
 
-struct HandledCurlData {
-	size_t Size;
-	HandledCurlData(size_t s) : Size(s) {}
-};
+class WorkItem;
+size_t handleCurl(void *ptr, size_t size, size_t nmemb, WorkItem *hcd);
 
-size_t handleCurl(void *ptr, size_t size, size_t nmemb, HandledCurlData *hcd) {
-	hcd->Size+=size*nmemb;
-	printf("in handle: %s\n", (char *)ptr);
-	return size*nmemb;
-}
 
 #define MAX_DATA_LEN 62
 class  WorkItem {
@@ -70,6 +63,24 @@ public:
 					RS.RetVal1 = 100;	
 				break;
 		}
+#if 0
+		HandledCurlData handledCurlData(0);
+		CURL *hnd = curl_easy_init();
+		curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "POST");
+		curl_easy_setopt(hnd, CURLOPT_URL, "https://echo.getpostman.com/post");
+		curl_easy_setopt(hnd, CURLOPT_WRITEFUNCTION, handleCurl);
+		curl_easy_setopt(hnd, CURLOPT_WRITEDATA, &handledCurlData);
+ 
+		struct curl_slist *headers = NULL;
+		headers = curl_slist_append(headers, "postman-token: 62c5f82f-64e3-0407-e673-7d26ed68e109");
+		headers = curl_slist_append(headers, "cache-control: no-cache");
+		headers = curl_slist_append(headers, "content-type: text/plain");
+		curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
+		curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, "Duis posuere volutpat.");
+		CURLcode ret = curl_easy_perform(hnd);
+		curl_easy_cleanup(hnd);
+#endif
+		RS.Success=1;
 		return RS.Success;
 	}
 	void *getResultBuffer() {
@@ -90,25 +101,9 @@ public:
 		ResponseStruct() : Command(0), Success(0), RetVal1(0) {}
 	} __attribute__((packed));
 
-	void getResponse() {
+	void processResponse(const char *p, size_t size) {
+		sscanf(p,"%u",&RS.RetVal1);
 		RS.Success=1;
-#if 0
-		HandledCurlData handledCurlData(0);
-		CURL *hnd = curl_easy_init();
-		curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "POST");
-		curl_easy_setopt(hnd, CURLOPT_URL, "https://echo.getpostman.com/post");
-		curl_easy_setopt(hnd, CURLOPT_WRITEFUNCTION, handleCurl);
-		curl_easy_setopt(hnd, CURLOPT_WRITEDATA, &handledCurlData);
- 
-		struct curl_slist *headers = NULL;
-		headers = curl_slist_append(headers, "postman-token: 62c5f82f-64e3-0407-e673-7d26ed68e109");
-		headers = curl_slist_append(headers, "cache-control: no-cache");
-		headers = curl_slist_append(headers, "content-type: text/plain");
-		curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
-		curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, "Duis posuere volutpat.");
-		CURLcode ret = curl_easy_perform(hnd);
-		curl_easy_cleanup(hnd);
-#endif
 	}
 private:
 	//request data
@@ -120,15 +115,23 @@ private:
 	ResponseStruct RS;
 };
 
+size_t handleCurl(void *ptr, size_t size, size_t nmemb, WorkItem *hcd) {
+	hcd->processResponse((const char *)ptr,size*nmemb);
+	return size*nmemb;
+}
+
 tbb::concurrent_queue<WorkItem*> OutGoingWorkQueue;
 
 class WorkTask : public tbb::task {
 public:
 	WorkTask(WorkItem *wi) : WI(wi) {}
 	tbb::task *execute() {
-		WI->getResponse();
+		if(WI->doWork()) {
+			OutGoingWorkQueue.push(WI);
+		}
 		return null;
 	}
+	virtual ~WorkTask() {}
 private:
 	WorkItem *WI;
 };
@@ -154,15 +157,17 @@ int main(int arc, char *agrv[]) {
 	curl_global_init(CURL_GLOBAL_ALL);
 	while(!force_exit) {
 		if(Radio.receiveDone()) {
-			WorkItem wi((const uint8_t*)&Radio.DATA[0],Radio.DATALEN, Radio.SENDERID, Radio.RSSI);
-			if(wi.isValid()) {
-				
+			WorkItem *wi = new WorkItem((const uint8_t*)&Radio.DATA[0],Radio.DATALEN, Radio.SENDERID, Radio.RSSI);
+			if(wi->isValid()) {
+				WorkTask *wt = new WorkTask(wi);
+				WorkTask::enqueue(*wt);
 			}
 		}
 		WorkItem *wi = 0;
 		int count=0;
 		while(Radio.canSend() && count++<10 && OutGoingWorkQueue.try_pop(wi)) {
 			Radio.send(wi->getSender(),wi->getResultBuffer(),wi->getResultSize());
+			delete wi;
 		}	
 	}
 	curl_global_cleanup();

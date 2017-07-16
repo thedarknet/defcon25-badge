@@ -22,6 +22,14 @@ uint8_t SPI::transfer(uint8_t data) {
 	return onTransfer(data);
 }
 
+bool SPI::init(SPIFrequency  divider, BitOrder  bitOrder, SPIMode dataMode) {
+	return onInit(divider, bitOrder, dataMode);
+}
+
+bool SPI::shutdown() {
+	return onShutdown();
+}
+
 SPI::~SPI() {
 
 }
@@ -40,6 +48,18 @@ ErrorType Hardware::disableIRQ() {
 
 ErrorType Hardware::attachInterrupt(int uniqueIRQ, void (*handler)(void), int mode) {
 	return onAttachInterrupt(uniqueIRQ, handler, mode);
+}
+
+void Hardware::pinMode(uint8_t pin, PINMODE mode) {
+	onPinMode(pin,mode);
+}
+
+void Hardware::digitalWrite(uint8_t pin, Hardware::PINVAL val) {
+	onDigitalWrite(pin,val);
+}
+
+uint8_t Hardware::digitalRead(uint8_t pin) {
+	return onDigitalRead(pin);
 }
 
 SPI *Hardware::getSPI1() {

@@ -1,22 +1,14 @@
 
 #include "RPIHardware.h"
 #include <chrono>
-#include <wiringPi.h>
-#include <wiringPiSPI.h>
 #include <cstdio>
 #include <cerrno>
 
-static const uint32_t SPI1_CS = 6; //pin 22
-
 RPISPI::RPISPI(int channel, int cs) : Channel(channel), CS(cs) {
-	if(-1==wiringPiSPISetup(Channel,18000000)) {
-		printf("error: %d\n",errno);
-	}
-	pinMode(OUTPUT,CS); //pin 22
 }
 
 RPISPI::~RPISPI() {
-
+	shutdown();
 }
 
 ErrorType RPISPI::onMasterListen() {
@@ -24,26 +16,43 @@ ErrorType RPISPI::onMasterListen() {
 }
 
 ErrorType RPISPI::onSelect() {
-	digitalWrite(CS,0);
+	//todo add this to a interface for GPIO
+	bcm2835_gpio_write(CS,0);
 	return ErrorType();
 }
 
 ErrorType RPISPI::onUnselect()  {
-	digitalWrite(CS,1);
+	//todo add this to a interface for GPIO
+	bcm2835_gpio_write(CS,1);
 	return ErrorType();
 }
 
 uint8_t RPISPI::onTransfer(uint8_t data) {
-	if(wiringPiSPIDataRW(Channel, &data,1)!=-1) {
-		return data;	
-	}
-	return 0;
+	return bcm2835_spi_transfer(data);
 }
 
-RPISPI RPISPI1(0,SPI1_CS);
+bool RPISPI::onInit(SPIFrequency  divider, BitOrder  bitOrder, SPIMode dataMode) {
+	if(bcm2835_init()) {
+		bcm2835_gpio_fsel(CS,BCM2835_GPIO_FSEL_OUTP);
+		// We control CS line manually don't assert CEx line!
+		bcm2835_spi_chipSelect(BCM2835_SPI_CS_NONE);
+		//todo map from generic to RPI specific
+		bcm2835_spi_setClockDivider(BCM2835_SPI_CLOCK_DIVIDER_256);
+		bcm2835_spi_setBitOrder(BCM2835_SPI_BIT_ORDER_MSBFIRST);
+		bcm2835_spi_setDataMode(BCM2835_SPI_MODE0);
+		bcm2835_spi_begin();
+		return true;
+	}
+	return false;
+}
 
-RPIHardware::RPIHardware() : Hardware(&RPISPI1,0) {
-	wiringPiSetup();
+bool RPISPI::onShutdown() {
+	bcm2835_spi_end();
+	return true;
+}
+
+
+RPIHardware::RPIHardware(SPI *one, SPI* two) : Hardware(one,two) {
 }
 
 RPIHardware::~RPIHardware() {
@@ -60,22 +69,41 @@ ErrorType RPIHardware::onDisableIRQ() {
 
 
 ErrorType RPIHardware::onAttachInterrupt(int uniqueIRQ, void (*handler)(void), int mode) {
+	UniqueIRQ = uniqueIRQ;
+	IRQHandler = handler;
 	return ErrorType();
 }
 
+void RPIHardware::checkIRQ() {
+	if (bcm2835_gpio_eds(UniqueIRQ)) {
+		// Now clear the eds flag by setting it to 1
+		bcm2835_gpio_set_eds(UniqueIRQ);
+		printf("Rising event detect for pin GPIO%d\n", UniqueIRQ);
+		(*IRQHandler)();
+    }
+}
+
+void RPIHardware::onPinMode(uint8_t pin, Hardware::PINMODE mode) {
+	if(mode==Hardware::OUTPUT) {
+		 bcm2835_gpio_fsel(pin,BCM2835_GPIO_FSEL_OUTP);
+	} else {
+		 bcm2835_gpio_fsel(pin,BCM2835_GPIO_FSEL_INPT);
+	}
+}
+
+void RPIHardware::onDigitalWrite(uint8_t pin, Hardware::PINVAL val) {
+	bcm2835_gpio_write(pin,val);
+}
+
+uint8_t RPIHardware::onDigitalRead(uint8_t pin) {
+	return bcm2835_gpio_lev(pin);
+}
 
 static auto ApplicationStartTime = std::chrono::system_clock::now();
 
-RPIHardware TheHardware;
-Hardware &Hardware::get() {
-	return TheHardware;
-}
-
-/*
 //returns milliseconds since application start
-uint32_t millis() {
+uint32_t Hardware::millis() {
 	auto diff = std::chrono::system_clock::now()-ApplicationStartTime;
 	return std::chrono::duration_cast<std::chrono::milliseconds>(diff).count();
 }
-*/
 

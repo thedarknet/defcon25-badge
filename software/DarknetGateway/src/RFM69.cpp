@@ -103,15 +103,15 @@ bool RFM69::initialize(uint8_t freqBand, RadioAddrType nodeID, uint8_t networkID
 	//pinMode(_slaveSelectPin, OUTPUT);
 	//Hardware::get().getSPI1()->begin();
 	//SPI.begin();
-	unsigned long start = millis();
+	unsigned long start = Hardware::get().millis();
 	uint16_t timeout = 500;
 	do
 		writeReg(REG_SYNCVALUE1, 0xAA);
-	while (readReg(REG_SYNCVALUE1) != 0xaa && millis() - start < timeout);
-	start = millis();
+	while (readReg(REG_SYNCVALUE1) != 0xaa && Hardware::get().millis() - start < timeout);
+	start = Hardware::get().millis();
 	do
 		writeReg(REG_SYNCVALUE1, 0x55);
-	while (readReg(REG_SYNCVALUE1) != 0x55 && millis() - start < timeout);
+	while (readReg(REG_SYNCVALUE1) != 0x55 && Hardware::get().millis() - start < timeout);
 
 	for (uint8_t i = 0; CONFIG[i][0] != 255; i++)
 		writeReg(CONFIG[i][0], CONFIG[i][1]);
@@ -122,10 +122,10 @@ bool RFM69::initialize(uint8_t freqBand, RadioAddrType nodeID, uint8_t networkID
 
 	setHighPower(_isRFM69HW); // called regardless if it's a RFM69W or RFM69HW
 	setMode(RF69_MODE_STANDBY);
-	start = millis();
-	while (((readReg(REG_IRQFLAGS1) & RF_IRQFLAGS1_MODEREADY) == 0x00) && millis() - start < timeout)
+	start = Hardware::get().millis();
+	while (((readReg(REG_IRQFLAGS1) & RF_IRQFLAGS1_MODEREADY) == 0x00) && Hardware::get().millis() - start < timeout)
 		; // wait for ModeReady
-	if (millis() - start >= timeout)
+	if (Hardware::get().millis() - start >= timeout)
 		return false;
 	_inISR = false;
 	Hardware::get().attachInterrupt(_interruptID, RFM69::isr0, 0);
@@ -253,8 +253,8 @@ bool RFM69::canSend() {
 
 void RFM69::send(RadioAddrType toAddress, const void* buffer, uint8_t bufferSize, bool requestACK) {
 	writeReg(REG_PACKETCONFIG2, (readReg(REG_PACKETCONFIG2) & 0xFB) | RF_PACKET2_RXRESTART); // avoid RX deadlocks
-	uint32_t now = millis();
-	while (!canSend() && millis() - now < RF69_CSMA_LIMIT_MS)
+	uint32_t now = Hardware::get().millis();
+	while (!canSend() && Hardware::get().millis() - now < RF69_CSMA_LIMIT_MS)
 		receiveDone();
 	sendFrame(toAddress, buffer, bufferSize, requestACK, false);
 }
@@ -270,10 +270,10 @@ bool RFM69::sendWithRetry(RadioAddrType toAddress, const void* buffer, uint8_t b
 	uint32_t sentTime;
 	for (uint8_t i = 0; i <= retries; i++) {
 		send(toAddress, buffer, bufferSize, true);
-		sentTime = millis();
-		while (millis() - sentTime < retryWaitTime) {
+		sentTime = Hardware::get().millis();
+		while (Hardware::get().millis() - sentTime < retryWaitTime) {
 			if (ACKReceived(toAddress)) {
-				//Serial.print(" ~ms:"); Serial.print(millis() - sentTime);
+				//Serial.print(" ~ms:"); Serial.print(Hardware::get().millis() - sentTime);
 				return true;
 			}
 		}
@@ -300,8 +300,8 @@ void RFM69::sendACK(const void* buffer, uint8_t bufferSize) {
 	uint8_t sender = SENDERID;
 	int16_t _RSSI = RSSI; // save payload received RSSI value
 	writeReg(REG_PACKETCONFIG2, (readReg(REG_PACKETCONFIG2) & 0xFB) | RF_PACKET2_RXRESTART); // avoid RX deadlocks
-	uint32_t now = millis();
-	while (!canSend() && millis() - now < RF69_CSMA_LIMIT_MS)
+	uint32_t now = Hardware::get().millis();
+	while (!canSend() && Hardware::get().millis() - now < RF69_CSMA_LIMIT_MS)
 		receiveDone();
 	SENDERID = sender;    // TWS: Restore SenderID after it gets wiped out by receiveDone()
 	sendFrame(sender, buffer, bufferSize, false, true);

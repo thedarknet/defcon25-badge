@@ -2,7 +2,7 @@ VERSION = 0.0.1
 CC      = g++
 CFLAGS  = -Wall -g --std=c++0x -DVERSION=\"$(VERSION)\" -DRPI=1
 #LDFLAGS = -lm `pkg-config --cflags gtk+-2.0` `pkg-config --libs gtk+-2.0`
-LDFLAGS = -lm -lwiringPi
+LDFLAGS = -lm -lcurl
 
 BUILDDIR = build
 SOURCEDIR = src
@@ -25,7 +25,7 @@ all: $(BINARY)
 
 
 $(BINARY): $(BUILDDIR)/$(OBJECTS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -I$(HEADERDIR) -I$(SOURCEDIR) $(OBJECTS) -o $(BINARY) 
+	$(CC) $(CFLAGS) $(LDFLAGS) -I$(HEADERDIR) -I$(SOURCEDIR) $(OBJECTS) /usr/local/lib/libbcm2835.a  -o $(BINARY) 
 
 
 $(BUILDDIR)/%.o: $(SOURCEDIR)/%.cpp

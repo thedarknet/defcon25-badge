@@ -308,12 +308,12 @@ SettingState::SettingState() :
 	memset(&AgentName[0], 0, sizeof(AgentName));
 	Items[0].id = 0;
 	Items[0].text = (const char *) "Set Agent Name";
+	//Items[1].id = 1;
+	//Items[1].text = (const char *) "Set Screen Saver";
 	Items[1].id = 1;
-	Items[1].text = (const char *) "Set Screen Saver";
-	Items[2].id = 2;
-	Items[1].text = (const char *) "Set Screen Saver Time";
+	Items[1].text = (const char *) "Screen Saver Time";
 	Items[1].setShouldScroll();
-	Items[2].id = 3;
+	Items[2].id = 2;
 	Items[2].text = (const char *) "Reset Badge Contacts";
 	Items[2].setShouldScroll();
 }
@@ -437,9 +437,9 @@ ReturnStateContext SettingState::onRun(RunContext &rc) {
 			}
 			break;
 	}
-	//if (rc.getKB().wasKeyReleased() && SubState < 100) {
-	rc.getGUI().drawList(&SettingList);
-	//}
+	if (SubState < 100) {
+		rc.getGUI().drawList(&SettingList);
+	}
 	return ReturnStateContext(nextState);
 }
 

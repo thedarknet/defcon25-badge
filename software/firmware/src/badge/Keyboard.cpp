@@ -217,7 +217,6 @@ void QKeyboard::scan() {
 					uint32_t value = HAL_TSC_GroupGetValue(&htsc, PC[r].GroupIndex);
 					if (value < 250) {
 						selectedPin = r;
-						LastPinSelectedTick = HAL_GetTick();
 					}
 				} else {
 					ERRMSG("Error during Poll");
@@ -238,6 +237,7 @@ void QKeyboard::scan() {
 			KeyJustReleased = NO_PIN_SELECTED;
 		}
 	} else {
+		LastPinSelectedTick = HAL_GetTick();
 		if (isDialerMode()) {
 			KeyJustReleased = DM->selectPin(selectedPin);
 			LastSelectedPin = selectedPin;

@@ -103,7 +103,7 @@ int main(void) {
 	MX_SPI2_Init();
 	MX_TIM16_Init();
 	MX_TSC_Init();
-	MX_USB_DEVICE_Init();
+	//MX_USB_DEVICE_Init();
 	//comment if working on dev board
 	MX_SPI3_Init();
 	IRInit();

@@ -18,15 +18,16 @@ class Model {
 	//no model matrix to save space and computation we assume identity
 public:
 	Model();
-	void set(VertexStruct *v, uint16_t nv, uint16_t *i, uint16_t ni);
+	void set(const VertexStruct *v, uint16_t nv, const uint16_t *i, uint16_t ni);
 	const Vec3f &normal(uint16_t face, uint8_t nVert) const;
 	const Vec3f &vert(uint16_t face, uint8_t nVert) const;
 	uint32_t nFaces() const;
 	const Matrix &getModelTransform() const {return ModelTransform;}
+	void setTransformation(float t) {ModelTransform.setRotation(t);}
 private:
-	VertexStruct *Verts;
+	const VertexStruct *Verts;
 	uint16_t NumVerts;
-	uint16_t *Indexes;
+	const uint16_t *Indexes;
 	uint8_t NumIndexes;
 	Matrix ModelTransform;
 };
@@ -80,8 +81,9 @@ private:
 
 void viewport(int x, int y, int w, int h);
 void projection(float coeff = 0.f); // coeff = -1/c
-void lookat(Vec3f eye, Vec3f center, Vec3f up);
-void triangle(Vec3i *pts, IShader &shader, BitArray &zbuffer, DisplayST7735 *display);
+void lookat(const Vec3f &eye, const Vec3f &center, const Vec3f &up);
+//void triangle(Vec3i *pts, IShader &shader, BitArray &zbuffer, DisplayST7735 *display);
+void triangle(Vec3i *pts, IShader &shader, BitArray &zbuffer, DisplayST7735 *display, const Vec2i &bboxmin, const Vec2i &bboxmax);
 
 template<typename T> T CLAMP(const T& value, const T& low, const T& high) {
 	return value < low ? low : (value > high ? high : value);

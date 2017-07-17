@@ -4,6 +4,11 @@
 #include <cassert>
 #include <cmath>
 
+namespace cmdc0de {
+	float fastcos(float n);
+	float fastsin(float n);
+}
+
 template<size_t DimCols,size_t DimRows,typename T> class mat;
 
 template <size_t DIM, typename T> struct vec {
@@ -164,6 +169,12 @@ public:
         mat<DimRows,DimCols,T> ret = adjugate();
         T tmp = ret[0]*rows[0];
         return ret/tmp;
+    }
+
+    void setRotation(float f) {
+    	rows[2][2] = rows[0][0] = cmdc0de::fastcos(f);
+    	rows[0][2] = cmdc0de::fastsin(f);
+    	rows[2][0] = -rows[0][2] ;//sin(f);
     }
 };
 

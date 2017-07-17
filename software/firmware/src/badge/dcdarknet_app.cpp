@@ -9,7 +9,7 @@
 #include "irmenu.h"
 #include "MessageState.h"
 #include "leddc25.h"
-//#include "bitarray.h"
+#include "images/images.h"
 
 DCDarkNetApp::DCDarkNetApp() :
 		CurrentState(0) {
@@ -50,11 +50,14 @@ static const uint32_t DISPLAY_WIDTH = 128;
 static const uint32_t DISPLAY_HEIGHT = 160;
 static const uint32_t DISPLAY_OPT_WRITE_ROWS = 2;
 DisplayST7735 Display(DISPLAY_WIDTH, DISPLAY_HEIGHT, DisplayST7735::PORTAIT);
-uint16_t DrawBuffer[DISPLAY_WIDTH * DISPLAY_OPT_WRITE_ROWS]; //120 wide, 10 pixels high, 2 bytes per pixel
+uint16_t DrawBuffer[DISPLAY_WIDTH * DISPLAY_OPT_WRITE_ROWS]; //120 wide, 10 pixels high, 2 bytes per pixel (uint16_t)
 uint8_t DrawBufferRangeChange[DISPLAY_HEIGHT/DISPLAY_OPT_WRITE_ROWS+1];
-DrawBufferNoBuffer NoBuffer(&Display,&DrawBuffer[0],DISPLAY_OPT_WRITE_ROWS);
+
+//DrawBufferNoBuffer NoBuffer(&Display,&DrawBuffer[0],DISPLAY_OPT_WRITE_ROWS);
+
 static const uint8_t BITS_PER_PIXEL = 6;
 uint8_t BackBuffer[((DISPLAY_WIDTH * DISPLAY_HEIGHT * BITS_PER_PIXEL)/8)+1];
+
 DrawBuffer2D16BitColor DB2D16(DISPLAY_WIDTH,DISPLAY_HEIGHT,&BackBuffer[0],&DrawBuffer[0],DISPLAY_OPT_WRITE_ROWS,&DrawBufferRangeChange[0], &Display);
 LedDC25 LedControl;
 
@@ -106,11 +109,10 @@ uint32_t DCDarkNetApp::init() {
 	gui.drawList(&DrawList);
 	Display.swap();
 	HAL_Delay(TIME_BETWEEN_INITS);
-
 	Display.fillScreen(RGBColor::BLACK);
-	Display.drawString(0,10,"#dcdn17");
-	Display.drawString(0,40,"><>");
-	Display.drawString(0,50,"   Cyberez Inc");
+	Display.swap();
+	Display.drawImage(getCyberez());
+	Display.drawString(0,150,"><>  #dcdn17");
 	Display.swap();
 	HAL_Delay(3000);
 

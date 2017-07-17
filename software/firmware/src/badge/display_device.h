@@ -4,6 +4,8 @@
 #include "error_type.h"
 #include "fonts.h"
 #include "bitarray.h"
+#include "images/images.h"
+
 
 /*
  * @Author cmdc0de
@@ -107,6 +109,7 @@ public:
 		virtual void drawHorizontalLine(int16_t x, int16_t y, int16_t w, const RGBColor& color)=0;
 		virtual void swap()=0;
 		virtual bool drawPixel(uint16_t x0, uint16_t y0, const RGBColor &color)=0;
+		virtual void drawImage(const DCImage &dc)=0;
 	protected:
 		void setAddrWindow(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1);
 		bool writeCmd(uint8_t c);
@@ -485,6 +488,7 @@ public:
 	void fillRec(int16_t x, int16_t y, int16_t w, int16_t h, const RGBColor &color);
 	void drawRec(int16_t x, int16_t y, int16_t w, int16_t h, const RGBColor &color);
 	void fillScreen(const RGBColor &color);
+	void drawImage(const DCImage &dcImage);
 	//////////////////////////////////////////
 	void setFrameBuffer(FrameBuf *fb) {
 		FB = fb;
@@ -544,6 +548,7 @@ public:
 	virtual void fillRec(int16_t x, int16_t y, int16_t w, int16_t h, const RGBColor &color);
 	virtual void swap();
 	virtual ~DrawBufferNoBuffer();
+	virtual void drawImage(const DCImage &dc);
 private:
 	DisplayST7735 *Display;
 	uint16_t *SPIBuffer;
@@ -575,6 +580,7 @@ public:
 	virtual void drawHorizontalLine(int16_t x, int16_t y, int16_t w, const RGBColor& color);
 	virtual void fillRec(int16_t x, int16_t y, int16_t w, int16_t h, const RGBColor &color);
 	virtual void swap();
+	virtual void drawImage(const DCImage &dc);
 protected:
 	uint16_t calcLCDColor(uint8_t packedColor);
 	uint8_t deresColor(const RGBColor &color);

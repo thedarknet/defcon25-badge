@@ -167,6 +167,12 @@ bool DrawBufferNoBuffer::drawPixel(uint16_t x0, uint16_t y0, const RGBColor &col
 	return writeNData(pc.getPackedColorData(), pc.getSize());
 }
 
+void DrawBufferNoBuffer::drawImage(const DCImage &dc) {
+	setAddrWindow(0,0,dc.width,dc.height);
+	writeCmd(DisplayST7735::MEMORY_WRITE);
+	writeNData((const uint8_t*)&dc.pixel_data[0],dc.height*dc.width*dc.bytes_per_pixel);
+}
+
 void DrawBufferNoBuffer::fillRec(int16_t x, int16_t y, int16_t w, int16_t h, const RGBColor &color) {
 	setAddrWindow(x, y, w, h);
 	writeCmd(DisplayST7735::MEMORY_WRITE);
@@ -255,6 +261,16 @@ bool DrawBuffer2D16BitColor::drawPixel(uint16_t x, uint16_t y, const RGBColor &c
 	return true;
 }
 
+//not using buffer just write directly to SPI
+void DrawBuffer2D16BitColor::drawImage(const DCImage &dc) {
+	setAddrWindow(0,0,dc.width,dc.height);
+	writeCmd(DisplayST7735::MEMORY_WRITE);
+	writeNData((const uint8_t*)&dc.pixel_data[0],dc.height*dc.width*dc.bytes_per_pixel);
+	for(int i=0;i<dc.height;i++) {
+		DrawBlocksChanged.setValueAsByte(i / RowsForDrawBuffer,0);
+	}
+}
+
 void DrawBuffer2D16BitColor::fillRec(int16_t x, int16_t y, int16_t w, int16_t h, const RGBColor &color) {
 	uint8_t c = deresColor(color);
 	for (int i = y; i < (h + y); ++i) {
@@ -327,7 +343,7 @@ uint8_t DrawBuffer2D16BitColor::deresColor(const RGBColor &color) {
 
 DisplayST7735::DisplayST7735(uint16_t w, uint16_t h, DisplayST7735::ROTATION r) :
 		DisplayDevice(w, h, r), CurrentTextColor(RGBColor::WHITE), CurrentBGColor(
-				RGBColor::BLACK), CurrentFont(0) {
+				RGBColor::BLACK), CurrentFont(0), FB(0) {
 
 }
 
@@ -391,6 +407,10 @@ static const struct sCmdBuf initializers[] = {
 
 void DisplayST7735::swap() {
 	FB->swap();
+}
+
+void DisplayST7735::drawImage(const DCImage &dcImage) {
+	FB->drawImage(dcImage);
 }
 
 bool DisplayST7735::drawPixel(uint16_t x0, uint16_t y0, const RGBColor &color) {

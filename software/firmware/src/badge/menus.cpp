@@ -245,7 +245,7 @@ ErrorType MenuState::onShutdown() {
 }
 
 KeyBoardTest::KeyBoardTest() :
-		LastKey(QKeyboard::NO_PIN_SELECTED - 1) {
+		LastKey(QKeyboard::NO_PIN_SELECTED - 1), NumberDialed(), Pos(0), ReleaseEnter(false) {
 
 }
 
@@ -256,8 +256,11 @@ KeyBoardTest::~KeyBoardTest() {
 ErrorType KeyBoardTest::onInit(RunContext &rc) {
 	LastKey = QKeyboard::NO_PIN_SELECTED - 1;
 	rc.getDisplay().fillScreen(RGBColor::BLACK);
+	memset(&NumberDialed[0], 0, sizeof(NumberDialed));
+	Pos = 0;
+	rc.getLedControl().setAllOff();
 	if (rc.getKB().isDialerMode()) {
-		rc.getDisplay().drawString(0, 10, (const char*) "Reset to exit");
+		rc.getDisplay().drawString(0, 10, (const char*) "Hold Hook");
 	} else {
 		rc.getDisplay().drawString(0, 10, (const char*) "Hook then 1 to exit");
 	}
@@ -268,8 +271,25 @@ ReturnStateContext KeyBoardTest::onRun(RunContext &rc) {
 	StateBase *nextState = this;
 	uint8_t key = QKeyboard::NO_PIN_SELECTED;
 	if (rc.getKB().isDialerMode()) {
-		if(rc.getKB().getLastPinPushed()==QKeyboard::ENTER) {
-			LastKey = rc.getKB().getLastKeyReleased();
+		if(Pos>=NUMBER_DIALED) {
+			rc.getDisplay().drawString(0, 100, "Hit 1 to reset");
+			if(rc.getKB().getLastPinPushed()==QKeyboard::ONE) {
+				clearState(INIT_BIT);
+			}
+		} else {
+			if (rc.getKB().getLastPinPushed() == QKeyboard::ENTER && !ReleaseEnter) {
+				ReleaseEnter = true;
+				LastKey = rc.getKB().getLastKeyReleased();
+				NumberDialed[Pos] = rc.getKB().getNumberAsCharacter();
+				++Pos;
+			} else if (rc.getKB().getLastPinPushed() == QKeyboard::ENTER) {
+				if (HAL_GetTick() - rc.getKB().getLastPinSelectedTick() > 2000) {
+					rc.getKB().setDialerMode(false);
+					nextState = StateFactory::getMenuState();
+				}
+			} else if (rc.getKB().getLastPinPushed() != QKeyboard::ENTER) {
+				ReleaseEnter = false;
+			}
 		}
 		key = rc.getKB().getLastPinPushed();
 		char buf[24];
@@ -279,6 +299,23 @@ ReturnStateContext KeyBoardTest::onRun(RunContext &rc) {
 		rc.getDisplay().fillRec(0, 30, 128, 10, RGBColor::BLACK);
 		sprintf(&buf[0], "Current Number:  %d", (int) key);
 		rc.getDisplay().drawString(0, 30, &buf[0]);
+		sprintf(&buf[0], "Dialing:");
+		rc.getDisplay().drawString(0, 50, &buf[0]);
+		sprintf(&buf[0], "Dialing: %s", &NumberDialed[0]);
+		rc.getDisplay().drawString(0, 70, &buf[0]);
+		if (Pos >= NUMBER_DIALED) {
+			//validate number
+			//TODO
+			//add cool response to 911, 411, 8675309
+			//and Krux's 8743221
+			//Hey! Suggestions for dialer numbers for the badge: The 911 equivalents for Europe, India, Australia, and/or Japan; Ghostbusters (555-2368); other 555 numbers from various movies; The Simpsons' Mr. Plow (636-555-3226); The Lost sequence 4, 8, 15, 16, 23, 42; the other Lost sequence 1057; Pi, Euler's number; the Golden Ratio; 10:10/11:11 (from clocks)
+			//As easy reference: Rapper Sir Mix-a-Lot touted the benefits of a larger derriere and encouraged fans to dial 1-900-MIXALOT with his 1992 No. 1 single. The famous ditty samples a song from an Irish band.
+			//and "Michael J. Fox was a time-traveling teen who saved the Clock Tower and romanced his high school sweetheart, Jennifer Parker (played by two different actresses). She kissed him in the courthouse square before handing over her phone number (555-4823).
+			//http://www.11points.com/Movies/11_Memorable_555_Phone_Numbers_From_Movies_and_TV
+
+			//force init to run again
+			//clearState(INIT_BIT);
+		}
 	} else {
 		key = rc.getKB().getLastPinPushed();
 		if (LastKey == 10 && key == 0) {
@@ -540,7 +577,8 @@ BadgeInfoState::onRun(RunContext & rc)
 			nextState = StateFactory::getMenuState();
 			break;
 	}
-	if (rc.getKB().wasKeyReleased() || (Items[BadgeInfoList.selectedItem].shouldScroll() && getTimesRunCalledSinceLastReset()%5==0)) {
+	if (rc.getKB().wasKeyReleased()
+			|| (Items[BadgeInfoList.selectedItem].shouldScroll() && getTimesRunCalledSinceLastReset() % 5 == 0)) {
 		rc.getGUI().drawList(&BadgeInfoList);
 	}
 	return ReturnStateContext(nextState);
@@ -614,7 +652,6 @@ static IRState TheIRState(2000, 5);
 static SendMsgState TheMsgState;
 static AddressState TheAddressState;
 static Menu3D The3DMenu;
-
 
 Menu3D *StateFactory::get3DState() {
 	return &The3DMenu;

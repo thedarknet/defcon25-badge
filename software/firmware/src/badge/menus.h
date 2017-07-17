@@ -166,6 +166,8 @@ private:
 
 class KeyBoardTest : public StateBase {
 public:
+	static const uint16_t NUMBER_DIALED = 7;
+public:
 	KeyBoardTest();
 	virtual ~KeyBoardTest();
 protected:
@@ -174,6 +176,9 @@ protected:
 	virtual ErrorType onShutdown();
 private:
 	uint8_t LastKey;
+	int8_t NumberDialed[NUMBER_DIALED+1];
+	uint8_t Pos;
+	bool ReleaseEnter;
 };
 
 class SendMsgState;

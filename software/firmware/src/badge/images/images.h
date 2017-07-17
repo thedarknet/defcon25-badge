@@ -9,6 +9,5 @@ struct DCImage {
 };
 
 const DCImage &getCyberez();
-const DCImage &getDC25();
 
 #endif

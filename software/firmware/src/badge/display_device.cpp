@@ -263,12 +263,10 @@ bool DrawBuffer2D16BitColor::drawPixel(uint16_t x, uint16_t y, const RGBColor &c
 
 //not using buffer just write directly to SPI
 void DrawBuffer2D16BitColor::drawImage(const DCImage &dc) {
-	setAddrWindow(0,0,dc.width,dc.height);
+	setAddrWindow(0,0,dc.width-1,dc.height-1);
 	writeCmd(DisplayST7735::MEMORY_WRITE);
 	writeNData((const uint8_t*)&dc.pixel_data[0],dc.height*dc.width*dc.bytes_per_pixel);
-	for(int i=0;i<dc.height;i++) {
-		DrawBlocksChanged.setValueAsByte(i / RowsForDrawBuffer,0);
-	}
+	DrawBlocksChanged.clear();
 }
 
 void DrawBuffer2D16BitColor::fillRec(int16_t x, int16_t y, int16_t w, int16_t h, const RGBColor &color) {

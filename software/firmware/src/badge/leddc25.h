@@ -51,6 +51,8 @@ public:
 		, DIALER = 1
 		, GAME_OF_LIFE = 2
 		, INIT = 3
+		, CLOCK_WISE_CIRCLE = 4
+		, COUNTER_CLOCK_WISE_CIRCLE=5
 	};
 public:
 	LedDC25();

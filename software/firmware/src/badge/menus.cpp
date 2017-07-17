@@ -11,6 +11,7 @@
 #include "AddressState.h"
 #include "3d/menu3d.h"
 #include "leddc25.h"
+#include <string.h>
 //#include <tim.h>
 //#include <uECC.h>
 //#include <sha256.h>
@@ -160,7 +161,7 @@ ErrorType MenuState::onInit(RunContext &rc) {
 	Items[8].id = 8;
 	Items[8].text = (const char *) "KeyBoard Test";
 	Items[9].id = 9;
-	Items[9].text = (const char *) "Dialer Test";
+	Items[9].text = (const char *) "Quest Dialing";
 	rc.getDisplay().fillScreen(RGBColor::BLACK);
 	rc.getGUI().drawList(&this->MenuList);
 	return ErrorType();
@@ -245,7 +246,7 @@ ErrorType MenuState::onShutdown() {
 }
 
 KeyBoardTest::KeyBoardTest() :
-		LastKey(QKeyboard::NO_PIN_SELECTED - 1), NumberDialed(), Pos(0), ReleaseEnter(false) {
+		LastKey(QKeyboard::NO_PIN_SELECTED - 1), NumberDialed(), FinalHexHash(), Pos(0), ReleaseEnter(false) {
 
 }
 
@@ -257,6 +258,7 @@ ErrorType KeyBoardTest::onInit(RunContext &rc) {
 	LastKey = QKeyboard::NO_PIN_SELECTED - 1;
 	rc.getDisplay().fillScreen(RGBColor::BLACK);
 	memset(&NumberDialed[0], 0, sizeof(NumberDialed));
+	memset(&FinalHexHash[0], 0, sizeof(FinalHexHash));
 	Pos = 0;
 	rc.getLedControl().setAllOff();
 	if (rc.getKB().isDialerMode()) {
@@ -267,13 +269,43 @@ ErrorType KeyBoardTest::onInit(RunContext &rc) {
 	return ErrorType();
 }
 
+//http://www.11points.com/Movies/11_Memorable_555_Phone_Numbers_From_Movies_and_TV
+#define TOTAL_NUMBERS 6
+static const char *Numbers[] = {
+		"411"
+		, "911"
+		, "8675309"
+		, "8743221"
+		, "5552368" //Ghostbusters (555-2368)
+		, "5554823" //back to the future
+};
+
 ReturnStateContext KeyBoardTest::onRun(RunContext &rc) {
 	StateBase *nextState = this;
 	uint8_t key = QKeyboard::NO_PIN_SELECTED;
 	if (rc.getKB().isDialerMode()) {
-		if(Pos>=NUMBER_DIALED) {
+		if (Pos >= NUMBER_DIALED) {
 			rc.getDisplay().drawString(0, 100, "Hit 1 to reset");
-			if(rc.getKB().getLastPinPushed()==QKeyboard::ONE) {
+			if (FinalHexHash[0] == '\0') {
+				rc.getLedControl().setDanceType(LedDC25::CLOCK_WISE_CIRCLE, 150);
+				for (int i = 0; i < TOTAL_NUMBERS; i++) {
+					if (0 == strcmp((const char *)&NumberDialed[0], (const char *)Numbers[i])) {
+						uint8_t mhash[SHA256_HASH_SIZE] = {0};
+						ShaOBJ HCtx;
+						sha256_init(&HCtx);
+						sha256_add(&HCtx, rc.getContactStore().getMyInfo().getPublicKey(), ContactStore::PUBLIC_KEY_LENGTH);
+						sha256_add(&HCtx, (const unsigned char *)&NumberDialed[i], strlen((const char *)&NumberDialed[0]));
+						sha256_digest(&HCtx, &mhash[0]);
+						sprintf((char *)&FinalHexHash[0],"%02x%02x%02x%02x%02x%02x%02x%02x", mhash[0],mhash[1],mhash[2],
+								mhash[3],mhash[4],mhash[5],mhash[6],mhash[7]);
+						break;
+					}
+				}
+			} else {
+				rc.getDisplay().drawString(0,120,"Send To Daemon: ");
+				rc.getDisplay().drawString(0,130,(const char *)&FinalHexHash[0]);
+			}
+			if (rc.getKB().getLastPinPushed() == QKeyboard::ONE) {
 				clearState(INIT_BIT);
 			}
 		} else {
@@ -303,19 +335,6 @@ ReturnStateContext KeyBoardTest::onRun(RunContext &rc) {
 		rc.getDisplay().drawString(0, 50, &buf[0]);
 		sprintf(&buf[0], "Dialing: %s", &NumberDialed[0]);
 		rc.getDisplay().drawString(0, 70, &buf[0]);
-		if (Pos >= NUMBER_DIALED) {
-			//validate number
-			//TODO
-			//add cool response to 911, 411, 8675309
-			//and Krux's 8743221
-			//Hey! Suggestions for dialer numbers for the badge: The 911 equivalents for Europe, India, Australia, and/or Japan; Ghostbusters (555-2368); other 555 numbers from various movies; The Simpsons' Mr. Plow (636-555-3226); The Lost sequence 4, 8, 15, 16, 23, 42; the other Lost sequence 1057; Pi, Euler's number; the Golden Ratio; 10:10/11:11 (from clocks)
-			//As easy reference: Rapper Sir Mix-a-Lot touted the benefits of a larger derriere and encouraged fans to dial 1-900-MIXALOT with his 1992 No. 1 single. The famous ditty samples a song from an Irish band.
-			//and "Michael J. Fox was a time-traveling teen who saved the Clock Tower and romanced his high school sweetheart, Jennifer Parker (played by two different actresses). She kissed him in the courthouse square before handing over her phone number (555-4823).
-			//http://www.11points.com/Movies/11_Memorable_555_Phone_Numbers_From_Movies_and_TV
-
-			//force init to run again
-			//clearState(INIT_BIT);
-		}
 	} else {
 		key = rc.getKB().getLastPinPushed();
 		if (LastKey == 10 && key == 0) {

@@ -109,6 +109,27 @@ void LedDC25::process() {
 			}
 		}
 			break;
+		case CLOCK_WISE_CIRCLE:
+			if (Counter < 0)
+				Counter = 9;
+			if ((HAL_GetTick() - lastBlinkTime) > DialerData) {
+				lastBlinkTime = HAL_GetTick();
+				setAllOff();
+				setInternalLedOn(1 << Counter);
+				--Counter;
+			}
+			break;
+		case COUNTER_CLOCK_WISE_CIRCLE:
+			if (Counter > 9)
+				Counter = 0;
+			if ((HAL_GetTick() - lastBlinkTime) > DialerData) {
+				lastBlinkTime = HAL_GetTick();
+				setAllOff();
+				setInternalLedOn(1 << Counter);
+				++Counter;
+			}
+			break;
+
 		case INIT:
 			{
 			if (Counter < 12) {

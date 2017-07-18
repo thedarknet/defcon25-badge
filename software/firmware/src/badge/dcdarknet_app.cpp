@@ -160,6 +160,7 @@ void DCDarkNetApp::run() {
 						> (1000 * 60 * rc.getContactStore().getSettings().getScreenSaverTime()))) {
 			CurrentState->shutdown();
 			CurrentState = StateFactory::getGameOfLifeState();
+			LedControl.setDanceType(LedDC25::NONE);
 		} else {
 			CurrentState = rsc.NextMenuToRun;
 		}

@@ -111,7 +111,7 @@ void LedDC25::process() {
 			break;
 		case CLOCK_WISE_CIRCLE:
 			if (Counter < 0)
-				Counter = 9;
+				Counter = 10;
 			if ((HAL_GetTick() - lastBlinkTime) > DialerData) {
 				lastBlinkTime = HAL_GetTick();
 				setAllOff();
@@ -120,7 +120,7 @@ void LedDC25::process() {
 			}
 			break;
 		case COUNTER_CLOCK_WISE_CIRCLE:
-			if (Counter > 9)
+			if (Counter > 10)
 				Counter = 0;
 			if ((HAL_GetTick() - lastBlinkTime) > DialerData) {
 				lastBlinkTime = HAL_GetTick();

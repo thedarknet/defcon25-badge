@@ -76,7 +76,7 @@ private:
 	uint32_t lastBlinkTime;
 	uint32_t lastDialerTime;
 	uint8_t DialerData;
-	uint8_t Counter;
+	int8_t Counter;
 
 };
 

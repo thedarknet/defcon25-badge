@@ -13,6 +13,7 @@ public:
 		if(StartPin==QKeyboard::NO_PIN_SELECTED) {
 			if(p!=QKeyboard::ENTER) {
 				StartPin = p;
+				resetTimer();
 			}
 		} else {
 			if(p!=QKeyboard::NO_PIN_SELECTED) {

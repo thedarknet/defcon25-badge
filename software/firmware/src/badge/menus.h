@@ -176,10 +176,12 @@ protected:
 	virtual ReturnStateContext onRun(RunContext &rc);
 	virtual ErrorType onShutdown();
 private:
+	static const int8_t NOT_A_NUMBER = -1;
 	uint8_t LastKey;
 	int8_t NumberDialed[NUMBER_DIALED+1];
 	int8_t FinalHexHash[HEX_STRING+1];
 	uint8_t Pos;
+	int8_t SelectedNumber;
 	bool ReleaseEnter;
 };
 

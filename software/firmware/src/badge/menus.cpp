@@ -246,7 +246,8 @@ ErrorType MenuState::onShutdown() {
 }
 
 KeyBoardTest::KeyBoardTest() :
-		LastKey(QKeyboard::NO_PIN_SELECTED - 1), NumberDialed(), FinalHexHash(), Pos(0), ReleaseEnter(false) {
+		LastKey(QKeyboard::NO_PIN_SELECTED), NumberDialed(), FinalHexHash(), Pos(0), SelectedNumber(NOT_A_NUMBER), ReleaseEnter(
+				false) {
 
 }
 
@@ -255,14 +256,15 @@ KeyBoardTest::~KeyBoardTest() {
 }
 
 ErrorType KeyBoardTest::onInit(RunContext &rc) {
-	LastKey = QKeyboard::NO_PIN_SELECTED - 1;
+	LastKey = QKeyboard::NO_PIN_SELECTED;
 	rc.getDisplay().fillScreen(RGBColor::BLACK);
 	memset(&NumberDialed[0], 0, sizeof(NumberDialed));
 	memset(&FinalHexHash[0], 0, sizeof(FinalHexHash));
 	Pos = 0;
+	SelectedNumber = NOT_A_NUMBER;
 	rc.getLedControl().setAllOff();
 	if (rc.getKB().isDialerMode()) {
-		rc.getDisplay().drawString(0, 10, (const char*) "Hold Hook");
+		//rc.getDisplay().drawString(0, 10, (const char*) "Hold Hook");
 	} else {
 		rc.getDisplay().drawString(0, 10, (const char*) "Hook then 1 to exit");
 	}
@@ -272,40 +274,41 @@ ErrorType KeyBoardTest::onInit(RunContext &rc) {
 //http://www.11points.com/Movies/11_Memorable_555_Phone_Numbers_From_Movies_and_TV
 #define TOTAL_NUMBERS 6
 static const char *Numbers[] = {
-		"411"
-		, "911"
-		, "8675309"
-		, "8743221"
+		"411" //uh
+		, "911" //duh
+		, "8675309" //Jenny
+		, "8743221" //KRUX
 		, "5552368" //Ghostbusters (555-2368)
 		, "5554823" //back to the future
-};
+		};
+#define MAX_NUMBER_LEN 7
 
 ReturnStateContext KeyBoardTest::onRun(RunContext &rc) {
 	StateBase *nextState = this;
 	uint8_t key = QKeyboard::NO_PIN_SELECTED;
 	if (rc.getKB().isDialerMode()) {
-		if (Pos >= NUMBER_DIALED) {
+		if (Pos == MAX_NUMBER_LEN || (SelectedNumber != NOT_A_NUMBER && strlen(Numbers[SelectedNumber]) == Pos)) {
 			rc.getDisplay().drawString(0, 100, "Hit 1 to reset");
 			if (FinalHexHash[0] == '\0') {
-				rc.getLedControl().setDanceType(LedDC25::CLOCK_WISE_CIRCLE, 150);
-				for (int i = 0; i < TOTAL_NUMBERS; i++) {
-					if (0 == strcmp((const char *)&NumberDialed[0], (const char *)Numbers[i])) {
-						uint8_t mhash[SHA256_HASH_SIZE] = {0};
-						ShaOBJ HCtx;
-						sha256_init(&HCtx);
-						sha256_add(&HCtx, rc.getContactStore().getMyInfo().getPublicKey(), ContactStore::PUBLIC_KEY_LENGTH);
-						sha256_add(&HCtx, (const unsigned char *)&NumberDialed[i], strlen((const char *)&NumberDialed[0]));
-						sha256_digest(&HCtx, &mhash[0]);
-						sprintf((char *)&FinalHexHash[0],"%02x%02x%02x%02x%02x%02x%02x%02x", mhash[0],mhash[1],mhash[2],
-								mhash[3],mhash[4],mhash[5],mhash[6],mhash[7]);
-						break;
-					}
+				if(SelectedNumber==NOT_A_NUMBER) {
+					rc.getLedControl().setDanceType(LedDC25::COUNTER_CLOCK_WISE_CIRCLE, 75);
+				} else {
+					rc.getLedControl().setDanceType(LedDC25::CLOCK_WISE_CIRCLE, 75);
 				}
+				uint8_t mhash[SHA256_HASH_SIZE] = { 0 };
+				ShaOBJ HCtx;
+				sha256_init(&HCtx);
+				sha256_add(&HCtx, rc.getContactStore().getMyInfo().getPublicKey(), ContactStore::PUBLIC_KEY_LENGTH);
+				sha256_add(&HCtx, (const unsigned char *) &NumberDialed[0], strlen((const char *) &NumberDialed[0]));
+				sha256_digest(&HCtx, &mhash[0]);
+				sprintf((char *) &FinalHexHash[0], "%02x%02x%02x%02x%02x%02x%02x%02x", mhash[0], mhash[1], mhash[2],
+						mhash[3], mhash[4], mhash[5], mhash[6], mhash[7]);
 			} else {
-				rc.getDisplay().drawString(0,120,"Send To Daemon: ");
-				rc.getDisplay().drawString(0,130,(const char *)&FinalHexHash[0]);
+				rc.getDisplay().drawString(0, 120, "Send To Daemon: ");
+				rc.getDisplay().drawString(0, 130, (const char *) &FinalHexHash[0]);
 			}
 			if (rc.getKB().getLastPinPushed() == QKeyboard::ONE) {
+				rc.getLedControl().setDanceType(LedDC25::NONE);
 				clearState(INIT_BIT);
 			}
 		} else {
@@ -313,10 +316,18 @@ ReturnStateContext KeyBoardTest::onRun(RunContext &rc) {
 				ReleaseEnter = true;
 				LastKey = rc.getKB().getLastKeyReleased();
 				NumberDialed[Pos] = rc.getKB().getNumberAsCharacter();
+				SelectedNumber = NOT_A_NUMBER;
+				for (int i = 0; i < TOTAL_NUMBERS; ++i) {
+					if (strstr(&Numbers[i][0], (const char *) &NumberDialed[0])==&Numbers[i][0]) {
+						SelectedNumber = i;
+						break;
+					}
+				}
 				++Pos;
 			} else if (rc.getKB().getLastPinPushed() == QKeyboard::ENTER) {
 				if (HAL_GetTick() - rc.getKB().getLastPinSelectedTick() > 2000) {
 					rc.getKB().setDialerMode(false);
+					rc.getLedControl().setDanceType(LedDC25::NONE);
 					nextState = StateFactory::getMenuState();
 				}
 			} else if (rc.getKB().getLastPinPushed() != QKeyboard::ENTER) {
@@ -326,15 +337,32 @@ ReturnStateContext KeyBoardTest::onRun(RunContext &rc) {
 		key = rc.getKB().getLastPinPushed();
 		char buf[24];
 		rc.getDisplay().fillRec(0, 20, 128, 20, RGBColor::BLACK);
-		sprintf(&buf[0], "Dialer Number:  %d", (int) LastKey);
+		if(LastKey==QKeyboard::NO_PIN_SELECTED) {
+			sprintf(&buf[0], "Dialer Number:  N/A");
+		} else {
+			int displayNumber = (LastKey == 9 ? 0 : LastKey + 1);
+			sprintf(&buf[0], "Dialer Number:  %d", displayNumber);
+		}
 		rc.getDisplay().drawString(0, 20, &buf[0]);
 		rc.getDisplay().fillRec(0, 30, 128, 10, RGBColor::BLACK);
-		sprintf(&buf[0], "Current Number:  %d", (int) key);
+		if(key==QKeyboard::ENTER) {
+			sprintf(&buf[0], "Current Number: Hook");
+		} else if(key==QKeyboard::NO_PIN_SELECTED) {
+			sprintf(&buf[0], "Current Number: N/A");
+		} else {
+			int displayNumber = (key == 9 ? 0 : key + 1);
+			sprintf(&buf[0], "Current Number: %d", displayNumber);
+		}
 		rc.getDisplay().drawString(0, 30, &buf[0]);
 		sprintf(&buf[0], "Dialing:");
 		rc.getDisplay().drawString(0, 50, &buf[0]);
 		sprintf(&buf[0], "Dialing: %s", &NumberDialed[0]);
-		rc.getDisplay().drawString(0, 70, &buf[0]);
+		rc.getDisplay().fillRec(0, 70, 128, 10, RGBColor::BLACK);
+		if (SelectedNumber != NOT_A_NUMBER) {
+			rc.getDisplay().drawString(0, 70, &buf[0], RGBColor::BLUE);
+		} else {
+			rc.getDisplay().drawString(0, 70, &buf[0], RGBColor::RED);
+		}
 	} else {
 		key = rc.getKB().getLastPinPushed();
 		if (LastKey == 10 && key == 0) {
@@ -346,7 +374,8 @@ ReturnStateContext KeyBoardTest::onRun(RunContext &rc) {
 			rc.getDisplay().fillRec(0, 20, 128, 20, RGBColor::BLACK);
 			char buf[16];
 			rc.getDisplay().fillRec(0, 30, 128, 10, RGBColor::BLACK);
-			sprintf(&buf[0], "pushed:  %d", (int) key);
+			int displayNumber = (key == 9 ? 0 : key + 1);
+			sprintf(&buf[0], "pushed: %d", displayNumber);
 			rc.getDisplay().drawString(0, 30, &buf[0]);
 		}
 	}

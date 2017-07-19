@@ -1,0 +1,1 @@
+python program.py --openocd_dir $HOME/opt/gnuarmeclipse/openocd/0.10.0-201701241841/ --key_dir $HOME/dev/defcon/defcon25-badge/software/BadgeGen/keys-staff --flash $HOME/dev/defcon/defcon25-badge/software/firmware/bin/firmware.hex

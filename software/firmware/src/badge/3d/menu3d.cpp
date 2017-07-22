@@ -178,6 +178,10 @@ void Menu3D::initMenu3d(RunContext &rc) {
 
 ReturnStateContext Menu3D::onRun(RunContext &rc) {
 	ReturnStateContext sr(this);
+	if(rc.getKB().wasKeyReleased()) {
+		sr.NextMenuToRun = StateFactory::getMenuState();
+	}
+
 	switch (InternalState) {
 		case INIT:
 			initMenu3d(rc);

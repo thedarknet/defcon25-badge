@@ -174,6 +174,7 @@ void Menu3D::initMenu3d(RunContext &rc) {
 	//viewport(18, 13, 82, 90);
 	projection(-1.f / (eye - center).norm());
 	light_dir.normalize();
+	rc.getDisplay().fillScreen(RGBColor::BLACK);
 }
 
 ReturnStateContext Menu3D::onRun(RunContext &rc) {

@@ -118,7 +118,7 @@ uint32_t DCDarkNetApp::init() {
 	HAL_Delay(3000);
 
 	((IRState *)StateFactory::getIRPairingState())->BeTheBob();
-#if 1
+#if 0
 	CurrentState = StateFactory::get3DState();
 #else
 	CurrentState = StateFactory::getMenuState();

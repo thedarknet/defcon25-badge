@@ -272,7 +272,7 @@ ErrorType KeyBoardTest::onInit(RunContext &rc) {
 }
 
 //http://www.11points.com/Movies/11_Memorable_555_Phone_Numbers_From_Movies_and_TV
-#define TOTAL_NUMBERS 6
+#define TOTAL_NUMBERS 7
 static const char *Numbers[] = {
 		"411" //uh
 		, "911" //duh
@@ -280,6 +280,7 @@ static const char *Numbers[] = {
 		, "8743221" //KRUX
 		, "5552368" //Ghostbusters (555-2368)
 		, "5554823" //back to the future
+		, "5554220" //Hackers
 		};
 #define MAX_NUMBER_LEN 7
 

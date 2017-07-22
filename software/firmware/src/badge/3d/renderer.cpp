@@ -6,16 +6,17 @@
 
 class Timer {
 public:
-	Timer(const char *n) : Name(n), Stop(0), diff(0) {
+	Timer(const char *n) :
+			Name(n), Stop(0), diff(0) {
 		Start = HAL_GetTick();
 	}
 	void stop() {
 		Stop = HAL_GetTick();
-		diff = Stop-Start;
+		diff = Stop - Start;
 	}
 	~Timer() {
 		stop();
-		INFOMSG("%s: %u", Name, HAL_GetTick()-Start);
+		INFOMSG("%s: %u", Name, HAL_GetTick() - Start);
 	}
 private:
 	const char *Name;
@@ -24,33 +25,47 @@ private:
 	uint32_t diff;
 };
 
-
 Matrix ModelView;
 Matrix Viewport;
 Matrix Projection;
 
-Model::Model() : Verts(0), NumVerts(0), Indexes(0), NumIndexes(0), ModelTransform(Matrix::identity()) {
+Model::Model() :
+		Verts(0), NumVerts(0), Indexes(0), NumIndexes(0), ModelTransform(Matrix::identity()), Format(VERTS) {
 
 }
 
-void Model::set(const VertexStruct *v, uint16_t nv, const uint16_t *i, uint16_t ni) {
+void Model::set(const VertexStruct *v, uint16_t nv, const uint16_t *i, uint16_t ni, MODEL_FORMAT format) {
 	Verts = v;
-	NumVerts=nv;
-	Indexes=i;
-	NumIndexes=ni;
+	NumVerts = nv;
+	Indexes = i;
+	NumIndexes = ni;
+	Format = format;
 }
 
-
+#ifdef NORMALS
 const Vec3f &Model::normal(uint16_t face, uint8_t nVert) const {
-	return Verts[Indexes[(face*3)+nVert]].normal;
+	if (Format == VERTS)
+		return Verts[Indexes[(face * 3) + nVert]].normal;
+	else
+	if (face == 0) {
+		return Verts[Indexes[nVert]].normal;
+	}
+	return Verts[Indexes[(face + 2) + nVert]].normal;
 }
+#endif
 
 const Vec3f &Model::vert(uint16_t face, uint8_t nVert) const {
-	return Verts[Indexes[(face*3)+nVert]].pos;
+	if (Format == VERTS)
+		return Verts[Indexes[(face * 3) + nVert]].pos;
+	else
+		return Verts[Indexes[face + nVert]].pos;
 }
 
 uint32_t Model::nFaces() const {
-	return NumIndexes/3;
+	if (Format == VERTS)
+		return NumIndexes / 3;
+	else
+		return NumIndexes-2;
 }
 
 IShader::IShader() :
@@ -150,7 +165,6 @@ bool ToonShader::fragment(Vec3f bar, RGBColor &color) {
 	return false;
 }
 
-
 void viewport(int x, int y, int w, int h) {
 	Viewport = Matrix::identity();
 	Viewport[0][3] = x + w / 2.f;
@@ -166,8 +180,8 @@ void projection(float coeff) {
 	Projection[3][2] = coeff;
 }
 
-void lookat(const Vec3f &eye, const Vec3f &center, const Vec3f &up) {
-	Vec3f z = (eye - center).normalize();
+void lookat(const Vec3f &eye, const Vec3f &target, const Vec3f &up) {
+	Vec3f z = (eye - target).normalize();
 	Vec3f x = cross(up, z).normalize();
 	Vec3f y = cross(z, x).normalize();
 	ModelView = Matrix::identity();
@@ -175,7 +189,7 @@ void lookat(const Vec3f &eye, const Vec3f &center, const Vec3f &up) {
 		ModelView[0][i] = x[i];
 		ModelView[1][i] = y[i];
 		ModelView[2][i] = z[i];
-		ModelView[i][3] = -center[i];
+		ModelView[i][3] = -target[i];
 	}
 }
 
@@ -192,18 +206,18 @@ Vec3f barycentric(const Vec3i &A, const Vec3i &B, const Vec3i &C, const Vec3i &P
 	return Vec3f(-1, 1, 1); // in this case generate negative coordinates, it will be thrown away by the rasterizator
 }
 
-
-void triangle(Vec3i *pts, IShader &shader, BitArray &zbuffer, DisplayST7735 *display, const Vec2i &bboxmin, const Vec2i &bboxmax) {
+void triangle(Vec3i *pts, IShader &shader, BitArray &zbuffer, DisplayST7735 *display, const Vec2i &bboxmin,
+		const Vec2i &bboxmax, uint16_t canvasWidth) {
 	//Timer bt("bbbox");
 	/*Vec2i bboxmin( INT16_MAX, INT16_MAX);
-	Vec2i bboxmax(INT16_MIN, INT16_MIN);
-	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < 2; j++) {
-			bboxmin[j] = bboxmin[j] < pts[i][j] ? bboxmin[j] : pts[i][j];
-			bboxmax[j] = bboxmax[j] > pts[i][j] ? bboxmax[j] : pts[i][j];
-		}
-	}
-	*/
+	 Vec2i bboxmax(INT16_MIN, INT16_MIN);
+	 for (int i = 0; i < 3; i++) {
+	 for (int j = 0; j < 2; j++) {
+	 bboxmin[j] = bboxmin[j] < pts[i][j] ? bboxmin[j] : pts[i][j];
+	 bboxmax[j] = bboxmax[j] > pts[i][j] ? bboxmax[j] : pts[i][j];
+	 }
+	 }
+	 */
 	//bt.stop();
 	Vec3i P;
 	RGBColor color(RGBColor::BLACK);
@@ -212,14 +226,20 @@ void triangle(Vec3i *pts, IShader &shader, BitArray &zbuffer, DisplayST7735 *dis
 		for (P.y = bboxmin.y; P.y <= bboxmax.y; P.y++) {
 			Vec3f c = barycentric(pts[0], pts[1], pts[2], P);
 			float tmp = pts[0].z * c.x + pts[1].z * c.y + pts[2].z * c.z + .5;
-			P.z = int(tmp*7.0f); //scale Z for int math
+			P.z = int(tmp * 7.0f); //scale Z for int math
 			//P.z = std::max(0, std::min(255, int(pts[0].z * c.x + pts[1].z * c.y + pts[2].z * c.z + .5))); // clamping to 0-255 since it is stored in unsigned char
-			if (c.x < 0 || c.y < 0 || c.z < 0 || zbuffer.getValueAsByte(P.y*128+P.x) > P.z)
+			if (c.x < 0 || c.y < 0 || zbuffer.getValueAsByte(P.y * 128 + P.x) > P.z)
 				continue;
 			bool discard = shader.fragment(c, color);
 			if (!discard) {
-				zbuffer.setValueAsByte(P.y*128+P.x,P.z);
-				display->drawPixel(P.x, P.y, color);
+				zbuffer.setValueAsByte(P.y * canvasWidth + P.x, P.z);
+				if(color.getR()<85 && color.getG()<85 && color.getB()<85) {
+					display->drawPixel(P.x,P.y,RGBColor::WHITE);
+				} else {
+					display->drawPixel(P.x, P.y, color);
+				}
+			} else {
+				display->drawPixel(P.x, P.y, RGBColor::WHITE);
 			}
 		}
 	}

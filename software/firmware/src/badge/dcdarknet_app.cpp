@@ -10,6 +10,7 @@
 #include "MessageState.h"
 #include "leddc25.h"
 #include "images/images.h"
+#include "3d/menu3d.h"
 
 DCDarkNetApp::DCDarkNetApp() :
 		CurrentState(0) {
@@ -117,9 +118,14 @@ uint32_t DCDarkNetApp::init() {
 	HAL_Delay(3000);
 
 	((IRState *)StateFactory::getIRPairingState())->BeTheBob();
+#if 1
+	CurrentState = StateFactory::get3DState();
+#else
 	CurrentState = StateFactory::getMenuState();
+#endif
 	KB.resetLastPinTick();
 	LedControl.setDanceType(LedDC25::INIT);
+	Display.fillScreen(RGBColor::BLACK);
 	return retVal;
 }
 

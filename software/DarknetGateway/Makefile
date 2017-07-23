@@ -1,8 +1,8 @@
 VERSION = 0.0.1
 CC      = g++
 CFLAGS  = -Wall -g --std=c++0x -DVERSION=\"$(VERSION)\" -DRPI=1
-#LDFLAGS = -lm `pkg-config --cflags gtk+-2.0` `pkg-config --libs gtk+-2.0`
-LDFLAGS = -lm -lcurl -L src/tbb/build/linux_armv7_gcc_cc4.9.2_libc2.19_kernel4.9.28_release -l tbb
+#LDFLAGS = -lcurl -L src/tbb/build/linux_armv7_gcc_cc4.9.2_libc2.19_kernel4.9.28_release -l tbb
+LDFLAGS =  
 
 BUILDDIR = build
 SOURCEDIR = src
@@ -36,7 +36,7 @@ setup:
 
 clean:
 	$(RM) $(BINARY) $(OBJECTS)
-	make -C src/tbb clean
+#	make -C src/tbb clean
 
 distclean: clean
 

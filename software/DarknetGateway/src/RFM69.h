@@ -106,8 +106,8 @@ class RFM69 {
     void writeReg(uint8_t addr, uint8_t val);
     void readAllRegs();
     virtual ~RFM69();
-  protected:
     static void isr0();
+  protected:
     void virtual interruptHandler();
     static volatile bool _inISR;
     virtual void sendFrame(RadioAddrType toAddress, const void* buffer, uint8_t size, bool requestACK=false, bool sendACK=false);

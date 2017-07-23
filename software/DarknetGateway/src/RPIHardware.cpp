@@ -71,6 +71,10 @@ ErrorType RPIHardware::onDisableIRQ() {
 ErrorType RPIHardware::onAttachInterrupt(int uniqueIRQ, void (*handler)(void), int mode) {
 	UniqueIRQ = uniqueIRQ;
 	IRQHandler = handler;
+	pinMode(UniqueIRQ, INPUT);
+	bcm2835_gpio_set_pud(UniqueIRQ, BCM2835_GPIO_PUD_DOWN);
+	// Now we can enable Rising edge detection
+	bcm2835_gpio_ren(UniqueIRQ);
 	return ErrorType();
 }
 

@@ -34,8 +34,9 @@ size_t handleCurl(void *ptr, size_t size, size_t nmemb, WorkItem *hcd);
 class  WorkItem {
 protected:
 	enum COMMAND {
-		GET_REP = 0xFF12
-		, EPICS_COMPLETED = 0xFF13
+		REQUEST_REP_MSG = 1
+		, INT_REPONSE_MSG = 2
+		, EPICS_COMPLETED = 3 
 		, RANDOM = 0xFF14
 	};
 public:
@@ -47,7 +48,7 @@ public:
 		if(MsgSize>3) {
 			RS.Command = *((int*)&Data[0]);
 			switch(RS.Command) {
-			case GET_REP: EPICS_COMPLETED:
+			case REQUEST_REP_MSG: EPICS_COMPLETED:
 				return true;
 				break;
 			}
@@ -56,7 +57,7 @@ public:
 	}
 	bool doWork() {
 		switch(RS.Command) {
-			case GET_REP: 
+			case REQUEST_REP_MSG: 
 					RS.RetVal1 = 10;	
 				break;
 			case EPICS_COMPLETED:
@@ -95,9 +96,9 @@ public:
 	}
 	
 	struct ResponseStruct {
-		uint32_t Command;
+		uint8_t Command;
 		uint8_t  Success;
-		uint32_t RetVal1;
+		int32_t RetVal1;
 		ResponseStruct() : Command(0), Success(0), RetVal1(0) {}
 	} __attribute__((packed));
 
@@ -137,15 +138,26 @@ private:
 };
 
 int main(int arc, char *agrv[]) {
+	int ResetPin=-1;
 	signal(SIGINT, sig_handler);
 
 	tbb::task_scheduler_init tsi;
 
 	RPISPI1.init(SPI_1_3125MHZ,MSB,SPI_MODE0);
+	 if(ResetPin!=-1) {
+		printf( ", RST=GPIO%d", ResetPin );
+		// Pulse a reset on module
+		Device.pinMode(ResetPin, Hardware::OUTPUT);
+		Device.digitalWrite(ResetPin, Hardware::PIN_LOW );
+		bcm2835_delay(150);
+		Device.digitalWrite(ResetPin, Hardware::PIN_HIGH );
+		bcm2835_delay(100);
+	 }
+										//
 	RFM69 Radio(false,IRQ_PIN);
-	bool b = Radio.initialize(RF69_915MHZ,0xFFFE,1);
+	bool b = Radio.initialize(RF69_915MHZ,0xFFFE,200);
 	if(b) {
-		Radio.readAllRegs();
+		//Radio.readAllRegs();
 		printf("RSSI:  %d \n", Radio.readRSSI());
 		printf("Gain:  %d \n", Radio.getCurrentGain());
 		printf("ImpedenceLevel:  %d \n", Radio.getImpedenceLevel());
@@ -156,6 +168,7 @@ int main(int arc, char *agrv[]) {
 
 	curl_global_init(CURL_GLOBAL_ALL);
 	while(!force_exit) {
+		Device.checkIRQ();
 		if(Radio.receiveDone()) {
 			WorkItem *wi = new WorkItem((const uint8_t*)&Radio.DATA[0],Radio.DATALEN, Radio.SENDERID, Radio.RSSI);
 			if(wi->isValid()) {
@@ -168,7 +181,8 @@ int main(int arc, char *agrv[]) {
 		while(Radio.canSend() && count++<10 && OutGoingWorkQueue.try_pop(wi)) {
 			Radio.send(wi->getSender(),wi->getResultBuffer(),wi->getResultSize());
 			delete wi;
-		}	
+		}
+		usleep(10);
 	}
 	curl_global_cleanup();
 	return 0;

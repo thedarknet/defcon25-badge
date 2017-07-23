@@ -12,6 +12,8 @@
 #include "3d/menu3d.h"
 #include "leddc25.h"
 #include <string.h>
+
+#include "gateway.h"
 //#include <tim.h>
 //#include <uECC.h>
 //#include <sha256.h>
@@ -162,6 +164,8 @@ ErrorType MenuState::onInit(RunContext &rc) {
 	Items[8].text = (const char *) "KeyBoard Test";
 	Items[9].id = 9;
 	Items[9].text = (const char *) "Quest Dialing";
+	Items[10].id = 10;
+	Items[10].text = (const char *) "Gateway";
 	rc.getDisplay().fillScreen(RGBColor::BLACK);
 	rc.getGUI().drawList(&this->MenuList);
 	return ErrorType();
@@ -230,6 +234,9 @@ ReturnStateContext MenuState::onRun(RunContext &rc) {
 					rc.getKB().setDialerMode(true);
 					nextState = StateFactory::getKeyBoardTest();
 					break;
+				case 10:
+					nextState = StateFactory::getGateway();
+					break;
 			}
 		}
 			break;
@@ -291,7 +298,7 @@ ReturnStateContext KeyBoardTest::onRun(RunContext &rc) {
 		if (Pos == MAX_NUMBER_LEN || (SelectedNumber != NOT_A_NUMBER && strlen(Numbers[SelectedNumber]) == Pos)) {
 			rc.getDisplay().drawString(0, 100, "Hit 1 to reset");
 			if (FinalHexHash[0] == '\0') {
-				if(SelectedNumber==NOT_A_NUMBER) {
+				if (SelectedNumber == NOT_A_NUMBER) {
 					rc.getLedControl().setDanceType(LedDC25::COUNTER_CLOCK_WISE_CIRCLE, 75);
 				} else {
 					rc.getLedControl().setDanceType(LedDC25::CLOCK_WISE_CIRCLE, 75);
@@ -319,7 +326,7 @@ ReturnStateContext KeyBoardTest::onRun(RunContext &rc) {
 				NumberDialed[Pos] = rc.getKB().getNumberAsCharacter();
 				SelectedNumber = NOT_A_NUMBER;
 				for (int i = 0; i < TOTAL_NUMBERS; ++i) {
-					if (strstr(&Numbers[i][0], (const char *) &NumberDialed[0])==&Numbers[i][0]) {
+					if (strstr(&Numbers[i][0], (const char *) &NumberDialed[0]) == &Numbers[i][0]) {
 						SelectedNumber = i;
 						break;
 					}
@@ -338,7 +345,7 @@ ReturnStateContext KeyBoardTest::onRun(RunContext &rc) {
 		key = rc.getKB().getLastPinPushed();
 		char buf[24];
 		rc.getDisplay().fillRec(0, 20, 128, 20, RGBColor::BLACK);
-		if(LastKey==QKeyboard::NO_PIN_SELECTED) {
+		if (LastKey == QKeyboard::NO_PIN_SELECTED) {
 			sprintf(&buf[0], "Dialer Number:  N/A");
 		} else {
 			int displayNumber = (LastKey == 9 ? 0 : LastKey + 1);
@@ -346,9 +353,9 @@ ReturnStateContext KeyBoardTest::onRun(RunContext &rc) {
 		}
 		rc.getDisplay().drawString(0, 20, &buf[0]);
 		rc.getDisplay().fillRec(0, 30, 128, 10, RGBColor::BLACK);
-		if(key==QKeyboard::ENTER) {
+		if (key == QKeyboard::ENTER) {
 			sprintf(&buf[0], "Current Number: Hook");
-		} else if(key==QKeyboard::NO_PIN_SELECTED) {
+		} else if (key == QKeyboard::NO_PIN_SELECTED) {
 			sprintf(&buf[0], "Current Number: N/A");
 		} else {
 			int displayNumber = (key == 9 ? 0 : key + 1);
@@ -701,6 +708,7 @@ static IRState TheIRState(2000, 5);
 static SendMsgState TheMsgState;
 static AddressState TheAddressState;
 static Menu3D The3DMenu;
+static Gateway TheGateway;
 
 Menu3D *StateFactory::get3DState() {
 	return &The3DMenu;
@@ -759,4 +767,8 @@ MessageState * StateFactory::getMessageState()
 StateBase * StateFactory::getIRPairingState()
 {
 	return &TheIRState;
+}
+
+StateBase *StateFactory::getGateway() {
+	return &TheGateway;
 }

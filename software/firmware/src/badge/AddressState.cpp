@@ -148,7 +148,7 @@ ReturnStateContext AddressState::onRun(RunContext &rc) {
 						uint8_t *sig = CurrentContactList[AddressList.selectedItem].getPairingSignature();
 						memset(&SignatureKey[0], 0, sizeof(SignatureKey));
 						sprintf(&SignatureKey[0],
-								"SIG: %02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+								"PAIR SIG: %02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
 								sig[0], sig[1], sig[2], sig[3], sig[4], sig[5], sig[6], sig[7], sig[8], sig[9], sig[10],
 								sig[11], sig[12], sig[13], sig[14], sig[15], sig[16], sig[17], sig[18], sig[19],
 								sig[20],

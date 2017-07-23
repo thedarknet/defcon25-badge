@@ -13,6 +13,9 @@ public:
 		IR = (1<<2),
 		FLASH_MEM = (1<<3)
 	};
+	static const uint8_t AGENT_NETWORK = 1;
+	static const uint8_t GATEWAY_NETWORK = 200;
+	static const uint16_t GATEWAY_RADIO_ID = 0xFFFE;
 public:
 	DCDarkNetApp();
 	uint32_t init();

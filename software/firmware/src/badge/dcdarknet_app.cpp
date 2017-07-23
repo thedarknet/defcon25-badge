@@ -97,7 +97,7 @@ uint32_t DCDarkNetApp::init() {
 	HAL_Delay(TIME_BETWEEN_INITS);
 
 	//test for IR??
-	if (Radio.initialize(RF69_915MHZ, MyContacts.getMyInfo().getUniqueID())) {
+	if (Radio.initialize(RF69_915MHZ, MyContacts.getMyInfo().getUniqueID(), DCDarkNetApp::AGENT_NETWORK)) {
 		items[2].set(1, "RADIO INIT");
 		Radio.setPowerLevel(31);
 		retVal |= COMPONENTS_ITEMS::RADIO;
@@ -178,7 +178,7 @@ void DCDarkNetApp::run() {
 	}
 	LedControl.process();
 
-	if (tick - lastSendTime > 10) {
+	if (tick - lastSendTime > 10 && CurrentState!=StateFactory::getGateway()) {
 		lastSendTime = tick;
 		if (Radio.receiveDone()) {
 			if (Radio.TARGETID == RF69_BROADCAST_ADDR) {

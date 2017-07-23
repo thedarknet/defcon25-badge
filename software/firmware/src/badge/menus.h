@@ -115,7 +115,7 @@ protected:
 	virtual ErrorType onShutdown();
 private:
 	GUI_ListData MenuList;
-	GUI_ListItemData Items[10];
+	GUI_ListItemData Items[11];
 };
 
 class SettingState: public StateBase {
@@ -189,6 +189,7 @@ class SendMsgState;
 class AddressState;
 class Menu3D;
 class MessageState;
+class Gateway;
 class StateFactory {
 public:
 	static bool init();
@@ -204,6 +205,7 @@ public:
 	static SendMsgState* getSendMessageState();
 	static AddressState* getAddressBookState();
 	static Menu3D *get3DState();
+	static StateBase *getGateway();
 };
 
 #endif

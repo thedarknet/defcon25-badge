@@ -49,13 +49,17 @@ ReturnStateContext Gateway::onRun(RunContext &rc) {
 			rc.getDisplay().drawString(2, 40, "Waiting for ack\n from Gateway.", RGBColor::WHITE, RGBColor::BLACK, 1,
 					true);
 			InternalState = WAITING_FOR_REQUEST_ACK;
+			//I think this is where the bug is at:  Shoud send with ack then immediately loop on ackreceived don't
+			//go through another run of the badge.
 		}
 			break;
 		case WAITING_FOR_REQUEST_ACK: {
-			if (rc.getRadio().receiveDone()) {
+			//if (rc.getRadio().receiveDone()) {
 				if (rc.getRadio().ACKReceived(DCDarkNetApp::GATEWAY_RADIO_ID)) {
 					InternalState = RECEIVING;
-				}
+					rc.getDisplay().fillScreen(RGBColor::BLACK);
+					rc.getDisplay().drawString(2,40,"Waiting on Reply");
+				//}
 			} else if (this->getTimesRunCalledSinceLastReset() > 2000) {
 				nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(),
 						"No response from Gateway", 3000);

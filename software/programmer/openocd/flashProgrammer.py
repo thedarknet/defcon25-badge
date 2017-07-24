@@ -18,14 +18,14 @@ class openOCDThread(threading.Thread):
     def run(self):
         cmd = [self.openocd_dir + 'bin/openocd']
         cmd += ['-f', self.openocd_dir + 'scripts/interface/stlink-v2.cfg']
-        cmd += ['-f', self.openocd_dir + 'scripts/target/stm32f1x.cfg']
+        cmd += ['-f', self.openocd_dir + 'scripts/target/stm32f3x.cfg']
 
         self.proc = subprocess.Popen(cmd, stderr=subprocess.PIPE)
 
         while self.proc.poll() is None:
 
             l = self.proc.stderr.readline() # This blocks until it receives a newline.
-            if 'stm32f1x.cpu: hardware has 6 breakpoints, 4 watchpoints' in l:
+            if 'stm32f3x.cpu: hardware has 6 breakpoints, 4 watchpoints' in l:
                 self.ready = True
 
             if self.verbose:

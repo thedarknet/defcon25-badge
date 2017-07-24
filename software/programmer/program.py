@@ -29,8 +29,8 @@ from openocd.flashProgrammer import flashProgrammer
 
 MAIN_FLASH_ADDR = 0x8000000
 FLASH_BASE = 0x8000000
-KEY_FLASH_OFFSET = 0xffd4
-SECTOR_SIZE = 0x400
+KEY_FLASH_OFFSET = 0x1ffd4
+SECTOR_SIZE = 0x800
 
 def get_used_key_dir(key_dir):
     return key_dir + '/used'

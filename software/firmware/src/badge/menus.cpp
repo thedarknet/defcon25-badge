@@ -279,6 +279,7 @@ ErrorType KeyBoardTest::onInit(RunContext &rc) {
 }
 
 //http://www.11points.com/Movies/11_Memorable_555_Phone_Numbers_From_Movies_and_TV
+#ifndef ALPHA
 #define TOTAL_NUMBERS 7
 static const char *Numbers[] = {
 		"411" //uh
@@ -288,8 +289,15 @@ static const char *Numbers[] = {
 		, "5552368" //Ghostbusters (555-2368)
 		, "5554823" //back to the future
 		, "5554220" //Hackers
-		};
+};
 #define MAX_NUMBER_LEN 7
+#else
+#define TOTAL_NUMBERS 1
+static const char *Numbers[] = {
+		"5555555"
+};
+#define MAX_NUMBER_LEN 7
+#endif
 
 ReturnStateContext KeyBoardTest::onRun(RunContext &rc) {
 	StateBase *nextState = this;

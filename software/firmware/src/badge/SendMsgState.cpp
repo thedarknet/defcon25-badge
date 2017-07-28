@@ -30,7 +30,7 @@ ReturnStateContext SendMsgState::onRun(RunContext &rc) {
 	switch (InternalState) {
 	case TYPE_MESSAGE: {
 		rc.getDisplay().drawString(0,10,(const char *)"Send Message: ");
-		rc.getDisplay().drawString(0,20,&MsgBuffer[0]);
+		rc.getDisplay().drawString(0,20,&MsgBuffer[0],RGBColor::WHITE, RGBColor::BLACK,1,true);
 		//keyboard entry
 		rc.getKB().updateContext(getKeyboardContext());
 		uint8_t pin = rc.getKB().getLastKeyReleased();

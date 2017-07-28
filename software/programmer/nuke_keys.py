@@ -9,12 +9,12 @@ from openocd.flashProgrammer import flashProgrammer
 
 MAIN_FLASH_ADDR = 0x8000000
 FLASH_BASE = 0x8000000
-KEY_FLASH_OFFSET = 0xffd4
-SECTOR_SIZE = 0x400
+KEY_FLASH_OFFSET = 0x1ffd4
+SECTOR_SIZE = 0x800
 KEY_BYTES = 30
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--openocd_dir', action='store', default='/opt/gnuarmeclipse/openocd/0.10.0-201601101000-dev/', help='Open OCD dev directory')
+parser.add_argument('--openocd_dir', action='store', default='/home/cmdc0de/opt/gnuarmeclipse/openocd/0.10.0-201701241841/', help='Open OCD dev directory')
 
 args, unknown = parser.parse_known_args()
 
@@ -41,7 +41,7 @@ try:
         print(key)
 
         print('Nuking keys!')
-        flasher.erase(FLASH_BASE + 0x10000 - SECTOR_SIZE, SECTOR_SIZE)
+        flasher.erase(FLASH_BASE + 0x20000 - SECTOR_SIZE, SECTOR_SIZE)
 
 finally:
     # Make sure we kill the flasher process, otherwise openocd thread 

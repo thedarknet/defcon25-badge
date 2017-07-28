@@ -184,7 +184,7 @@ void DCDarkNetApp::run() {
 	}
 	LedControl.process();
 
-	if (tick - lastSendTime > 10 && CurrentState != StateFactory::getGateway()) {
+	if (tick - lastSendTime > 8 && CurrentState != StateFactory::getGateway()) {
 		lastSendTime = tick;
 		if (Radio.receiveDone()) {
 			if (Radio.TARGETID == RF69_BROADCAST_ADDR) {

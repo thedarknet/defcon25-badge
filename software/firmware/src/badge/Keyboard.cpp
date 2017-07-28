@@ -216,7 +216,7 @@ void QKeyboard::scan() {
 			if (HAL_OK == HAL_TSC_Start(&htsc)) {
 				if (HAL_OK == HAL_TSC_PollForAcquisition(&htsc)) {
 					uint32_t value = HAL_TSC_GroupGetValue(&htsc, PC[r].GroupIndex);
-					if (value < 250) {
+					if (value < 252) {
 						selectedPin = r;
 					}
 				} else {

@@ -4,6 +4,7 @@
 #include "menus.h"
 #include "MessageState.h"
 #include "leddc25.h"
+#include <stdlib.h>
 
 const LedDC25::PinConfig LedDC25::PC[] = {
 		{ LED_STATUS_Pin, LED_STATUS_GPIO_Port }
@@ -49,7 +50,15 @@ bool LedDC25::isLedOn(LED_ID ledid) {
 }
 
 void LedDC25::setDanceType(LED_DANCE_TYPE t) {
-	setDanceType(t, 0);
+	uint8_t data = 0;
+	switch(t) {
+	case DIALER:
+		data = rand()%11;
+		break;
+	default:
+		break;
+	}
+	setDanceType(t, data);
 }
 
 void LedDC25::setInternalLedOn(uint32_t t) {
@@ -74,6 +83,17 @@ void LedDC25::setDanceType(LED_DANCE_TYPE t, uint8_t data) {
 
 void LedDC25::process() {
 	switch (DanceType) {
+		case RANDOM:
+		{
+			if (HAL_GetTick() - lastBlinkTime > BLINK_TIME) {
+				setAllOff();
+				int i = rand()%11;
+				for(int k=0;k<i;k++) {
+					setInternalLedOn(1<<k);
+				}
+			}
+		}
+		break;
 		case NONE:
 			{
 			if (StateFactory::getMessageState()->hasNewMessage()) {

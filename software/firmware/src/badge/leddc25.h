@@ -49,10 +49,11 @@ public:
 	enum LED_DANCE_TYPE {
 		NONE = 0
 		, DIALER = 1
-		, GAME_OF_LIFE = 2
+		, RANDOM = 2
 		, INIT = 3
 		, CLOCK_WISE_CIRCLE = 4
 		, COUNTER_CLOCK_WISE_CIRCLE=5
+		, TOTAL_DANCE_TYPES = 6
 	};
 public:
 	LedDC25();

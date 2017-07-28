@@ -164,8 +164,10 @@ ErrorType MenuState::onInit(RunContext &rc) {
 	Items[8].text = (const char *) "KeyBoard Test";
 	Items[9].id = 9;
 	Items[9].text = (const char *) "Quest Dialing";
+#ifdef GATEWAY
 	Items[10].id = 10;
 	Items[10].text = (const char *) "Gateway";
+#endif
 	rc.getDisplay().fillScreen(RGBColor::BLACK);
 	rc.getGUI().drawList(&this->MenuList);
 	return ErrorType();
@@ -262,11 +264,52 @@ KeyBoardTest::~KeyBoardTest() {
 
 }
 
+//http://www.11points.com/Movies/11_Memorable_555_Phone_Numbers_From_Movies_and_TV
+#if 1
+#define TOTAL_NUMBERS 7
+#define MAX_NUMBER_LEN 7
+static const char sNumbers[TOTAL_NUMBERS][MAX_NUMBER_LEN] = {
+		 {char('4'+100),char('1'+100),char('1'+100),char(100),char(100),char(100),char(100)}
+		,{char('9'+100),char('1'+100),char('1'+100),char(100),char(100),char(100),char(100)}
+		,{char('8'+100),char('6'+100),char('7'+100),char('5'+100),char('3'+100),char('0'+100),char('9'+100)}
+		,{char('8'+100),char('7'+100),char('4'+100),char('3'+100),char('2'+100),char('2'+100),char('1'+100)}
+		,{char('5'+100),char('5'+100),char('5'+100),char('2'+100),char('3'+100),char('6'+100),char('8'+100)}
+		,{char('5'+100),char('5'+100),char('5'+100),char('4'+100),char('8'+100),char('2'+100),char('3'+100)}
+		,{char('5'+100),char('5'+100),char('5'+100),char('4'+100),char('2'+100),char('2'+100),char('0'+100)}
+};
+char Numbers[TOTAL_NUMBERS][MAX_NUMBER_LEN];
+/*
+const char *Numbers[] = {
+		"411" //u
+		, "911" //duh
+		, "8675309" //Jenny
+		, "8743221" //KRUX
+		, "5552368" //Ghostbusters (555-2368)
+		, "5554823" //back to the future
+		, "5554220" //Hackers
+};
+*/
+#else
+#define TOTAL_NUMBERS 1
+static const char *Numbers[] = {
+		"5555555"
+};
+#define MAX_NUMBER_LEN 7
+#endif
+
+
+
 ErrorType KeyBoardTest::onInit(RunContext &rc) {
 	LastKey = QKeyboard::NO_PIN_SELECTED;
 	rc.getDisplay().fillScreen(RGBColor::BLACK);
 	memset(&NumberDialed[0], 0, sizeof(NumberDialed));
 	memset(&FinalHexHash[0], 0, sizeof(FinalHexHash));
+	memset(&Numbers[0][0],0,sizeof(Numbers));
+	for(int i=0;i<TOTAL_NUMBERS;++i) {
+		for(int j=0;j<MAX_NUMBER_LEN;++j) {
+			Numbers[i][j] = sNumbers[i][j]-100;
+		}
+	}
 	Pos = 0;
 	SelectedNumber = NOT_A_NUMBER;
 	rc.getLedControl().setAllOff();
@@ -277,27 +320,6 @@ ErrorType KeyBoardTest::onInit(RunContext &rc) {
 	}
 	return ErrorType();
 }
-
-//http://www.11points.com/Movies/11_Memorable_555_Phone_Numbers_From_Movies_and_TV
-#ifndef ALPHA
-#define TOTAL_NUMBERS 7
-static const char *Numbers[] = {
-		"411" //uh
-		, "911" //duh
-		, "8675309" //Jenny
-		, "8743221" //KRUX
-		, "5552368" //Ghostbusters (555-2368)
-		, "5554823" //back to the future
-		, "5554220" //Hackers
-};
-#define MAX_NUMBER_LEN 7
-#else
-#define TOTAL_NUMBERS 1
-static const char *Numbers[] = {
-		"5555555"
-};
-#define MAX_NUMBER_LEN 7
-#endif
 
 ReturnStateContext KeyBoardTest::onRun(RunContext &rc) {
 	StateBase *nextState = this;

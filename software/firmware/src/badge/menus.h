@@ -115,7 +115,11 @@ protected:
 	virtual ErrorType onShutdown();
 private:
 	GUI_ListData MenuList;
+#ifdef GATEWAY
 	GUI_ListItemData Items[11];
+#else
+	GUI_ListItemData Items[10];
+#endif
 };
 
 class SettingState: public StateBase {

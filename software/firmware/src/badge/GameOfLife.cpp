@@ -1,4 +1,5 @@
 #include "GameOfLife.h"
+#include "leddc25.h"
 #include <stdlib.h>
 
 GameOfLife::GameOfLife() :
@@ -29,6 +30,8 @@ ReturnStateContext GameOfLife::onRun(RunContext &rc) {
 		rc.getDisplay().fillScreen(RGBColor::BLACK);
 		DisplayMessageUntil = HAL_GetTick() + 3000;
 		initGame();
+		int danceType = rand()%LedDC25::TOTAL_DANCE_TYPES;
+		rc.getLedControl().setDanceType(LedDC25::LED_DANCE_TYPE(danceType));
 		noChange = 0;
 	}
 		break;
@@ -80,13 +83,10 @@ ReturnStateContext GameOfLife::onRun(RunContext &rc) {
 	case SLEEP:
 		break;
 	}
-	//if((now-kb.getLastPinSelectedTick())>(1000*60*TIMES_SCREEN_SAVER*getContactStore().getSettings().getScreenSaverTime())) {
-	//	kb.setAllLightsOn(false);
-	//	InternalState = SLEEP;
-	//}
 	if (rc.getKB().getLastKeyReleased() == QKeyboard::NO_PIN_SELECTED) {
 		return ReturnStateContext(this);
 	} else {
+		rc.getLedControl().setDanceType(LedDC25::NONE);
 		return ReturnStateContext(StateFactory::getMenuState());
 	}
 }

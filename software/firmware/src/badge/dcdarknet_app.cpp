@@ -116,7 +116,7 @@ uint32_t DCDarkNetApp::init() {
 	Display.swap();
 	HAL_Delay(3000);
 
-#ifdef ALPHA
+#if 0
 	Display.fillScreen(RGBColor::BLACK);
 	Display.drawString(2, 40, "This is alpha\nfirmware.  Goto\n Darknet table\n to get latest.\n");
 	Display.swap();

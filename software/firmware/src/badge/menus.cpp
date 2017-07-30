@@ -336,7 +336,7 @@ ReturnStateContext KeyBoardTest::onRun(RunContext &rc) {
 				uint8_t mhash[SHA256_HASH_SIZE] = { 0 };
 				ShaOBJ HCtx;
 				sha256_init(&HCtx);
-				sha256_add(&HCtx, rc.getContactStore().getMyInfo().getPublicKey(), ContactStore::PUBLIC_KEY_LENGTH);
+				sha256_add(&HCtx, rc.getContactStore().getMyInfo().getPrivateKey(), ContactStore::PRIVATE_KEY_LENGTH);
 				sha256_add(&HCtx, (const unsigned char *) &NumberDialed[0], strlen((const char *) &NumberDialed[0]));
 				sha256_digest(&HCtx, &mhash[0]);
 				sprintf((char *) &FinalHexHash[0], "%02x%02x%02x%02x%02x%02x%02x%02x", mhash[0], mhash[1], mhash[2],
@@ -604,7 +604,7 @@ const char *BadgeInfoState::getRegCode(ContactStore &cs) {
 	return &RegCode[0];
 }
 
-static const char *VERSION = "dc25.1.1";
+static const char *VERSION = "dc25.1.2";
 
 ErrorType
 BadgeInfoState::onInit(RunContext & rc)

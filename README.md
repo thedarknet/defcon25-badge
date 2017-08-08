@@ -1,6 +1,9 @@
 # defcon25-badge
 Badge Related items for defcon 25
 
+Assembly instructions are located here:
+
+https://dcdark.net/2017/badge/index.html
 
 -----
 Installation of IDE:

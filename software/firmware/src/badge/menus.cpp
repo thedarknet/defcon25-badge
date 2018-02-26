@@ -604,7 +604,7 @@ const char *BadgeInfoState::getRegCode(ContactStore &cs) {
 	return &RegCode[0];
 }
 
-static const char *VERSION = "dc25.1.2";
+static const char *VERSION = "scale.1.3";
 
 ErrorType
 BadgeInfoState::onInit(RunContext & rc)

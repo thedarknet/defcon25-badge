@@ -112,7 +112,7 @@ uint32_t DCDarkNetApp::init() {
 	Display.fillScreen(RGBColor::BLACK);
 	Display.swap();
 	Display.drawImage(getCyberez());
-	Display.drawString(0, 150, "><>  #dcdn17");
+	Display.drawString(0, 150, "><>  #Scalex16");
 	Display.swap();
 	HAL_Delay(3000);
 

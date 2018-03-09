@@ -32,6 +32,7 @@ public:
 	ContactStore &getContactStore();
 	RFM69 &getRadio();
 	LedDC25 &getLedControl();
+	void checkRadio(uint32_t tick);
 private:
 	DisplayST7735 *dp; //should just be DisplayDevice rather than specific display //TODO
 	GUI GuiDisplay;

@@ -14,7 +14,6 @@
 
 DCDarkNetApp::DCDarkNetApp() :
 		CurrentState(0) {
-
 }
 
 static const uint32_t TIME_BETWEEN_INITS = 100;
@@ -112,7 +111,7 @@ uint32_t DCDarkNetApp::init() {
 	Display.fillScreen(RGBColor::BLACK);
 	Display.swap();
 	Display.drawImage(getCyberez());
-	Display.drawString(0, 150, "><>  #Scalex16");
+	Display.drawString(0, 150, "><>  #Scale16x");
 	Display.swap();
 	HAL_Delay(3000);
 
@@ -134,8 +133,6 @@ uint32_t DCDarkNetApp::init() {
 	Display.fillScreen(RGBColor::BLACK);
 	return retVal;
 }
-
-static uint32_t lastSendTime = 0;
 
 void DCDarkNetApp::run() {
 	uint32_t tick = HAL_GetTick();
@@ -184,22 +181,7 @@ void DCDarkNetApp::run() {
 	}
 	LedControl.process();
 
-	if (tick - lastSendTime > 8 && CurrentState != StateFactory::getGateway()) {
-		lastSendTime = tick;
-		if (Radio.receiveDone()) {
-			if (Radio.TARGETID == RF69_BROADCAST_ADDR) {
-				((MessageState *) StateFactory::getMessageState())->addRadioMessage((const char *) &Radio.DATA[0],
-						Radio.DATALEN,
-						RF69_BROADCAST_ADDR, Radio.RSSI);
-			} else {
-				((MessageState *) StateFactory::getMessageState())->addRadioMessage((const char *) &Radio.DATA[0],
-						Radio.DATALEN, Radio.SENDERID, Radio.RSSI);
-			}
-#ifndef DONT_USE_ACK
-			if (Radio.ACK_REQUESTED && Radio.SENDERID != RF69_BROADCAST_ADDR) {
-				Radio.sendACK("ACK", 4);
-			}
-#endif
-		}
+	if (CurrentState != StateFactory::getGateway()) {
+		rc.checkRadio(tick);
 	}
 }

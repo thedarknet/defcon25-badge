@@ -60,6 +60,7 @@ ReturnStateContext GameOfLife::onRun(RunContext &rc) {
 						rc.getDisplay().drawPixel(k * 4, j * 2 + 10, RGBColor::BLACK);
 					}
 				}
+				rc.checkRadio(HAL_GetTick());
 			}
 			if (0 == count) {
 				sprintf(&UtilityBuf[0], "   ALL DEAD\n   After %d\n   generations", CurrentGeneration);

@@ -47,6 +47,24 @@ LedDC25 &RunContext::getLedControl() {
 	return *LedControl;
 }
 
+static uint32_t lastSendTime = 0;
+
+void RunContext::checkRadio(uint32_t tick) {
+	if (tick - lastSendTime > 8) {
+		lastSendTime = tick;
+		if (Transciever->receiveDone()) {
+			if (Transciever->TARGETID == RF69_BROADCAST_ADDR) {
+				((MessageState *) StateFactory::getMessageState())->addRadioMessage((const char *) &Transciever->DATA[0],
+						Transciever->DATALEN,
+						RF69_BROADCAST_ADDR, Transciever->RSSI);
+			} else {
+				((MessageState *) StateFactory::getMessageState())->addRadioMessage((const char *) &Transciever->DATA[0],
+						Transciever->DATALEN, Transciever->SENDERID, Transciever->RSSI);
+			}
+		}
+	}
+}
+
 ///////////////////////////
 
 StateBase::StateBase() :
@@ -178,70 +196,70 @@ ReturnStateContext MenuState::onRun(RunContext &rc) {
 	uint8_t key = rc.getKB().getLastKeyReleased();
 
 	switch (key) {
-		case QKeyboard::UP: {
-			if (MenuList.selectedItem == 0) {
-				MenuList.selectedItem = sizeof(Items) / sizeof(Items[0]) - 1;
-			} else {
-				MenuList.selectedItem--;
-			}
-			break;
+	case QKeyboard::UP: {
+		if (MenuList.selectedItem == 0) {
+			MenuList.selectedItem = sizeof(Items) / sizeof(Items[0]) - 1;
+		} else {
+			MenuList.selectedItem--;
 		}
-		case QKeyboard::DOWN: {
-			if (MenuList.selectedItem == (sizeof(Items) / sizeof(Items[0]) - 1)) {
-				MenuList.selectedItem = 0;
-			} else {
-				MenuList.selectedItem++;
-			}
-			break;
-		}
-		case QKeyboard::BACK: {
+		break;
+	}
+	case QKeyboard::DOWN: {
+		if (MenuList.selectedItem == (sizeof(Items) / sizeof(Items[0]) - 1)) {
 			MenuList.selectedItem = 0;
+		} else {
+			MenuList.selectedItem++;
 		}
+		break;
+	}
+	case QKeyboard::BACK: {
+		MenuList.selectedItem = 0;
+	}
+		break;
+	case QKeyboard::ENTER: {
+		switch (MenuList.selectedItem) {
+		case 0:
+			nextState = StateFactory::getSettingState();
 			break;
-		case QKeyboard::ENTER: {
-			switch (MenuList.selectedItem) {
-				case 0:
-					nextState = StateFactory::getSettingState();
-					break;
-				case 1:
-					if (rc.getContactStore().getSettings().getAgentName()[0] != '\0') {
-						nextState = StateFactory::getIRPairingState();
-					} else {
-						nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(),
-								(const char *) "You must set your agent name first", 3000);
-					}
-					break;
-				case 2:
-					nextState = StateFactory::getAddressBookState();
-					break;
-				case 3:
-					nextState = StateFactory::getMessageState();
-					break;
-				case 4:
-					nextState = StateFactory::get3DState();
-					break;
-				case 5:
-					nextState = StateFactory::getGameOfLifeState();
-					break;
-				case 6:
-					nextState = StateFactory::getBadgeInfoState();
-					break;
-				case 7:
-					nextState = StateFactory::getRadioInfoState();
-					break;
-				case 8:
-					nextState = StateFactory::getKeyBoardTest();
-					break;
-				case 9:
-					rc.getKB().setDialerMode(true);
-					nextState = StateFactory::getKeyBoardTest();
-					break;
-				case 10:
-					nextState = StateFactory::getGateway();
-					break;
+		case 1:
+			if (rc.getContactStore().getSettings().getAgentName()[0] != '\0') {
+				nextState = StateFactory::getIRPairingState();
+			} else {
+				nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(),
+						(const char *) "You must set your agent name first", 3000);
 			}
-		}
 			break;
+		case 2:
+			nextState = StateFactory::getAddressBookState();
+			break;
+		case 3:
+			nextState = StateFactory::getMessageState();
+			break;
+		case 4:
+			nextState = StateFactory::get3DState();
+			break;
+		case 5:
+			nextState = StateFactory::getGameOfLifeState();
+			break;
+		case 6:
+			nextState = StateFactory::getBadgeInfoState();
+			break;
+		case 7:
+			nextState = StateFactory::getRadioInfoState();
+			break;
+		case 8:
+			nextState = StateFactory::getKeyBoardTest();
+			break;
+		case 9:
+			rc.getKB().setDialerMode(true);
+			nextState = StateFactory::getKeyBoardTest();
+			break;
+		case 10:
+			nextState = StateFactory::getGateway();
+			break;
+		}
+	}
+		break;
 	}
 	if (rc.getKB().wasKeyReleased() && key != 9) {
 		rc.getGUI().drawList(&this->MenuList);
@@ -268,46 +286,44 @@ KeyBoardTest::~KeyBoardTest() {
 #if 1
 #define TOTAL_NUMBERS 7
 #define MAX_NUMBER_LEN 7
-static const char sNumbers[TOTAL_NUMBERS][MAX_NUMBER_LEN] = {
-		 {char('4'+100),char('1'+100),char('1'+100),char(100),char(100),char(100),char(100)}
-		,{char('9'+100),char('1'+100),char('1'+100),char(100),char(100),char(100),char(100)}
-		,{char('8'+100),char('6'+100),char('7'+100),char('5'+100),char('3'+100),char('0'+100),char('9'+100)}
-		,{char('8'+100),char('7'+100),char('4'+100),char('3'+100),char('2'+100),char('2'+100),char('1'+100)}
-		,{char('5'+100),char('5'+100),char('5'+100),char('2'+100),char('3'+100),char('6'+100),char('8'+100)}
-		,{char('5'+100),char('5'+100),char('5'+100),char('4'+100),char('8'+100),char('2'+100),char('3'+100)}
-		,{char('5'+100),char('5'+100),char('5'+100),char('4'+100),char('2'+100),char('2'+100),char('0'+100)}
-};
+static const char sNumbers[TOTAL_NUMBERS][MAX_NUMBER_LEN] = { { char('4' + 100), char('1' + 100), char('1' + 100), char(
+		100), char(100), char(100), char(100) }, { char('9' + 100), char('1' + 100), char('1' + 100), char(100), char(
+		100), char(100), char(100) }, { char('8' + 100), char('6' + 100), char('7' + 100), char('5' + 100), char(
+		'3' + 100), char('0' + 100), char('9' + 100) }, { char('8' + 100), char('7' + 100), char('4' + 100), char(
+		'3' + 100), char('2' + 100), char('2' + 100), char('1' + 100) }, { char('5' + 100), char('5' + 100), char(
+		'5' + 100), char('2' + 100), char('3' + 100), char('6' + 100), char('8' + 100) }, { char('5' + 100), char(
+		'5' + 100), char('5' + 100), char('4' + 100), char('8' + 100), char('2' + 100), char('3' + 100) },
+		{ char('5' + 100), char('5' + 100), char('5' + 100), char('4' + 100), char('2' + 100), char('2' + 100), char(
+				'0' + 100) } };
 char Numbers[TOTAL_NUMBERS][MAX_NUMBER_LEN];
 /*
-const char *Numbers[] = {
-		"411" //u
-		, "911" //duh
-		, "8675309" //Jenny
-		, "8743221" //KRUX
-		, "5552368" //Ghostbusters (555-2368)
-		, "5554823" //back to the future
-		, "5554220" //Hackers
-};
-*/
+ const char *Numbers[] = {
+ "411" //u
+ , "911" //duh
+ , "8675309" //Jenny
+ , "8743221" //KRUX
+ , "5552368" //Ghostbusters (555-2368)
+ , "5554823" //back to the future
+ , "5554220" //Hackers
+ };
+ */
 #else
 #define TOTAL_NUMBERS 1
 static const char *Numbers[] = {
-		"5555555"
+	"5555555"
 };
 #define MAX_NUMBER_LEN 7
 #endif
-
-
 
 ErrorType KeyBoardTest::onInit(RunContext &rc) {
 	LastKey = QKeyboard::NO_PIN_SELECTED;
 	rc.getDisplay().fillScreen(RGBColor::BLACK);
 	memset(&NumberDialed[0], 0, sizeof(NumberDialed));
 	memset(&FinalHexHash[0], 0, sizeof(FinalHexHash));
-	memset(&Numbers[0][0],0,sizeof(Numbers));
-	for(int i=0;i<TOTAL_NUMBERS;++i) {
-		for(int j=0;j<MAX_NUMBER_LEN;++j) {
-			Numbers[i][j] = sNumbers[i][j]-100;
+	memset(&Numbers[0][0], 0, sizeof(Numbers));
+	for (int i = 0; i < TOTAL_NUMBERS; ++i) {
+		for (int j = 0; j < MAX_NUMBER_LEN; ++j) {
+			Numbers[i][j] = sNumbers[i][j] - 100;
 		}
 	}
 	Pos = 0;
@@ -456,109 +472,105 @@ ReturnStateContext SettingState::onRun(RunContext &rc) {
 	uint8_t key = rc.getKB().getLastKeyReleased();
 	StateBase *nextState = this;
 	switch (SubState) {
-		case 0:
-			switch (key) {
-				case QKeyboard::UP: {
-					if (SettingList.selectedItem == 0) {
-						SettingList.selectedItem = sizeof(Items) / sizeof(Items[0]) - 1;
-					} else {
-						SettingList.selectedItem--;
-					}
-					break;
-				}
-				case QKeyboard::DOWN: {
-					if (SettingList.selectedItem == (sizeof(Items) / sizeof(Items[0]) - 1)) {
-						SettingList.selectedItem = 0;
-					} else {
-						SettingList.selectedItem++;
-					}
-					break;
-				}
-				case QKeyboard::BACK: {
-					nextState = StateFactory::getMenuState();
-				}
-					break;
-				case QKeyboard::ENTER: {
-					SubState = SettingList.selectedItem + 100;
-					rc.getDisplay().fillScreen(RGBColor::BLACK);
-					switch (SubState) {
-						case 100:
-							memset(&AgentName[0], 0, sizeof(AgentName));
-							getKeyboardContext().init(&AgentName[0], sizeof(AgentName));
-							rc.getDisplay().drawString(0, 10, (const char*) "Current agent name:");
-							if (*rc.getContactStore().getSettings().getAgentName() == '\0') {
-								rc.getDisplay().drawString(0, 20, (const char *) "NOT SET");
-							} else {
-								rc.getDisplay().drawString(0, 20, rc.getContactStore().getSettings().getAgentName());
-							}
-							rc.getDisplay().drawString(0, 30, (const char*) "Set agent name:");
-							break;
-						case 101:
-							rc.getDisplay().drawString(0, 10, (const char*) "Time until badge\ngoes to sleep:",
-									RGBColor::WHITE, RGBColor::BLACK, 1, true);
-							InputPos = rc.getContactStore().getSettings().getScreenSaverTime();
-							break;
-						case 102:
-							rc.getKB().reset();
-							rc.getDisplay().drawString(0, 10, (const char*) "ERASE ALL\nCONTACTS?");
-							rc.getDisplay().drawString(0, 30, (const char*) "Touch 1 to Cancel");
-							rc.getDisplay().drawString(0, 34, (const char*) "Touch Hook to do it");
-							break;
-					}
-				}
-					break;
-				default:
-					break;
-			}
-			break;
-
-		case 100:
-			rc.getKB().updateContext(getKeyboardContext());
-			if (rc.getKB().getLastKeyReleased() == QKeyboard::ENTER && AgentName[0] != '\0' && AgentName[0] != ' '
-					&& AgentName[0] != '_') {
-				AgentName[ContactStore::AGENT_NAME_LENGTH - 1] = '\0';
-				getKeyboardContext().finalize();
-				//done
-				if (rc.getContactStore().getSettings().setAgentname(&AgentName[0])) {
-					nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), "Save Successful",
-							2000);
-				} else {
-					nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), "Save FAILED!",
-							4000);
-				}
+	case 0:
+		switch (key) {
+		case QKeyboard::UP: {
+			if (SettingList.selectedItem == 0) {
+				SettingList.selectedItem = sizeof(Items) / sizeof(Items[0]) - 1;
 			} else {
-				rc.getDisplay().drawString(0, 40, &AgentName[0]);
+				SettingList.selectedItem--;
 			}
 			break;
-		case 101:
-			if (rc.getKB().getLastKeyReleased() == QKeyboard::ENTER) {
-				if (rc.getContactStore().getSettings().setScreenSaverTime(InputPos)) {
-					nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), "Setting saved",
-							2000);
+		}
+		case QKeyboard::DOWN: {
+			if (SettingList.selectedItem == (sizeof(Items) / sizeof(Items[0]) - 1)) {
+				SettingList.selectedItem = 0;
+			} else {
+				SettingList.selectedItem++;
+			}
+			break;
+		}
+		case QKeyboard::BACK: {
+			nextState = StateFactory::getMenuState();
+		}
+			break;
+		case QKeyboard::ENTER: {
+			SubState = SettingList.selectedItem + 100;
+			rc.getDisplay().fillScreen(RGBColor::BLACK);
+			switch (SubState) {
+			case 100:
+				memset(&AgentName[0], 0, sizeof(AgentName));
+				getKeyboardContext().init(&AgentName[0], sizeof(AgentName));
+				rc.getDisplay().drawString(0, 10, (const char*) "Current agent name:");
+				if (*rc.getContactStore().getSettings().getAgentName() == '\0') {
+					rc.getDisplay().drawString(0, 20, (const char *) "NOT SET");
 				} else {
-					nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), "Save FAILED!",
-							4000);
+					rc.getDisplay().drawString(0, 20, rc.getContactStore().getSettings().getAgentName());
 				}
-			} else if (rc.getKB().getLastKeyReleased() != QKeyboard::NO_PIN_SELECTED) {
-				InputPos = rc.getKB().getLastKeyReleased() + 1;
-				if (InputPos > 8) {
-					InputPos = 8;
-				} else if (InputPos < 1) {
-					InputPos = 1;
-				}
+				rc.getDisplay().drawString(0, 30, (const char*) "Set agent name:");
+				break;
+			case 101:
+				rc.getDisplay().drawString(0, 10, (const char*) "Time until badge\ngoes to sleep:", RGBColor::WHITE,
+						RGBColor::BLACK, 1, true);
+				InputPos = rc.getContactStore().getSettings().getScreenSaverTime();
+				break;
+			case 102:
+				rc.getKB().reset();
+				rc.getDisplay().drawString(0, 10, (const char*) "ERASE ALL\nCONTACTS?");
+				rc.getDisplay().drawString(0, 30, (const char*) "Touch 1 to Cancel");
+				rc.getDisplay().drawString(0, 34, (const char*) "Touch Hook to do it");
+				break;
 			}
-			sprintf(&AgentName[0], "%d Minutes", InputPos);
+		}
+			break;
+		default:
+			break;
+		}
+		break;
+
+	case 100:
+		rc.getKB().updateContext(getKeyboardContext());
+		if (rc.getKB().getLastKeyReleased() == QKeyboard::ENTER && AgentName[0] != '\0' && AgentName[0] != ' '
+				&& AgentName[0] != '_') {
+			AgentName[ContactStore::AGENT_NAME_LENGTH - 1] = '\0';
+			getKeyboardContext().finalize();
+			//done
+			if (rc.getContactStore().getSettings().setAgentname(&AgentName[0])) {
+				nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), "Save Successful", 2000);
+			} else {
+				nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), "Save FAILED!", 4000);
+			}
+		} else {
 			rc.getDisplay().drawString(0, 40, &AgentName[0]);
-			break;
-		case 102:
-			if (rc.getKB().getLastKeyReleased() == QKeyboard::BACK) {
-				nextState = StateFactory::getMenuState();
-			} else if (rc.getKB().getLastKeyReleased() == QKeyboard::ENTER) {
-				rc.getContactStore().resetToFactory();
-				StateFactory::getAddressBookState()->resetSelection();
-				nextState = StateFactory::getMenuState();
+		}
+		break;
+	case 101:
+		if (rc.getKB().getLastKeyReleased() == QKeyboard::ENTER) {
+			if (rc.getContactStore().getSettings().setScreenSaverTime(InputPos)) {
+				nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), "Setting saved", 2000);
+			} else {
+				nextState = StateFactory::getDisplayMessageState(StateFactory::getMenuState(), "Save FAILED!", 4000);
 			}
-			break;
+		} else if (rc.getKB().getLastKeyReleased() != QKeyboard::NO_PIN_SELECTED) {
+			InputPos = rc.getKB().getLastKeyReleased() + 1;
+			if (InputPos > 8) {
+				InputPos = 8;
+			} else if (InputPos < 1) {
+				InputPos = 1;
+			}
+		}
+		sprintf(&AgentName[0], "%d Minutes", InputPos);
+		rc.getDisplay().drawString(0, 40, &AgentName[0]);
+		break;
+	case 102:
+		if (rc.getKB().getLastKeyReleased() == QKeyboard::BACK) {
+			nextState = StateFactory::getMenuState();
+		} else if (rc.getKB().getLastKeyReleased() == QKeyboard::ENTER) {
+			rc.getContactStore().resetToFactory();
+			StateFactory::getAddressBookState()->resetSelection();
+			nextState = StateFactory::getMenuState();
+		}
+		break;
 	}
 	if (SubState < 100 && rc.getKB().wasKeyReleased()) {
 		rc.getGUI().drawList(&SettingList);
@@ -566,8 +578,7 @@ ReturnStateContext SettingState::onRun(RunContext &rc) {
 	return ReturnStateContext(nextState);
 }
 
-ErrorType SettingState::onShutdown()
-{
+ErrorType SettingState::onShutdown() {
 	InputPos = 0;
 	memset(&AgentName[0], 0, sizeof(AgentName));
 	return ErrorType();
@@ -577,15 +588,13 @@ ErrorType SettingState::onShutdown()
 
 //////////////////////////////////////////////////////////////
 
-BadgeInfoState::BadgeInfoState()
-:
+BadgeInfoState::BadgeInfoState() :
 		StateBase(), BadgeInfoList("Badge Info:", Items, 0, 0, 128, 160, 0, (sizeof(Items) / sizeof(Items[0]))), RegCode() {
 
 	memset(&RegCode, 0, sizeof(RegCode));
 }
 
-BadgeInfoState::~BadgeInfoState()
-{
+BadgeInfoState::~BadgeInfoState() {
 
 }
 
@@ -606,9 +615,7 @@ const char *BadgeInfoState::getRegCode(ContactStore &cs) {
 
 static const char *VERSION = "scale.1.3";
 
-ErrorType
-BadgeInfoState::onInit(RunContext & rc)
-		{
+ErrorType BadgeInfoState::onInit(RunContext & rc) {
 	memset(&ListBuffer[0], 0, sizeof(ListBuffer));
 	sprintf(&ListBuffer[0][0], "Name: %s", rc.getContactStore().getSettings().getAgentName());
 	sprintf(&ListBuffer[1][0], "Num contacts: %u", rc.getContactStore().getSettings().getNumContacts());
@@ -617,10 +624,8 @@ BadgeInfoState::onInit(RunContext & rc)
 	uint8_t *pCP = rc.getContactStore().getMyInfo().getCompressedPublicKey();
 	sprintf(&ListBuffer[4][0],
 			"PK: %02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
-			pCP[0], pCP[1], pCP[2], pCP[3], pCP[4], pCP[5], pCP[6], pCP[7], pCP[8], pCP[9], pCP[10], pCP[11],
-			pCP[12],
-			pCP[13], pCP[14], pCP[15], pCP[16], pCP[17], pCP[18], pCP[19], pCP[20], pCP[21], pCP[22], pCP[23],
-			pCP[24]);
+			pCP[0], pCP[1], pCP[2], pCP[3], pCP[4], pCP[5], pCP[6], pCP[7], pCP[8], pCP[9], pCP[10], pCP[11], pCP[12],
+			pCP[13], pCP[14], pCP[15], pCP[16], pCP[17], pCP[18], pCP[19], pCP[20], pCP[21], pCP[22], pCP[23], pCP[24]);
 	sprintf(&ListBuffer[5][0], "DEVID: %lu", HAL_GetDEVID());
 	sprintf(&ListBuffer[6][0], "REVID: %lu", HAL_GetREVID());
 	sprintf(&ListBuffer[7][0], "HAL Version: %lu", HAL_GetHalVersion());
@@ -636,32 +641,30 @@ BadgeInfoState::onInit(RunContext & rc)
 	return ErrorType();
 }
 
-ReturnStateContext
-BadgeInfoState::onRun(RunContext & rc)
-		{
+ReturnStateContext BadgeInfoState::onRun(RunContext & rc) {
 	StateBase *nextState = this;
 	uint8_t key = rc.getKB().getLastKeyReleased();
 	switch (key) {
-		case QKeyboard::UP: {
-			if (BadgeInfoList.selectedItem == 0) {
-				BadgeInfoList.selectedItem = sizeof(Items) / sizeof(Items[0]) - 1;
-			} else {
-				BadgeInfoList.selectedItem--;
-			}
-			break;
+	case QKeyboard::UP: {
+		if (BadgeInfoList.selectedItem == 0) {
+			BadgeInfoList.selectedItem = sizeof(Items) / sizeof(Items[0]) - 1;
+		} else {
+			BadgeInfoList.selectedItem--;
 		}
-		case QKeyboard::DOWN: {
-			if (BadgeInfoList.selectedItem == (sizeof(Items) / sizeof(Items[0]) - 1)) {
-				BadgeInfoList.selectedItem = 0;
-			} else {
-				BadgeInfoList.selectedItem++;
-			}
-			break;
+		break;
+	}
+	case QKeyboard::DOWN: {
+		if (BadgeInfoList.selectedItem == (sizeof(Items) / sizeof(Items[0]) - 1)) {
+			BadgeInfoList.selectedItem = 0;
+		} else {
+			BadgeInfoList.selectedItem++;
 		}
-		case QKeyboard::ENTER:
-			case QKeyboard::BACK:
-			nextState = StateFactory::getMenuState();
-			break;
+		break;
+	}
+	case QKeyboard::ENTER:
+	case QKeyboard::BACK:
+		nextState = StateFactory::getMenuState();
+		break;
 	}
 	if (rc.getKB().wasKeyReleased()
 			|| (Items[BadgeInfoList.selectedItem].shouldScroll() && getTimesRunCalledSinceLastReset() % 5 == 0)) {
@@ -670,28 +673,22 @@ BadgeInfoState::onRun(RunContext & rc)
 	return ReturnStateContext(nextState);
 }
 
-ErrorType
-BadgeInfoState::onShutdown()
-{
+ErrorType BadgeInfoState::onShutdown() {
 	return ErrorType();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-RadioInfoState::RadioInfoState()
-:
+RadioInfoState::RadioInfoState() :
 		StateBase(), RadioInfoList("Radio Info:", Items, 0, 0, 128, 160, 0, (sizeof(Items) / sizeof(Items[0]))), Items(), ListBuffer() {
 
 }
 
-RadioInfoState::~RadioInfoState()
-{
+RadioInfoState::~RadioInfoState() {
 
 }
 
-ErrorType
-RadioInfoState::onInit(RunContext & rc)
-		{
+ErrorType RadioInfoState::onInit(RunContext & rc) {
 	memset(&ListBuffer[0], 0, sizeof(ListBuffer));
 	for (uint32_t i = 0; i < (sizeof(Items) / sizeof(Items[0])); i++) {
 		Items[i].text = &ListBuffer[i][0];
@@ -707,9 +704,7 @@ RadioInfoState::onInit(RunContext & rc)
 	return ErrorType();
 }
 
-ReturnStateContext
-RadioInfoState::onRun(RunContext & rc)
-		{
+ReturnStateContext RadioInfoState::onRun(RunContext & rc) {
 	StateBase *nextState = this;
 	uint8_t pin = rc.getKB().getLastKeyReleased();
 	if (pin == 9) {
@@ -718,9 +713,7 @@ RadioInfoState::onRun(RunContext & rc)
 	return ReturnStateContext(nextState);
 }
 
-ErrorType
-RadioInfoState::onShutdown()
-{
+ErrorType RadioInfoState::onShutdown() {
 	return ErrorType();
 }
 
@@ -759,43 +752,35 @@ StateBase *StateFactory::getDisplayMessageState(StateBase *bm, const char *messa
 	return &Display_Message_State;
 }
 
-StateBase * StateFactory::getRadioInfoState()
-{
+StateBase * StateFactory::getRadioInfoState() {
 	return &TheRadioInfoState;
 }
 
-StateBase * StateFactory::getMenuState()
-{
+StateBase * StateFactory::getMenuState() {
 	return &MenuState;
 }
 
-StateBase * StateFactory::getSettingState()
-{
+StateBase * StateFactory::getSettingState() {
 	return &TheSettingState;
 }
 
-StateBase * StateFactory::getBadgeInfoState()
-{
+StateBase * StateFactory::getBadgeInfoState() {
 	return &TheBadgeInfoState;
 }
 
-StateBase * StateFactory::getGameOfLifeState()
-{
+StateBase * StateFactory::getGameOfLifeState() {
 	return &TheGameOfLifeState;
 }
 
-StateBase * StateFactory::getKeyBoardTest()
-{
+StateBase * StateFactory::getKeyBoardTest() {
 	return &TheKeyBoardTest;
 }
 
-MessageState * StateFactory::getMessageState()
-{
+MessageState * StateFactory::getMessageState() {
 	return &TheMessageState;
 }
 
-StateBase * StateFactory::getIRPairingState()
-{
+StateBase * StateFactory::getIRPairingState() {
 	return &TheIRState;
 }
 

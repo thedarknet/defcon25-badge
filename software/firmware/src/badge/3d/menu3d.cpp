@@ -249,6 +249,7 @@ void Menu3D::render(RunContext &rc) {
 	shader.setLightDir(light_dir);
 	//Vec3i screen_coords[3];
 	for (uint32_t i = 0; i < model.nFaces(); i++) {
+		rc.checkRadio(HAL_GetTick());
 		for (int j = 0; j < 3; j++) {
 			Vec3i v0 = shader.vertex(modelViewProj, model, i, j);
 			Vec3i v1 = shader.vertex(modelViewProj, model, i, (j + 1) % 3);

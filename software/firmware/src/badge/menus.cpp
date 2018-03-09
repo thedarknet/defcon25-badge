@@ -613,7 +613,7 @@ const char *BadgeInfoState::getRegCode(ContactStore &cs) {
 	return &RegCode[0];
 }
 
-static const char *VERSION = "scale.1.3";
+static const char *VERSION = "scale.1.4";
 
 ErrorType BadgeInfoState::onInit(RunContext & rc) {
 	memset(&ListBuffer[0], 0, sizeof(ListBuffer));
